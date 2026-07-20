@@ -1,35 +1,72 @@
-
-import React from 'react';
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { ArrowRight, Award, CheckCircle2, UserCheck, ShieldCheck, Target, Cpu } from "lucide-react";
 
 const AboutSection = () => {
+  const differentiators = [
+    {
+      icon: Cpu,
+      title: "Autonomie Complète de A à Z",
+      description: "Capable de prendre en charge votre projet depuis le recueil du besoin fonctionnel jusqu'au déploiement sécurisé en production."
+    },
+    {
+      icon: Target,
+      title: "Culture du Résultat Métier",
+      description: "Priorité absolue à la valeur concrète apportée à votre entreprise et vos utilisateurs, plutôt qu'au code pour le code."
+    },
+    {
+      icon: ShieldCheck,
+      title: "Exigence Grands Comptes",
+      description: "Rigueur, normes de sécurité et qualité éprouvées auprès de grandes institutions bancaires et d'assurance (COVEA, La Banque Postale)."
+    }
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
-      <div className="bg-card rounded-xl p-8 md:p-12 shadow-sm">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">À propos de RAMSIN</h2>
-          <p className="text-lg mb-6">
-            RAMSIN est une entreprise spécialisée dans l'architecture des systèmes d'information, 
-            fondée par un ingénieur informatique possédant une double expertise technique et fonctionnelle.
-          </p>
-          <p className="text-lg mb-6">
-            Fort d'une expérience significative dans le domaine, je mets mes compétences au service 
-            des entreprises pour les accompagner dans la gestion de l'outil MEGA Hopex, jouant 
-            le rôle d'architecte, de Product Owner et assurant le pilotage d'équipe.
-          </p>
-          <p className="text-lg">
-            Mon approche allie rigueur technique et compréhension des enjeux métier pour 
-            vous offrir un accompagnement personnalisé et efficace.
-          </p>
-          <div className="mt-8">
-            <Button asChild variant="outline">
-              <Link to="/about">En savoir plus sur mon parcours</Link>
+    <section className="py-16 md:py-24 bg-card border-y border-border/60">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
+              <UserCheck className="w-3.5 h-3.5 mr-1 inline" /> Séniorité & Engagements
+            </Badge>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              Pourquoi Travailler Ensemble ?
+            </h2>
+            <p className="text-muted-foreground text-lg sm:text-xl">
+              Ingénieur diplômé (Master 2 Sup de Vinci / MIAGE), Oumar SIDIBÉ combine 7 ans d'expérience SI et développement web sur-mesure.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {differentiators.map((diff, index) => {
+              const IconComp = diff.icon;
+              return (
+                <div key={index} className="p-6 rounded-2xl bg-background border border-border/80 hover:border-primary/40 transition-all space-y-4 hover-lift">
+                  <div className="p-3 bg-primary/10 text-primary rounded-xl w-fit">
+                    <IconComp className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground">{diff.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {diff.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center pt-4">
+            <Button asChild size="lg" variant="outline" className="gap-2 font-semibold hover-lift">
+              <Link to="/about">
+                Consulter le parcours & compétences <ArrowRight className="w-4 h-4" />
+              </Link>
             </Button>
           </div>
+
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
