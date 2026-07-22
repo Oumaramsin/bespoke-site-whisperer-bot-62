@@ -7,6 +7,13 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      "/api/resend": {
+        target: "https://api.resend.com/emails",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/resend/, ""),
+      },
+    },
   },
   plugins: [
     react(),

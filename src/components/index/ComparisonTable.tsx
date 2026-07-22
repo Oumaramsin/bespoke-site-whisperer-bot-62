@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Scale, Sparkles, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, X, Scale, Sparkles, ShieldCheck, ArrowRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const ComparisonTable = () => {
@@ -29,23 +30,15 @@ const ComparisonTable = () => {
     }
   ];
 
+  const scrollToReservation = () => {
+    const el = document.getElementById("reservation-calendrier");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-background via-secondary/20 to-background border-t border-border/60 relative overflow-hidden">
-      {/* Wave separator top */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-[1px] pointer-events-none">
-        <svg
-          viewBox="0 0 1200 60"
-          preserveAspectRatio="none"
-          className="w-full h-8 md:h-12"
-          aria-hidden="true"
-        >
-          <path
-            d="M0,40 C300,10 600,50 900,20 C1050,5 1150,40 1200,30 L1200,0 L0,0 Z"
-            fill="hsl(var(--background))"
-          />
-        </svg>
-      </div>
-
       <div className="container mx-auto px-4">
         {/* En-tête de section */}
         <div
@@ -59,7 +52,7 @@ const ComparisonTable = () => {
             <Scale className="w-3.5 h-3.5 mr-1.5 inline text-primary" /> Transparence & Sérénité
           </Badge>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            Pourquoi Choisir Mon Accompagnement ?
+            Méthode Classique vs L'Approche RAMSIN
           </h2>
           <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed">
             Une comparaison directe entre les dérives habituelles du secteur et un partenariat serein, transparent et sécurisé.
@@ -68,7 +61,7 @@ const ComparisonTable = () => {
 
         {/* Tableau de Comparaison Haut de Gamme */}
         <Card
-          className={`max-w-5xl mx-auto border-2 border-primary/20 shadow-2xl overflow-hidden glass-card rounded-2xl scroll-scale-up ${isVisible ? "is-visible" : ""}`}
+          className={`max-w-5xl mx-auto border-2 border-emerald-500/30 shadow-2xl overflow-hidden glass-card rounded-2xl scroll-scale-up ${isVisible ? "is-visible" : ""}`}
         >
           <CardContent className="p-0">
             {/* Header de la Table */}
@@ -88,10 +81,10 @@ const ComparisonTable = () => {
                   <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
-                  <span className="truncate">Mon Accompagnement Ramsin</span>
+                  <span className="truncate">L'Approche RAMSIN</span>
                 </span>
                 <Badge className="hidden sm:inline-flex bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  <Sparkles className="w-3 h-3 mr-1 inline" /> Recommandé
+                  <Sparkles className="w-3 3 mr-1 inline" /> Recommandé
                 </Badge>
               </div>
             </div>
@@ -127,6 +120,17 @@ const ComparisonTable = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Bandeau d'Appel à l'Action de fin de Tableau */}
+            <div className="bg-gradient-to-r from-emerald-500/10 via-primary/5 to-emerald-500/10 p-6 border-t border-emerald-500/30 text-center flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center sm:text-left">
+                <h4 className="font-extrabold text-foreground text-base">Convaincu par l'approche RAMSIN ?</h4>
+                <p className="text-xs text-muted-foreground">Planifiez votre premier échange offert de 30 minutes sans engagement.</p>
+              </div>
+              <Button onClick={scrollToReservation} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold gap-2 shadow-md cursor-pointer shrink-0">
+                Réserver mon échange (30 min) <ArrowRight className="w-4 h-4" />
+              </Button>
             </div>
           </CardContent>
         </Card>

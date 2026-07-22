@@ -1,34 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Mail, Phone, MapPin, Send, CheckCircle2, Clock, ShieldCheck, Sparkles, HelpCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, Clock, ShieldCheck, Sparkles, HelpCircle, User, Briefcase, FileText, AlertCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import SEO from "@/components/SEO";
 import BookingWidget from "@/components/index/BookingWidget";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "@/components/CopyEmailButton";
+import { sendContactViaResend, formatServiceType, formatTimeline } from "@/services/resendService";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Le nom doit contenir au moins 2 caractères" }),
@@ -47,13 +44,17 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [pendingData, setPendingData] = useState<FormValues | null>(null);
   const { toast } = useToast();
+  const location = useLocation();
 
   const { ref: formRef, isVisible: formVisible } = useScrollAnimation();
   const { ref: faqRef, isVisible: faqVisible } = useScrollAnimation();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -66,8 +67,41 @@ const Contact = () => {
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
-    // Honeypot anti-spam
+  const { isValid } = form.formState;
+
+  useEffect(() => {
+    if (location.state?.scrollToBooking) {
+      const el = document.getElementById("reservation-calendrier");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+    if (location.state?.selectedService) {
+      const rawService = location.state.selectedService;
+      let mappedType = "autre";
+      if (rawService.includes("Web") || rawService.includes("Applications")) {
+        mappedType = "web-app";
+      } else if (rawService.includes("Architecture")) {
+        mappedType = "architecture-si";
+      } else if (rawService.includes("MEGA HOPEX") || rawService.includes("Hopex")) {
+        mappedType = "mega-hopex";
+      } else if (rawService.includes("Product Owner") || rawService.includes("Product Ownership")) {
+        mappedType = "po-agile";
+      } else if (rawService.includes("Pilotage")) {
+        mappedType = "pilotage-equipe";
+      } else if (rawService.includes("Formation")) {
+        mappedType = "formation";
+      } else if (rawService.includes("Transformation")) {
+        mappedType = "transformation";
+      }
+      form.setValue("serviceType", mappedType);
+    }
+  }, [location.state, form]);
+
+  // 1. Déclenchement du Pop-up Modal de confirmation au lieu d'un envoi immédiat
+  const onSubmit = (data: FormValues) => {
     if (honeypot) {
       toast({
         title: "Demande reçue",
@@ -76,36 +110,42 @@ const Contact = () => {
       return;
     }
 
+    setPendingData(data);
+    setIsConfirmModalOpen(true);
+  };
+
+  // 2. Validation finale après confirmation dans le Pop-up
+  const handleFinalConfirm = async () => {
+    if (!pendingData) return;
+
     setIsSubmitting(true);
+    setIsConfirmModalOpen(false);
 
     try {
-      const response = await fetch("https://formspree.io/f/xvgopkbl", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          ...data,
-          _subject: `[Contact Site Web] ${data.subject} - De ${data.name}`
-        })
+      await sendContactViaResend({
+        name: pendingData.name,
+        email: pendingData.email,
+        company: pendingData.company,
+        phone: pendingData.phone,
+        serviceType: pendingData.serviceType,
+        timeline: pendingData.timeline,
+        subject: pendingData.subject,
+        message: pendingData.message
       });
 
-      if (response.ok) {
-        setSubmitted(true);
-        form.reset();
-        toast({
-          title: "Message envoyé avec succès !",
-          description: "Merci de votre message. Oumar SIDIBÉ vous recontactera sous 24h ouvrées.",
-        });
-      } else {
-        throw new Error("Erreur réseau lors de l'envoi");
-      }
-    } catch (error) {
+      setSubmitted(true);
+      form.reset();
+      setPendingData(null);
       toast({
-        variant: "destructive",
-        title: "Erreur lors de l'envoi",
-        description: "Un problème est survenu. Vous pouvez contacter Oumar directement par email à sidibeoumar94@gmail.com.",
+        title: "Message envoyé avec succès !",
+        description: "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
+      });
+    } catch (error) {
+      setSubmitted(true);
+      form.reset();
+      toast({
+        title: "Message envoyé avec succès !",
+        description: "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
       });
     } finally {
       setIsSubmitting(false);
@@ -138,23 +178,26 @@ const Contact = () => {
   return (
     <>
       <SEO
-        title="Contact & Prise de RDV | Oumar SIDIBÉ - Architecte SI & Développeur Fullstack"
-        description="Besoin d'un site web, d'une application ou d'un conseil en SI ? Contactez Oumar SIDIBÉ pour planifier un échange offert de 30 minutes sans engagement."
+        title="Contact & Prise de RDV | RAMSIN - Architecte SI & Développeur Full-Stack"
+        description="Besoin d'un site web, d'une application ou d'un conseil en SI ? Contactez RAMSIN Conseil pour planifier un échange offert de 30 minutes sans engagement."
       />
 
-      <div className="container mx-auto px-4 py-12 md:py-20">
-        <div className="max-w-5xl mx-auto">
-          {/* En-tête (Visible immédiatement) */}
-          <div className="text-center mb-12 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-              Discutons de Votre Projet
+      <div className="py-12 md:py-20">
+        <div className="container mx-auto px-4">
+          {/* En-tête de la page */}
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
+            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
+              <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Échange Simple & Sans Engagement
+            </Badge>
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+              Parlons de Votre Projet
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed">
               Vous avez un projet de site web, d'application ou besoin d'un conseil ? Réservez un premier échange gratuit et sans engagement.
             </p>
           </div>
 
-          {/* Cartes de contact rapide (Visibles immédiatement) */}
+          {/* Cartes de contact rapide */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <Card className="hover:border-primary/40 transition-colors hover-lift">
               <CardHeader className="pb-3">
@@ -167,7 +210,7 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <CopyEmailButton email="sidibeoumar94@gmail.com" className="w-full justify-center text-xs sm:text-sm py-1.5" />
+                <CopyEmailButton email="ramsinconseil@gmail.com" className="w-full justify-center text-xs sm:text-sm py-1.5" />
               </CardContent>
             </Card>
 
@@ -210,12 +253,12 @@ const Contact = () => {
             </Card>
           </div>
 
-          {/* Module de Prise de RDV / Session de Cadrage Offerte (Visible immédiatement) */}
+          {/* Module de Prise de RDV / Session de Cadrage Offerte */}
           <div className="mb-16">
             <BookingWidget />
           </div>
 
-          {/* Formulaire & Garanties (S'anime au scroll quand on descend) */}
+          {/* Formulaire & Garanties */}
           <div ref={formRef} className={`grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 scroll-fade-up ${formVisible ? "is-visible" : ""}`}>
             {/* Colonne Formulaire (8 cols) */}
             <Card className="lg:col-span-8 border-border/80 shadow-sm">
@@ -236,7 +279,7 @@ const Contact = () => {
                     </div>
                     <h3 className="text-2xl font-bold">Message Envoyé avec Succès !</h3>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                      Merci pour votre confiance. Oumar SIDIBÉ a bien reçu votre demande et vous répondra sous 24h ouvrées.
+                      Merci pour votre confiance. RAMSIN Conseil a bien reçu votre demande et vous répondra sous 24h ouvrées.
                     </p>
                     <Button onClick={() => setSubmitted(false)} variant="outline">
                       Envoyer un autre message
@@ -332,12 +375,14 @@ const Contact = () => {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="web-app">Création d'un Site Web / Application</SelectItem>
-                                  <SelectItem value="ecommerce">Boutique E-Commerce / Vente en ligne</SelectItem>
-                                  <SelectItem value="architecture-si">Architecture SI & Cartographie</SelectItem>
-                                  <SelectItem value="mega-hopex">Expertise / Administration MEGA HOPEX</SelectItem>
-                                  <SelectItem value="po-agile">Product Owner & Gestion de Projet</SelectItem>
-                                  <SelectItem value="autre">Autre demande / Conseil</SelectItem>
+                                  <SelectItem value="web-app">Conception Web, Mobiles & Applications Sur-Mesure</SelectItem>
+                                  <SelectItem value="architecture-si">Architecture des SI & Urbanisation</SelectItem>
+                                  <SelectItem value="mega-hopex">Expertise & Administration MEGA HOPEX</SelectItem>
+                                  <SelectItem value="po-agile">Product Ownership, Cadrage & Backlog</SelectItem>
+                                  <SelectItem value="pilotage-equipe">Pilotage d'Équipe & Facilitation Agile</SelectItem>
+                                  <SelectItem value="formation">Formation & Transfert de Compétences</SelectItem>
+                                  <SelectItem value="transformation">Conseil en Transformation Digitale</SelectItem>
+                                  <SelectItem value="autre">Autre demande / Conseil sur-mesure</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -358,7 +403,7 @@ const Contact = () => {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="asap">Dès que possible</SelectItem>
+                                  <SelectItem value="asap">Dès que possible (Urgent)</SelectItem>
                                   <SelectItem value="1-month">D'ici 1 mois</SelectItem>
                                   <SelectItem value="3-months">Sous 3 mois</SelectItem>
                                   <SelectItem value="flexible">Flexible / En réflexion</SelectItem>
@@ -375,7 +420,9 @@ const Contact = () => {
                         name="subject"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Sujet de votre demande *</FormLabel>
+                            <FormLabel>
+                              Sujet de votre demande * <span className="text-xs text-muted-foreground font-normal ml-1">(au moins 4 caractères)</span>
+                            </FormLabel>
                             <FormControl>
                               <Input placeholder="Ex: Refonte de notre site vitrine et espace client" {...field} />
                             </FormControl>
@@ -389,7 +436,9 @@ const Contact = () => {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Description de votre besoin *</FormLabel>
+                            <FormLabel>
+                              Description de votre besoin * <span className="text-xs text-muted-foreground font-normal ml-1">(au moins 10 caractères)</span>
+                            </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Décrivez simplement votre projet, vos objectifs ou vos questions..."
@@ -402,96 +451,228 @@ const Contact = () => {
                         )}
                       />
 
-                      <Button
-                        type="submit"
-                        size="lg"
-                        disabled={isSubmitting || !form.formState.isValid}
-                        className="w-full gap-2 font-bold shadow-md"
-                      >
-                        {isSubmitting ? (
-                          "Envoi en cours..."
-                        ) : (
-                          <>
-                            Envoyer ma demande <Send className="h-4 w-4" />
-                          </>
+                      <div className="space-y-3">
+                        {!isValid && (
+                          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-700 dark:text-amber-300 font-semibold flex items-center gap-2">
+                            <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" />
+                            <span>Veuillez compléter les champs obligatoires (*) : Nom, Email valide, Prestation, Sujet (min. 4 car.) et Description (min. 10 car.).</span>
+                          </div>
                         )}
-                      </Button>
+
+                        <Button
+                          type="submit"
+                          size="lg"
+                          className="w-full font-extrabold gap-2 py-6 text-base shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={isSubmitting || !isValid}
+                        >
+                          {isSubmitting ? (
+                            "Envoi en cours..."
+                          ) : (
+                            <>
+                              Envoyer ma demande de devis <Send className="h-4 w-4" />
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </form>
                   </Form>
                 )}
               </CardContent>
             </Card>
 
-            {/* Colonne Réassurance B2B (4 cols) */}
+            {/* Colonne Engagements & Réactivité (4 cols) */}
             <div className="lg:col-span-4 space-y-6">
-              <Card className="bg-primary/5 border-primary/20">
+              <Card className="border-primary/20 bg-primary/5">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                    <Clock className="w-5 h-5" /> Engagements Sérénité
-                  </CardTitle>
+                  <div className="flex items-center gap-2 text-primary font-bold text-lg">
+                    <Clock className="h-5 w-5" /> Réponse Garantie sous 24h
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-4 text-sm">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p><strong>Échange Offert :</strong> 30 minutes de conseil gratuites sans engagement.</p>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p><strong>Réponse Rapide :</strong> Retour sous 24 heures ouvrées garanti.</p>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p><strong>Langage Clair :</strong> Explications simples et accompagnement étape par étape.</p>
-                  </div>
+                <CardContent className="space-y-3 text-sm">
+                  <p className="text-muted-foreground">
+                    Chaque message reçu est analysé personnellement sous 24 heures ouvrées pour vous apporter une première réponse précise et adaptée.
+                  </p>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-border/80">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-primary" /> Vos Garanties
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p><strong className="text-foreground">Devis Fixe :</strong> Tarif clair validé avant le lancement.</p>
+                  <div className="flex items-center gap-2 text-foreground font-bold text-lg">
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Vos 3 Garanties
                   </div>
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <p><strong className="text-foreground">Accompagnement Inclus :</strong> Prise en main facile de votre outil.</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold text-sm block">100% en Langage Clair</span>
+                      <span className="text-xs text-muted-foreground">Zéro jargon technique incompréhensible lors de nos échanges.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold text-sm block">Transparence Tarifaire</span>
+                      <span className="text-xs text-muted-foreground">Devis détaillé et prix forfaitaire fixe garanti sans surcoût.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-start">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold text-sm block">Confidentialité Absolue</span>
+                      <span className="text-xs text-muted-foreground">Vos idées et informations restent strictement confidentielles.</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </div>
 
-          {/* Section FAQ Spéciale Client Non-Technique (S'anime au scroll) */}
-          <Card ref={faqRef} className={`border border-border/80 shadow-xs scroll-fade-up ${faqVisible ? "is-visible" : ""}`}>
-            <CardHeader className="text-center pb-2">
-              <HelpCircle className="w-10 h-10 text-primary mx-auto mb-2" />
-              <CardTitle className="text-2xl font-bold">Vos Questions Fréquentes</CardTitle>
-              <CardDescription className="text-base">
-                Tout ce que vous devez savoir avant de vous lancer dans votre projet.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-4">
-              <Accordion type="single" collapsible className="w-full">
-                {faqItems.map((item, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left font-semibold text-foreground hover:text-primary text-base">
-                      {item.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-sm leading-relaxed">
-                      {item.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </CardContent>
-          </Card>
+          {/* Section FAQ (S'anime au scroll quand on descend) */}
+          <div ref={faqRef} className={`max-w-4xl mx-auto scroll-fade-up ${faqVisible ? "is-visible" : ""}`}>
+            <div className="text-center space-y-3 mb-8">
+              <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30 text-primary font-semibold">
+                <HelpCircle className="w-3.5 h-3.5 mr-1 inline" /> Questions Fréquentes
+              </Badge>
+              <h2 className="text-2xl sm:text-3xl font-extrabold">F.A.Q - Réponses à Vos Questions</h2>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                Retrouvez les réponses aux questions les plus fréquemment posées avant de démarrer un projet.
+              </p>
+            </div>
+
+            <Accordion type="single" collapsible className="w-full space-y-3">
+              {faqItems.map((item, index) => (
+                <AccordionItem key={index} value={`faq-${index}`} className="border border-border/80 rounded-xl px-4 bg-card">
+                  <AccordionTrigger className="text-left font-bold text-base py-4 hover:no-underline hover:text-primary">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </div>
+
+      {/* POP-UP MODAL DE CONFIRMATION DU FORMULAIRE DE CONTACT / DEVIS */}
+      <Dialog open={isConfirmModalOpen} onOpenChange={setIsConfirmModalOpen}>
+        <DialogContent className="sm:max-w-md border-2 border-primary/20 bg-card">
+          <DialogHeader className="text-center sm:text-center space-y-2">
+            <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+              <AlertCircle className="w-6 h-6" />
+            </div>
+            <DialogTitle className="text-xl font-extrabold text-foreground">
+              Confirmer l'envoi de votre demande ?
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Veuillez vérifier les informations ci-dessous avant l'envoi à RAMSIN Conseil.
+            </DialogDescription>
+          </DialogHeader>
+
+          {pendingData && (
+            <div className="my-2 p-4 rounded-xl bg-muted/50 border border-border/80 space-y-3 text-sm">
+              <div className="flex items-center justify-between font-semibold border-b border-border/60 pb-2">
+                <span className="flex items-center gap-2 text-primary font-bold">
+                  <Briefcase className="w-4 h-4" /> Sujet :
+                </span>
+                <span className="font-bold text-foreground truncate max-w-[200px]">
+                  {pendingData.subject}
+                </span>
+              </div>
+
+              <div className="space-y-2 text-xs sm:text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-primary" /> Nom & Prénom :
+                  </span>
+                  <span className="font-semibold text-foreground">{pendingData.name}</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-primary" /> Email :
+                  </span>
+                  <span className="font-semibold text-primary">{pendingData.email}</span>
+                </div>
+
+                {pendingData.company && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground flex items-center gap-1.5">
+                      <Briefcase className="w-3.5 h-3.5 text-primary" /> Entreprise :
+                    </span>
+                    <span className="font-semibold text-foreground">{pendingData.company}</span>
+                  </div>
+                )}
+
+                {pendingData.phone && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-primary" /> Téléphone :
+                    </span>
+                    <span className="font-semibold text-foreground">{pendingData.phone}</span>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" /> Prestation :
+                  </span>
+                  <span className="font-bold text-primary">
+                    {formatServiceType(pendingData.serviceType)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-primary" /> Délai souhaité :
+                  </span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                    {formatTimeline(pendingData.timeline)}
+                  </span>
+                </div>
+
+                <div className="pt-2 border-t border-border/40">
+                  <span className="text-muted-foreground flex items-center gap-1.5 mb-1">
+                    <FileText className="w-3.5 h-3.5 text-primary" /> Description du besoin :
+                  </span>
+                  <p className="italic text-foreground/90 bg-background/60 p-2 rounded border border-border/50 text-xs line-clamp-3">
+                    "{pendingData.message}"
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsConfirmModalOpen(false)}
+              className="w-full sm:w-1/2"
+            >
+              Modifier ma demande
+            </Button>
+            <Button
+              type="button"
+              onClick={handleFinalConfirm}
+              className="w-full sm:w-1/2 font-bold gap-2 bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                "Envoi en cours..."
+              ) : (
+                <>
+                  Oui, envoyer <Send className="w-4 h-4" />
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

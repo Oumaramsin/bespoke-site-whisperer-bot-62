@@ -62,7 +62,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">
-                  À Propos d'Oumar SIDIBÉ
+                  À Propos de RAMSIN
                 </Link>
               </li>
               <li>
@@ -78,7 +78,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-1.5 flex-wrap">
                 <span>Email :</span>
-                <CopyEmailButton email="sidibeoumar94@gmail.com" />
+                <CopyEmailButton email="ramsinconseil@gmail.com" />
               </li>
               <li>Téléphone : <a href="tel:+33761518890" className="text-foreground hover:text-primary font-medium">+33 (0)7 61 51 88 90</a></li>
               <li>Localisation : Paris & Île-de-France (Interventions France & Remote)</li>
@@ -91,7 +91,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border/60 mt-10 pt-6 text-center text-xs text-muted-foreground">
-          <p>© {currentYear} RAMSIN Conseil - Oumar SIDIBÉ. Tous droits réservés.</p>
+          <p>© {currentYear} RAMSIN Conseil. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

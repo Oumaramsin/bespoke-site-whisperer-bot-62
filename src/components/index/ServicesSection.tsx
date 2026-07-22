@@ -1,46 +1,45 @@
-import { Database, Code, Briefcase, ShoppingBag, ArrowRight, Sparkles } from "lucide-react";
+import { Database, Code, Briefcase, ShoppingBag, Smartphone, Wrench, ArrowRight, Sparkles } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-const ServicesSection = () => {
+export const ServicesSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
-  const solutions = [
+  const services = [
     {
       icon: Code,
-      title: "Application & Plateforme Web Sur-Mesure",
-      subtitle: "Développement de A à Z & Scalabilité",
-      description: "Conception et développement d'applications web robustes (ex: Dabari) intégrant des espaces membres, API et tableaux de bord.",
-      tags: ["Next.js 16/15", "React 19", "Node.js & Express", "PostgreSQL & Prisma", "Docker"],
+      title: "Développement de Sites Web Professionnels",
+      subtitle: "Vitrine, E-Commerce & Refonte",
+      description: "Création de sites vitrines modernes, boutiques e-commerce haute conversion, portails d'entreprise et refonte complète de sites existants.",
+      items: ["Site Vitrine Pro", "Boutique E-Commerce (Stripe/PayPal)", "Portail d'Entreprise", "Refonte & Modernisation"],
+      link: "/projects"
+    },
+    {
+      icon: Smartphone,
+      title: "Développement d'Applications & Logiciels",
+      subtitle: "Web, Mobile iOS & Android, sur-mesure",
+      description: "Conception d'applications web scalables (Next.js/React), d'applications mobiles intuitives et de logiciels de gestion métier sur-mesure.",
+      items: ["Applications Web (Next.js / Node)", "Applications Mobiles (iOS & Android)", "Logiciels de Gestion Métier", "Espaces Membres & API"],
+      link: "/projects"
+    },
+    {
+      icon: Wrench,
+      title: "Maintenance, Support & Hébergement",
+      subtitle: "Sérénité Technique & Sauvegardes",
+      description: "Prise en charge intégrale de la sécurité de vos outils : mises à jour régulières, correction de bugs, hébergement haute disponibilité et assistance.",
+      items: ["Mises à jour Sites & Apps", "Correction de Bugs & Optimisation", "Hébergement & Sauvegardes", "Assistance Technique 7j/7"],
       link: "/projects"
     },
     {
       icon: Database,
-      title: "Architecture SI & Refonte d'Existant",
-      subtitle: "Cartographie & Modernisation",
-      description: "Audit du SI existant, cartographie sur MEGA HOPEX V5, élimination de la dette technique et rédaction des DAT pour les DSI.",
-      tags: ["MEGA HOPEX V5", "Dossier DAT", "Design Authority", "Cartographie Applicative"],
-      link: "/services"
-    },
-    {
-      icon: ShoppingBag,
-      title: "Sites Vitrines & Boutique E-Commerce",
-      subtitle: "Conversion & Génération de Leads",
-      description: "Création de sites vitrines générateurs de prospects (ex: L'Éclat du Chef) et de boutiques de luxe (ex: Maison HamdiWaShukri).",
-      tags: ["Formspree API", "Stripe & PayPal", "Configurateur Sur-Mesure", "Mobile-First"],
+      title: "Architecture SI & Conseil Hopex",
+      subtitle: "Cartographie & Gouvernance",
+      description: "Accompagnement des DSI et entreprises dans l'urbanisation des Systèmes d'Information, cartographie sur MEGA HOPEX V5 et rédaction des DAT.",
+      items: ["Expertise MEGA HOPEX V5", "Dossier d'Architecture DAT", "Cartographie Applicative", "Design Authority"],
       link: "/projects"
-    },
-    {
-      icon: Briefcase,
-      title: "Pilotage & Expertise Agile / Product Owner",
-      subtitle: "Cadrage Fonctionnel & Suivi de A à Z",
-      description: "Recueil des besoins métiers, découpage en User Stories, animation des cérémonies Agiles et garantie de livraison dans les temps.",
-      tags: ["Product Owner", "Scrum / Agile", "Gestion de Backlog", "Cadrage Fonctionnel"],
-      link: "/services"
     }
   ];
 
@@ -49,18 +48,18 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4">
         <div ref={headerRef} className={`text-center max-w-3xl mx-auto mb-14 scroll-fade-up ${headerVisible ? "is-visible" : ""}`}>
           <Badge variant="outline" className="mb-3 px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-            <Sparkles className="w-3.5 h-3.5 mr-1 inline" /> Offres & Solutions
+            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Nos Services & Solutions
           </Badge>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
-            Vos Besoins / Mes Solutions
+            Des Solutions Digitales Adaptées à Vos Besoins
           </h2>
-          <p className="text-muted-foreground text-lg sm:text-xl">
-            Une réponse claire et sur-mesure adaptée aux exigences des DSI comme aux projets des entreprises en croissance.
+          <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed">
+            De la création de votre site vitrine jusqu'à l'architecture complexe de votre Système d'Information, nous concrétisons vos idées avec précision.
           </p>
         </div>
 
         <div ref={cardsRef} className={`grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 scroll-fade-up ${cardsVisible ? "is-visible" : ""}`}>
-          {solutions.map((item, index) => {
+          {services.map((item, index) => {
             const IconComp = item.icon;
             return (
               <Card key={index} className={`flex flex-col border border-border/80 hover:border-primary/50 transition-all hover:shadow-md bg-card hover-lift stagger-${index + 1}`}>
@@ -81,11 +80,12 @@ const ServicesSection = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 flex flex-col justify-between pt-0 space-y-4">
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {item.tags.map((tag, i) => (
-                      <span key={i} className="text-xs bg-secondary text-secondary-foreground px-2.5 py-1 rounded-md font-medium">
-                        {tag}
-                      </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                    {item.items.map((sub, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs font-medium text-foreground bg-secondary/60 p-2 rounded-lg">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                        <span>{sub}</span>
+                      </div>
                     ))}
                   </div>
                   <div className="pt-3 border-t border-border/60">
@@ -93,21 +93,13 @@ const ServicesSection = () => {
                       to={item.link}
                       className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1.5"
                     >
-                      En savoir plus sur cette solution <ArrowRight className="w-3.5 h-3.5" />
+                      Découvrir nos réalisations dans ce domaine <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </CardContent>
               </Card>
             );
           })}
-        </div>
-
-        <div className="text-center pt-4">
-          <Button asChild size="lg" variant="outline" className="gap-2 px-8 font-semibold hover-lift">
-            <Link to="/services">
-              Consulter l'ensemble des prestations <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
         </div>
       </div>
     </section>

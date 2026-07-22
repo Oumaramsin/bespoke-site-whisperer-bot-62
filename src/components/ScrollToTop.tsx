@@ -11,7 +11,9 @@ const ScrollToTop = () => {
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth" });
-        }, 100);
+          // Nettoie l'URL pour supprimer l'ancre # de la barre d'adresse du navigateur
+          window.history.replaceState(null, "", pathname);
+        }, 150);
         return;
       }
     }

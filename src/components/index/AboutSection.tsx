@@ -35,7 +35,7 @@ const AboutSection = () => {
               Pourquoi Travailler Ensemble ?
             </h2>
             <p className="text-muted-foreground text-lg sm:text-xl">
-              Ingénieur diplômé (Master 2 Sup de Vinci / MIAGE), Oumar SIDIBÉ combine 7 ans d'expérience SI et développement web sur-mesure.
+              Cabinet spécialisé, RAMSIN Conseil combine 7 ans d'expérience en Architecture SI et développement web sur-mesure.
             </p>
           </div>
 

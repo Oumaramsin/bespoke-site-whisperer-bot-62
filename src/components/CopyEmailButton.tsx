@@ -10,7 +10,7 @@ interface CopyEmailButtonProps {
 }
 
 export const CopyEmailButton = ({
-  email = "sidibeoumar94@gmail.com",
+  email = "ramsinconseil@gmail.com",
   variant = "badge",
   className = "",
 }: CopyEmailButtonProps) => {

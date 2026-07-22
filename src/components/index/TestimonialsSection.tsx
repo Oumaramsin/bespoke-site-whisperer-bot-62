@@ -9,21 +9,21 @@ const TestimonialsSection = () => {
       company: "L'Éclat du Chef",
       role: "Traiteur Événementiel Île-de-France",
       stars: 5,
-      content: "Oumar a su traduire nos besoins en un site vitrine élégant et ultra-efficace. Les demandes de devis arrivent directement sur notre boîte e-mail. Tout nous a été expliqué simplement et la formation m'a rendu 100% autonome."
+      content: "RAMSIN Conseil a su traduire nos besoins en un site vitrine élégant et ultra-efficace. Les demandes de devis arrivent directement sur notre boîte e-mail. Tout nous a été expliqué simplement et la formation m'a rendu 100% autonome."
     },
     {
       author: "Équipe Projet",
       company: "Maison HamdiWaShukri",
       role: "Boutique E-Commerce Luxe",
       stars: 5,
-      content: "Le configurateur sur-mesure et le paiement Stripe/PayPal fonctionnent à la perfection. Oumar est d'une grande rigueur, très pédagogue et réactif. Un vrai plaisir de collaborer en toute confiance."
+      content: "Le configurateur sur-mesure et le paiement Stripe/PayPal fonctionnent à la perfection. RAMSIN est d'une grande rigueur, très pédagogue et réactif. Un vrai plaisir de collaborer en toute confiance."
     },
     {
       author: "Responsable DSI",
       company: "Projets Cartographie SI",
       role: "Architecture d'Entreprise MEGA HOPEX",
       stars: 5,
-      content: "Excellente maîtrise de la plateforme MEGA HOPEX V5 et de la cartographie des flux applicatifs. Oumar sécurise les documentations et apporte une vision claire et structurée auprès des équipes."
+      content: "Excellente maîtrise de la plateforme MEGA HOPEX V5 et de la cartographie des flux applicatifs. RAMSIN Conseil sécurise les documentations et apporte une vision claire et structurée auprès des équipes."
     }
   ];
 

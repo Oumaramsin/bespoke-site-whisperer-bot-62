@@ -93,7 +93,7 @@ const HeroSection = () => {
             <AnimatedKPI value={7} label="Années d'Expérience SI" suffix="+" />
             <TextKPI value="V5 Certifiée" label="Expertise MEGA HOPEX" />
             <AnimatedKPI value={100} label="Missions & Projets Réussis" suffix="%" />
-            <TextKPI value="Fullstack" label="Applications Web" />
+            <TextKPI value="Full-Stack" label="Applications Web" />
           </div>
 
           {/* Éléments de Réassurance Client */}

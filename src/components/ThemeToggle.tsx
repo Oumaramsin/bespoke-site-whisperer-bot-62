@@ -3,13 +3,14 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 export const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const currentTheme = resolvedTheme || theme;
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
       className="rounded-lg w-9 h-9 text-muted-foreground hover:text-foreground transition-colors"
       aria-label="Basculer le thème clair ou sombre"
       title="Basculer le thème"
