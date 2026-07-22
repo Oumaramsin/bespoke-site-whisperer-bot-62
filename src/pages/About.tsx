@@ -48,6 +48,7 @@ const About = () => {
     {
       title: "Consultant Solution AE MEGA HOPEX",
       company: "Marte",
+      logo: "/logos/marte.png",
       period: "Janvier 2020 - Septembre 2022",
       category: "Expertise MEGA HOPEX & API",
       accent: "border-l-amber-500",

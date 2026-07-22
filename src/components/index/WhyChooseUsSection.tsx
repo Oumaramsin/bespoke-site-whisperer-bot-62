@@ -40,18 +40,24 @@ export const WhyChooseUsSection = () => {
   const goals = [
     {
       icon: TrendingUp,
-      title: "Gagner en Visibilité",
-      desc: "Positionnez votre entreprise en tête des recherches et valorisez votre image de marque auprès de votre audience."
+      title: "Gagner en Visibilité & Notoriété",
+      badge: "+ Visibilité & SEO",
+      badgeColor: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30",
+      desc: "Positionnez votre entreprise en tête des recherches Google et valorisez votre image de marque auprès de vos prospects grâce à un site ultra-rapide et captivant."
     },
     {
       icon: Users,
-      title: "Attirer Plus de Clients",
-      desc: "Transformez vos visiteurs en clients engagés grâce à un parcours utilisateur (UX/UI) fluide et persuasif."
+      title: "Attirer & Convertir Plus de Clients",
+      badge: "+ Clients & Devis",
+      badgeColor: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+      desc: "Transformez vos simples visiteurs en clients engagés grâce à un parcours UX/UI persuasif, des boutiques e-commerce fluides et des formulaires de devis intelligents."
     },
     {
       icon: ShieldCheck,
-      title: "Booster Votre Productivité",
-      desc: "Simplifiez votre gestion quotidienne grâce à des outils web et logiciels métier automatisés et fiables."
+      title: "Développer Votre Chiffre d'Affaires",
+      badge: "+ Business & ROI",
+      badgeColor: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30",
+      desc: "Automatisez vos tâches chronophages et générez des opportunités de vente 24h/24 sans aucune perte de temps ni gestion technique complexe."
     }
   ];
 
@@ -83,15 +89,20 @@ export const WhyChooseUsSection = () => {
           {goals.map((item, idx) => {
             const IconComp = item.icon;
             return (
-              <Card key={idx} className="border-2 border-primary/20 bg-gradient-to-b from-card to-primary/5 hover:border-primary/50 transition-all hover-lift">
-                <CardHeader className="pb-3 text-center sm:text-left">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3 mx-auto sm:mx-0">
-                    <IconComp className="w-6 h-6" />
+              <Card key={idx} className="border-2 border-primary/20 bg-gradient-to-b from-card via-card to-primary/5 hover:border-primary/50 transition-all hover-lift">
+                <CardHeader className="pb-3 text-center sm:text-left space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <IconComp className="w-6 h-6" />
+                    </div>
+                    <Badge variant="outline" className={`text-xs font-extrabold px-3 py-1 border ${item.badgeColor}`}>
+                      {item.badge}
+                    </Badge>
                   </div>
-                  <CardTitle className="text-xl font-bold">{item.title}</CardTitle>
+                  <CardTitle className="text-xl font-extrabold text-foreground">{item.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                     {item.desc}
                   </p>
                 </CardContent>

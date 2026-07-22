@@ -1,12 +1,12 @@
-import HeroSection from '@/components/index/HeroSection';
-import ClientsSection from '@/components/index/ClientsSection';
-import ProjectsSection from '@/components/index/ProjectsSection';
-import ServicesSection from '@/components/index/ServicesSection';
-import WhyChooseUsSection from '@/components/index/WhyChooseUsSection';
-import ComparisonTable from '@/components/index/ComparisonTable';
-import ProcessSection from '@/components/index/ProcessSection';
-import BookingWidget from '@/components/index/BookingWidget';
-import SEO from '@/components/SEO';
+import HeroSection from "@/components/index/HeroSection";
+import ClientsSection from "@/components/index/ClientsSection";
+import ProjectsSection from "@/components/index/ProjectsSection";
+import ServicesSection from "@/components/index/ServicesSection";
+import WhyChooseUsSection from "@/components/index/WhyChooseUsSection";
+import ComparisonTable from "@/components/index/ComparisonTable";
+import ProcessSection from "@/components/index/ProcessSection";
+import BookingWidget from "@/components/index/BookingWidget";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   return (

@@ -1,10 +1,27 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle2, ShieldCheck, HeartHandshake } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  ShieldCheck,
+  HeartHandshake,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCountUp } from "@/hooks/useCountUp";
 
-const AnimatedKPI = ({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) => {
-  const { ref, displayValue } = useCountUp({ end: value, duration: 2200, suffix });
+const AnimatedKPI = ({
+  value,
+  label,
+  suffix = "",
+}: {
+  value: number;
+  label: string;
+  suffix?: string;
+}) => {
+  const { ref, displayValue } = useCountUp({
+    end: value,
+    duration: 2200,
+    suffix,
+  });
   return (
     <div className="p-5 rounded-2xl glass-card text-center space-y-1 hover-lift">
       <span
@@ -49,7 +66,6 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          
           {/* Badge statut de confiance */}
           <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-card border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs sm:text-sm font-semibold shadow-xs scroll-fade-up is-visible">
             <span className="relative flex h-2.5 w-2.5">
@@ -62,13 +78,16 @@ const HeroSection = () => {
           {/* Titre Principal */}
           <div className="space-y-4">
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
-              Vos Projets Web & SI Sur-Mesure
+              Multipliez Votre Visibilité &
               <span className="block mt-2 gradient-text">
-                Conçus avec Rigueur pour Faire Grandir Votre Entreprise
+                Développez Votre Chiffre d'Affaires
               </span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed pt-2">
-              7 ans d'expertise au service des grands groupes et des entreprises en croissance : nous concrétisons vos sites, applications et architectures SI de A à Z avec simplicité et sans aucun jargon.
+              Sites web haute conversion, applications sur-mesure et conseil en
+              architecture SI : nous concevons des solutions digitales clés en
+              main pensées pour <strong>attirer plus de clients</strong> et{" "}
+              <strong>accélérer la croissance de votre entreprise</strong>.
             </p>
           </div>
 
@@ -79,12 +98,16 @@ const HeroSection = () => {
               onClick={scrollToReservation}
               className="gap-2.5 px-8 py-6 text-base font-semibold glow-shadow hover:scale-[1.02] transition-all rounded-xl cursor-pointer animate-pulse-glow"
             >
-              Réserver un échange de 30 min (Gratuit) <ArrowRight className="h-5 w-5" />
+              Réserver un échange de 30 min (Gratuit){" "}
+              <ArrowRight className="h-5 w-5" />
             </Button>
-            <Button asChild variant="outline" size="lg" className="px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary rounded-xl hover-lift">
-              <Link to="/projects">
-                Découvrir les réalisations ↓
-              </Link>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary rounded-xl hover-lift"
+            >
+              <Link to="/projects">Découvrir les réalisations ↓</Link>
             </Button>
           </div>
 
@@ -92,23 +115,29 @@ const HeroSection = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-10 border-t border-border/60">
             <AnimatedKPI value={7} label="Années d'Expérience SI" suffix="+" />
             <TextKPI value="V5 Certifiée" label="Expertise MEGA HOPEX" />
-            <AnimatedKPI value={100} label="Missions & Projets Réussis" suffix="%" />
+            <AnimatedKPI
+              value={100}
+              label="Missions & Projets Réussis"
+              suffix="%"
+            />
             <TextKPI value="Full-Stack" label="Applications Web" />
           </div>
 
           {/* Éléments de Réassurance Client */}
           <div className="flex flex-wrap justify-center items-center gap-8 text-xs sm:text-sm text-muted-foreground pt-4 font-medium">
             <span className="flex items-center gap-2">
-              <HeartHandshake className="w-4 h-4 text-blue-600" /> Échange offert de 30 min
+              <HeartHandshake className="w-4 h-4 text-blue-600" /> Échange
+              offert de 30 min
             </span>
             <span className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-blue-600" /> Explications 100% en langage clair
+              <ShieldCheck className="w-4 h-4 text-blue-600" /> Explications
+              100% en langage clair
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse sous 24h ouvrées
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse sous
+              24h ouvrées
             </span>
           </div>
-
         </div>
       </div>
     </section>

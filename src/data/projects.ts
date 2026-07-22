@@ -104,7 +104,8 @@ export const PROJECTS_DATA: Project[] = [
     ],
     tags: ["HTML5", "CSS3", "JavaScript", "Formulaire API", "GitHub Pages"],
     stack: ["HTML5", "CSS3", "JavaScript", "Formspree", "GitHub Pages"],
-    featured: true
+    featured: true,
+    logo: "/logos/eclat-du-chef.png"
   },
   {
     id: "covea-hopex-v5",

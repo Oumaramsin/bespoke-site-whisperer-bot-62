@@ -54,10 +54,19 @@ export const ProjectsSection = () => {
               {/* En-tête de Carte avec Badges */}
               <CardHeader className="pb-4 pt-5 px-6 border-b border-border/60 bg-gradient-to-r from-muted/50 to-transparent">
                 <div className="flex items-center justify-between gap-2 mb-3">
-                  <Badge variant="secondary" className="text-xs font-bold px-3 py-1 bg-primary/10 text-primary border-primary/20 flex items-center gap-1.5">
-                    <Building2 className="w-3.5 h-3.5" />
-                    {project.clientCompany}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    {project.logo && (
+                      <img
+                        src={project.logo}
+                        alt={`Logo ${project.clientCompany}`}
+                        className="h-7 w-auto object-contain"
+                      />
+                    )}
+                    <Badge variant="secondary" className="text-xs font-bold px-3 py-1 bg-primary/10 text-primary border-primary/20 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5" />
+                      {project.clientCompany}
+                    </Badge>
+                  </div>
                   <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-border/80">
                     {project.categoryLabel}
                   </Badge>
