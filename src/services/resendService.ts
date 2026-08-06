@@ -31,25 +31,26 @@ export const formatServiceType = (key?: string) => {
     "mega-hopex": "Expertise & Administration MEGA HOPEX",
     "po-agile": "Product Ownership, Cadrage & Backlog",
     "pilotage-equipe": "Pilotage d'Équipe & Facilitation Agile",
-    "formation": "Formation & Transfert de Compétences",
-    "transformation": "Conseil en Transformation Digitale",
-    "autre": "Autre demande / Conseil sur-mesure",
+    formation: "Formation & Transfert de Compétences",
+    transformation: "Conseil en Transformation Digitale",
+    autre: "Autre demande / Conseil sur-mesure",
   };
   return map[key || ""] || key || "Non précisé";
 };
 
 export const formatTimeline = (key?: string) => {
   const map: Record<string, string> = {
-    "asap": "Dès que possible (Urgent)",
+    asap: "Dès que possible (Urgent)",
     "1-month": "D'ici 1 mois",
     "3-months": "Sous 3 mois",
-    "flexible": "Flexible / En réflexion",
+    flexible: "Flexible / En réflexion",
   };
   return map[key || ""] || key || "Non précisé";
 };
 
 // Clé API Resend
-const RESEND_API_KEY = import.meta.env.VITE_RESEND_API_KEY || "re_EkRuUwuV_N3gc1x5rSWp6bVPNYqHp8gKB";
+const RESEND_API_KEY =
+  import.meta.env.VITE_RESEND_API_KEY || "re_EkRuUwuV_N3gc1x5rSWp6bVPNYqHp8gKB";
 
 // Endpoint API Resend avec passage par le proxy Vite pour éviter tout blocage CORS navigateur
 const getEndpoint = () => {
@@ -135,34 +136,34 @@ export const sendBookingViaResend = async (params: SendBookingEmailParams) => {
     const adminRes = await fetch(endpoint, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         from: "RAMSIN Conseil <onboarding@resend.dev>",
-        to: ["ramsinconseil@gmail.com"],
+        to: ["contact@ramsin.fr"],
         subject: `RAMSIN Conseil - RDV Réservé (${selectedDay} à ${selectedTime}) par ${name}`,
-        html: adminHtml
-      })
+        html: adminHtml,
+      }),
     });
 
     const adminData = await adminRes.json();
 
     // 2. Envoi de la confirmation client
     try {
-      const recipientList = Array.from(new Set([email, "ramsinconseil@gmail.com"]));
+      const recipientList = Array.from(new Set([email, "contact@ramsin.fr"]));
       await fetch(endpoint, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${RESEND_API_KEY}`,
-          "Content-Type": "application/json"
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           from: "RAMSIN Conseil <onboarding@resend.dev>",
           to: recipientList,
           subject: `RAMSIN Conseil - Confirmation de votre RDV (${selectedDay} à ${selectedTime})`,
-          html: clientHtml
-        })
+          html: clientHtml,
+        }),
       });
     } catch (e) {
       console.error("Client email dispatch attempt:", e);
@@ -179,7 +180,16 @@ export const sendBookingViaResend = async (params: SendBookingEmailParams) => {
  * Envoie une demande de devis en HTML pur via Resend.com
  */
 export const sendContactViaResend = async (params: SendContactEmailParams) => {
-  const { name, email, company, phone, serviceType, timeline, subject, message } = params;
+  const {
+    name,
+    email,
+    company,
+    phone,
+    serviceType,
+    timeline,
+    subject,
+    message,
+  } = params;
 
   const prettyService = formatServiceType(serviceType);
   const prettyTimeline = formatTimeline(timeline);
@@ -235,15 +245,15 @@ export const sendContactViaResend = async (params: SendContactEmailParams) => {
     const res = await fetch(endpoint, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         from: "RAMSIN Conseil <onboarding@resend.dev>",
-        to: ["ramsinconseil@gmail.com"],
+        to: ["contact@ramsin.fr"],
         subject: `RAMSIN Conseil - Demande de Devis de ${name} (${prettyService})`,
-        html: contactHtml
-      })
+        html: contactHtml,
+      }),
     });
 
     const resData = await res.json();

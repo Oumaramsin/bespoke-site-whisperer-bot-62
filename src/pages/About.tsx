@@ -1,7 +1,21 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Briefcase, School, Wrench, Star, Mail, Phone, MapPin, ArrowRight, Code2, Database, Layers, CheckCircle2, Sparkles } from "lucide-react";
+import {
+  Briefcase,
+  School,
+  Wrench,
+  Star,
+  Mail,
+  Phone,
+  MapPin,
+  ArrowRight,
+  Code2,
+  Database,
+  Layers,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -26,8 +40,8 @@ const About = () => {
         "Enrichissement de la cartographie (description application, objets gérés, flux applicatifs, technologies)",
         "Participation à l'évolution des bonnes pratiques et de l'outillage",
         "Gestion des manques et incohérences avec la cartographie MEGA HOPEX V5",
-        "Suivi du backlog des évolutions et reporting sur la qualité du référentiel"
-      ]
+        "Suivi du backlog des évolutions et reporting sur la qualité du référentiel",
+      ],
     },
     {
       title: "Consultant Architecte Solution",
@@ -42,8 +56,8 @@ const About = () => {
         "Rédaction des Dossiers d'Architecture Applicative et Technique (DAT)",
         "Passage et soutenance des dossiers en Design Authority pour validation",
         "Collaboration au sein des Squads pour l'intégration systémique",
-        "Cartographie des processus métiers et flux du périmètre crédit immobilier"
-      ]
+        "Cartographie des processus métiers et flux du périmètre crédit immobilier",
+      ],
     },
     {
       title: "Consultant Solution AE MEGA HOPEX",
@@ -58,8 +72,8 @@ const About = () => {
         "Développement de scripts en VB.Net pour l'API MEGA HOPEX",
         "Conception d'interfaces utilisateur personnalisées et scripts VBScript pour l'automatisation",
         "Support technique et fonctionnel auprès des utilisateurs",
-        "Conduite du changement et formation"
-      ]
+        "Conduite du changement et formation",
+      ],
     },
     {
       title: "Ingénieur Études et Développement",
@@ -73,22 +87,22 @@ const About = () => {
         "Création et consommation d'API REST",
         "Gestion des déploiements sur environnements Linux",
         "Animation des Daily Meetings en méthode Agile",
-        "Assistance à la maîtrise d'ouvrage (AMOA)"
-      ]
-    }
+        "Assistance à la maîtrise d'ouvrage (AMOA)",
+      ],
+    },
   ];
 
   const education = [
     {
       degree: "Master 2 Expert en Systèmes d'Informations",
       school: "Pôle Universitaire Léonard de Vinci - Sup de Vinci",
-      year: "2019"
+      year: "2019",
     },
     {
       degree: "Licence 3 Parcours MIAGE",
       school: "Université d'Orléans",
-      year: "2017"
-    }
+      year: "2017",
+    },
   ];
 
   const skillGroups = [
@@ -96,26 +110,51 @@ const About = () => {
       title: "Architecture & Cartographie SI",
       icon: Layers,
       accent: "border-l-violet-500",
-      items: ["MEGA HOPEX V5 & V2R1", "Cartographie Applicative", "Flux & Processus SI", "Dossier d'Architecture (DAT)", "Design Authority", "UML & MERISE", "Gouvernance Données"]
+      items: [
+        "MEGA HOPEX V5 & V2R1",
+        "Cartographie Applicative",
+        "Flux & Processus SI",
+        "Dossier d'Architecture (DAT)",
+        "Design Authority",
+        "UML & MERISE",
+        "Gouvernance Données",
+      ],
     },
     {
       title: "Développement Full-Stack Moderne",
       icon: Code2,
       accent: "border-l-blue-500",
-      items: ["Next.js 16 / 15", "React 19", "TypeScript", "Node.js & Express", "JavaScript (Vanilla)", "HTML5 & CSS3", "PHP 7 & Symfony"]
+      items: [
+        "Next.js 16 / 15",
+        "React 19",
+        "TypeScript",
+        "Node.js & Express",
+        "JavaScript (Vanilla)",
+        "HTML5 & CSS3",
+        "PHP 7 & Symfony",
+      ],
     },
     {
       title: "Base de Données & DevOps",
       icon: Database,
       accent: "border-l-emerald-500",
-      items: ["PostgreSQL", "Prisma ORM", "MySQL", "Docker & Docker Compose", "API REST & JWT", "Stripe & PayPal SDK", "Gitlab & Linux", "VB.Net / VBScript"]
-    }
+      items: [
+        "PostgreSQL",
+        "Prisma ORM",
+        "MySQL",
+        "Docker & Docker Compose",
+        "API REST & JWT",
+        "Stripe & PayPal SDK",
+        "Gitlab & Linux",
+        "VB.Net / VBScript",
+      ],
+    },
   ];
 
   const contact = {
-    email: "ramsinconseil@gmail.com",
+    email: "contact@ramsin.fr",
     phone: "+33 (0)7 61 51 88 90",
-    location: "Paris & Région Parisienne (Fresnes)"
+    location: "Paris & Région Parisienne (Fresnes)",
   };
 
   const handleBookingRedirect = () => {
@@ -149,8 +188,12 @@ const About = () => {
               Disponible pour de nouvelles missions
             </div>
 
-            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-              <Star className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" /> Cabinet Conseil SI & Développement Full-Stack
+            <Badge
+              variant="outline"
+              className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
+            >
+              <Star className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" />{" "}
+              Cabinet Conseil SI & Développement Full-Stack
             </Badge>
           </div>
 
@@ -160,15 +203,22 @@ const About = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Architecture des Systèmes d'Information | Expert MEGA HOPEX | Conception d'Applications Full-Stack
+            Architecture des Systèmes d'Information | Expert MEGA HOPEX |
+            Conception d'Applications Full-Stack
           </p>
 
           {/* Contact rapide */}
           <div className="flex flex-wrap gap-3 justify-center text-sm pt-2">
-            <a href={`mailto:${contact.email}`} className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium">
+            <a
+              href={`mailto:${contact.email}`}
+              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium"
+            >
               <Mail className="w-3.5 h-3.5 text-primary" /> {contact.email}
             </a>
-            <a href="tel:+33761518890" className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium">
+            <a
+              href="tel:+33761518890"
+              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium"
+            >
               <Phone className="w-3.5 h-3.5 text-primary" /> {contact.phone}
             </a>
             <span className="bg-secondary/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 font-medium">
@@ -180,17 +230,30 @@ const About = () => {
 
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="max-w-4xl mx-auto">
-
           {/* ═══════════════════════════════════════════
               SYNTHÈSE PROFIL
           ═══════════════════════════════════════════ */}
           <Card className="mb-14 border-2 border-primary/20 bg-gradient-to-r from-primary/5 via-background to-background glass-card rounded-2xl">
             <CardContent className="pt-6 space-y-4 text-base leading-relaxed">
               <p>
-                Doté d'une double compétence rare alliant <strong>l'Architecture des Systèmes d'Information d'Entreprise (MEGA HOPEX)</strong> et <strong>le Développement Web & Mobile Full-Stack moderne (Next.js, Node.js, PostgreSQL, Docker)</strong>, j'accompagne les DSI et les entreprises dans la structuration et la numérisation de leurs activités.
+                Doté d'une double compétence rare alliant{" "}
+                <strong>
+                  l'Architecture des Systèmes d'Information d'Entreprise (MEGA
+                  HOPEX)
+                </strong>{" "}
+                et{" "}
+                <strong>
+                  le Développement Web & Mobile Full-Stack moderne (Next.js,
+                  Node.js, PostgreSQL, Docker)
+                </strong>
+                , j'accompagne les DSI et les entreprises dans la structuration
+                et la numérisation de leurs activités.
               </p>
               <p>
-                Ma rigueur, ma curiosité technique insatiable et ma volonté inébranlable sont les atouts clés qui me permettent de m'intégrer avec aisance au sein des équipes (Squads Agiles, Design Authorities, Comités DSI).
+                Ma rigueur, ma curiosité technique insatiable et ma volonté
+                inébranlable sont les atouts clés qui me permettent de
+                m'intégrer avec aisance au sein des équipes (Squads Agiles,
+                Design Authorities, Comités DSI).
               </p>
             </CardContent>
           </Card>
@@ -203,23 +266,33 @@ const About = () => {
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Wrench className="h-5 w-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">Domaines d'Expertise & Stack</h2>
+              <h2 className="text-2xl font-extrabold tracking-tight">
+                Domaines d'Expertise & Stack
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {skillGroups.map((group, index) => {
                 const IconComp = group.icon;
                 return (
-                  <Card key={index} className={`border border-border/80 border-l-4 ${group.accent} hover-lift glass-card rounded-2xl`}>
+                  <Card
+                    key={index}
+                    className={`border border-border/80 border-l-4 ${group.accent} hover-lift glass-card rounded-2xl`}
+                  >
                     <CardHeader className="pb-3">
                       <div className="p-2 bg-primary/10 rounded-lg w-fit text-primary mb-2">
                         <IconComp className="w-5 h-5" />
                       </div>
-                      <CardTitle className="text-lg font-bold">{group.title}</CardTitle>
+                      <CardTitle className="text-lg font-bold">
+                        {group.title}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-1.5">
                         {group.items.map((item, i) => (
-                          <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+                          <li
+                            key={i}
+                            className="text-sm text-muted-foreground flex items-center gap-2"
+                          >
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                             <span>{item}</span>
                           </li>
@@ -235,12 +308,17 @@ const About = () => {
           {/* ═══════════════════════════════════════════
               TIMELINE D'EXPÉRIENCES PROFESSIONNELLES
           ═══════════════════════════════════════════ */}
-          <section ref={expRef} className={`mb-14 scroll-fade-up ${expVisible ? "is-visible" : ""}`}>
+          <section
+            ref={expRef}
+            className={`mb-14 scroll-fade-up ${expVisible ? "is-visible" : ""}`}
+          >
             <div className="flex items-center gap-3 mb-8">
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Briefcase className="h-5 w-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">Expériences Professionnelles</h2>
+              <h2 className="text-2xl font-extrabold tracking-tight">
+                Expériences Professionnelles
+              </h2>
             </div>
 
             {/* Timeline */}
@@ -254,7 +332,9 @@ const About = () => {
                     {/* Point sur la timeline */}
                     <div className="absolute left-2.5 top-6 w-3 h-3 rounded-full bg-primary border-2 border-background hidden md:block" />
 
-                    <Card className={`border border-border/80 border-l-4 ${exp.accent} shadow-sm hover-lift glass-card rounded-2xl overflow-hidden`}>
+                    <Card
+                      className={`border border-border/80 border-l-4 ${exp.accent} shadow-sm hover-lift glass-card rounded-2xl overflow-hidden`}
+                    >
                       <CardContent className="p-5 space-y-3">
                         {/* Header de l'expérience */}
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
@@ -267,12 +347,19 @@ const About = () => {
                               />
                             )}
                             <div>
-                              <h3 className="text-lg font-extrabold text-foreground">{exp.title}</h3>
-                              <p className="text-sm font-bold text-primary">{exp.company}</p>
+                              <h3 className="text-lg font-extrabold text-foreground">
+                                {exp.title}
+                              </h3>
+                              <p className="text-sm font-bold text-primary">
+                                {exp.company}
+                              </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                            <Badge
+                              variant="outline"
+                              className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
+                            >
                               {exp.category}
                             </Badge>
                             <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
@@ -284,7 +371,10 @@ const About = () => {
                         {/* Description */}
                         <ul className="space-y-1.5 pt-1">
                           {exp.description.map((item, i) => (
-                            <li key={i} className="text-sm text-muted-foreground flex items-start gap-2.5">
+                            <li
+                              key={i}
+                              className="text-sm text-muted-foreground flex items-start gap-2.5"
+                            >
                               <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-2"></span>
                               <span className="leading-relaxed">{item}</span>
                             </li>
@@ -301,22 +391,32 @@ const About = () => {
           {/* ═══════════════════════════════════════════
               FORMATIONS & DIPLÔMES
           ═══════════════════════════════════════════ */}
-          <section ref={eduRef} className={`mb-14 scroll-fade-up ${eduVisible ? "is-visible" : ""}`}>
+          <section
+            ref={eduRef}
+            className={`mb-14 scroll-fade-up ${eduVisible ? "is-visible" : ""}`}
+          >
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-primary/10 rounded-lg">
                 <School className="h-5 w-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">Formation & Diplômes</h2>
+              <h2 className="text-2xl font-extrabold tracking-tight">
+                Formation & Diplômes
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {education.map((edu, index) => (
-                <Card key={index} className="border border-border/80 hover-lift glass-card rounded-2xl">
+                <Card
+                  key={index}
+                  className="border border-border/80 hover-lift glass-card rounded-2xl"
+                >
                   <CardContent className="pt-6 space-y-2">
                     <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full inline-block">
                       {edu.year}
                     </span>
                     <h3 className="text-lg font-bold">{edu.degree}</h3>
-                    <p className="text-sm text-muted-foreground">{edu.school}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {edu.school}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -335,7 +435,9 @@ const About = () => {
               Travaillons ensemble sur votre projet
             </h3>
             <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-              Que ce soit pour une mission de conseil en architecture SI, d'administration MEGA HOPEX ou pour le développement d'une application web sur-mesure.
+              Que ce soit pour une mission de conseil en architecture SI,
+              d'administration MEGA HOPEX ou pour le développement d'une
+              application web sur-mesure.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button

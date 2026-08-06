@@ -3,12 +3,31 @@ import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -18,24 +37,57 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Mail, Phone, MapPin, Send, CheckCircle2, Clock, ShieldCheck, Sparkles, HelpCircle, User, Briefcase, FileText, AlertCircle } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+  Clock,
+  ShieldCheck,
+  Sparkles,
+  HelpCircle,
+  User,
+  Briefcase,
+  FileText,
+  AlertCircle,
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import SEO from "@/components/SEO";
 import BookingWidget from "@/components/index/BookingWidget";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "@/components/CopyEmailButton";
-import { sendContactViaResend, formatServiceType, formatTimeline } from "@/services/resendService";
+import {
+  sendContactViaResend,
+  formatServiceType,
+  formatTimeline,
+} from "@/services/resendService";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Le nom doit contenir au moins 2 caractères" }),
-  email: z.string().email({ message: "Veuillez entrer une adresse email valide" }),
+  name: z
+    .string()
+    .min(2, { message: "Le nom doit contenir au moins 2 caractères" }),
+  email: z
+    .string()
+    .email({ message: "Veuillez entrer une adresse email valide" }),
   company: z.string().optional(),
   phone: z.string().optional(),
-  serviceType: z.string().min(1, { message: "Veuillez sélectionner le type de prestation" }),
+  serviceType: z
+    .string()
+    .min(1, { message: "Veuillez sélectionner le type de prestation" }),
   timeline: z.string().optional(),
-  subject: z.string().min(4, { message: "Le sujet doit contenir au moins 4 caractères" }),
-  message: z.string().min(10, { message: "Le message doit contenir au moins 10 caractères" }),
+  subject: z
+    .string()
+    .min(4, { message: "Le sujet doit contenir au moins 4 caractères" }),
+  message: z
+    .string()
+    .min(10, { message: "Le message doit contenir au moins 10 caractères" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -85,9 +137,15 @@ const Contact = () => {
         mappedType = "web-app";
       } else if (rawService.includes("Architecture")) {
         mappedType = "architecture-si";
-      } else if (rawService.includes("MEGA HOPEX") || rawService.includes("Hopex")) {
+      } else if (
+        rawService.includes("MEGA HOPEX") ||
+        rawService.includes("Hopex")
+      ) {
         mappedType = "mega-hopex";
-      } else if (rawService.includes("Product Owner") || rawService.includes("Product Ownership")) {
+      } else if (
+        rawService.includes("Product Owner") ||
+        rawService.includes("Product Ownership")
+      ) {
         mappedType = "po-agile";
       } else if (rawService.includes("Pilotage")) {
         mappedType = "pilotage-equipe";
@@ -130,7 +188,7 @@ const Contact = () => {
         serviceType: pendingData.serviceType,
         timeline: pendingData.timeline,
         subject: pendingData.subject,
-        message: pendingData.message
+        message: pendingData.message,
       });
 
       setSubmitted(true);
@@ -138,14 +196,16 @@ const Contact = () => {
       setPendingData(null);
       toast({
         title: "Message envoyé avec succès !",
-        description: "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
+        description:
+          "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
       });
     } catch (error) {
       setSubmitted(true);
       form.reset();
       toast({
         title: "Message envoyé avec succès !",
-        description: "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
+        description:
+          "Merci de votre message. RAMSIN Conseil vous recontactera sous 24h ouvrées.",
       });
     } finally {
       setIsSubmitting(false);
@@ -155,24 +215,30 @@ const Contact = () => {
   const faqItems = [
     {
       question: "Je n'y connais rien en informatique, est-ce un problème ?",
-      answer: "Pas du tout ! Mon rôle est précisément d'être votre traducteur et votre guide. Nous discutons exclusivement de vos objectifs métiers et de vos idées en langage simple. Je m'occupe de toute la complexité technique."
+      answer:
+        "Pas du tout ! Mon rôle est précisément d'être votre traducteur et votre guide. Nous discutons exclusivement de vos objectifs métiers et de vos idées en langage simple. Je m'occupe de toute la complexité technique.",
     },
     {
       question: "Comment se déroule la première prise de contact ?",
-      answer: "Nous réalisons un premier échange offert de 30 minutes (par visio ou téléphone). Vous me présentez votre projet et vos besoins. À l'issue de cet échange, je vous propose une feuille de route claire avec un tarif fixe."
+      answer:
+        "Nous réalisons un premier échange offert de 30 minutes (par visio ou téléphone). Vous me présentez votre projet et vos besoins. À l'issue de cet échange, je vous propose une feuille de route claire avec un tarif fixe.",
     },
     {
       question: "Combien coûte la création d'un site ou d'une application ?",
-      answer: "Chaque projet est unique. Après notre premier échange, vous recevez un devis forfaitaire détaillé et définitif. Il n'y aura aucun surcoût ni frais caché en cours de réalisation."
+      answer:
+        "Chaque projet est unique. Après notre premier échange, vous recevez un devis forfaitaire détaillé et définitif. Il n'y aura aucun surcoût ni frais caché en cours de réalisation.",
     },
     {
       question: "Serai-je autonome pour modifier mon site après la livraison ?",
-      answer: "Oui à 100% ! Une session de formation personnalisée est incluse pour vous et vos équipes, accompagnée d'un guide d'utilisation clair. Vous restez 100% propriétaire de votre site et de votre code."
+      answer:
+        "Oui à 100% ! Une session de formation personnalisée est incluse pour vous et vos équipes, accompagnée d'un guide d'utilisation clair. Vous restez 100% propriétaire de votre site et de votre code.",
     },
     {
-      question: "Que se passe-t-il si un problème survient après le lancement ?",
-      answer: "Tous les projets bénéficient d'une garantie de 30 jours offerte post-lancement. Si le moindre dysfonctionnement survient, il est corrigé immédiatement et gratuitement."
-    }
+      question:
+        "Que se passe-t-il si un problème survient après le lancement ?",
+      answer:
+        "Tous les projets bénéficient d'une garantie de 30 jours offerte post-lancement. Si le moindre dysfonctionnement survient, il est corrigé immédiatement et gratuitement.",
+    },
   ];
 
   return (
@@ -186,14 +252,19 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           {/* En-tête de la page */}
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
-            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-              <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Échange Simple & Sans Engagement
+            <Badge
+              variant="outline"
+              className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
+            >
+              <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" />{" "}
+              Échange Simple & Sans Engagement
             </Badge>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
               Parlons de Votre Projet
             </h1>
             <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed">
-              Vous avez un projet de site web, d'application ou besoin d'un conseil ? Réservez un premier échange gratuit et sans engagement.
+              Vous avez un projet de site web, d'application ou besoin d'un
+              conseil ? Réservez un premier échange gratuit et sans engagement.
             </p>
           </div>
 
@@ -210,7 +281,10 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <CopyEmailButton email="ramsinconseil@gmail.com" className="w-full justify-center text-xs sm:text-sm py-1.5" />
+                <CopyEmailButton
+                  email="contact@ramsin.fr"
+                  className="w-full justify-center text-xs sm:text-sm py-1.5"
+                />
               </CardContent>
             </Card>
 
@@ -239,15 +313,20 @@ const Contact = () => {
                 <div className="p-2.5 bg-primary/10 rounded-lg w-fit text-primary mb-2">
                   <MapPin className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-lg">Localisation & Mobilité</CardTitle>
+                <CardTitle className="text-lg">
+                  Localisation & Mobilité
+                </CardTitle>
                 <CardDescription className="text-sm">
                   Disponibilité et proximité
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="font-semibold text-foreground text-sm">
-                  Paris & Région Parisienne<br />
-                  <span className="text-xs text-muted-foreground font-normal">Interventions dans toute la France</span>
+                  Paris & Région Parisienne
+                  <br />
+                  <span className="text-xs text-muted-foreground font-normal">
+                    Interventions dans toute la France
+                  </span>
                 </p>
               </CardContent>
             </Card>
@@ -259,16 +338,25 @@ const Contact = () => {
           </div>
 
           {/* Formulaire & Garanties */}
-          <div ref={formRef} className={`grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 scroll-fade-up ${formVisible ? "is-visible" : ""}`}>
+          <div
+            ref={formRef}
+            className={`grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 scroll-fade-up ${formVisible ? "is-visible" : ""}`}
+          >
             {/* Colonne Formulaire (8 cols) */}
             <Card className="lg:col-span-8 border-border/80 shadow-sm">
               <CardHeader>
-                <Badge variant="outline" className="w-fit mb-2 px-3 py-0.5 text-xs border-primary/30 text-primary font-semibold">
+                <Badge
+                  variant="outline"
+                  className="w-fit mb-2 px-3 py-0.5 text-xs border-primary/30 text-primary font-semibold"
+                >
                   Option 2 : Message Écrit
                 </Badge>
-                <CardTitle className="text-2xl font-bold">Envoyer un Message & Demande de Devis</CardTitle>
+                <CardTitle className="text-2xl font-bold">
+                  Envoyer un Message & Demande de Devis
+                </CardTitle>
                 <CardDescription className="text-base">
-                  Remplissez ce formulaire et recevez une réponse claire sous 24h ouvrées.
+                  Remplissez ce formulaire et recevez une réponse claire sous
+                  24h ouvrées.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -277,17 +365,26 @@ const Contact = () => {
                     <div className="w-16 h-16 bg-emerald-500/10 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                       <CheckCircle2 className="w-10 h-10" />
                     </div>
-                    <h3 className="text-2xl font-bold">Message Envoyé avec Succès !</h3>
+                    <h3 className="text-2xl font-bold">
+                      Message Envoyé avec Succès !
+                    </h3>
                     <p className="text-muted-foreground max-w-md mx-auto">
-                      Merci pour votre confiance. RAMSIN Conseil a bien reçu votre demande et vous répondra sous 24h ouvrées.
+                      Merci pour votre confiance. RAMSIN Conseil a bien reçu
+                      votre demande et vous répondra sous 24h ouvrées.
                     </p>
-                    <Button onClick={() => setSubmitted(false)} variant="outline">
+                    <Button
+                      onClick={() => setSubmitted(false)}
+                      variant="outline"
+                    >
                       Envoyer un autre message
                     </Button>
                   </div>
                 ) : (
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       {/* Anti-Spam Honeypot Bot Trap (Masqué visuellement) */}
                       <div className="hidden" aria-hidden="true">
                         <input
@@ -309,7 +406,10 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Nom & Prénom *</FormLabel>
                               <FormControl>
-                                <Input placeholder="Ex: Marc Dubois" {...field} />
+                                <Input
+                                  placeholder="Ex: Marc Dubois"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -323,7 +423,11 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Email Professionnel *</FormLabel>
                               <FormControl>
-                                <Input type="email" placeholder="marc@entreprise.fr" {...field} />
+                                <Input
+                                  type="email"
+                                  placeholder="marc@entreprise.fr"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -339,7 +443,10 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Entreprise / Organisation</FormLabel>
                               <FormControl>
-                                <Input placeholder="Ex: Acme SAS (optionnel)" {...field} />
+                                <Input
+                                  placeholder="Ex: Acme SAS (optionnel)"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -353,7 +460,11 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Téléphone</FormLabel>
                               <FormControl>
-                                <Input type="tel" placeholder="06 12 34 56 78 (optionnel)" {...field} />
+                                <Input
+                                  type="tel"
+                                  placeholder="06 12 34 56 78 (optionnel)"
+                                  {...field}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -368,21 +479,41 @@ const Contact = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Prestation Souhaitée *</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
                                 <FormControl>
                                   <SelectTrigger>
                                     <SelectValue placeholder="Sélectionnez une prestation" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="web-app">Conception Web, Mobiles & Applications Sur-Mesure</SelectItem>
-                                  <SelectItem value="architecture-si">Architecture des SI & Urbanisation</SelectItem>
-                                  <SelectItem value="mega-hopex">Expertise & Administration MEGA HOPEX</SelectItem>
-                                  <SelectItem value="po-agile">Product Ownership, Cadrage & Backlog</SelectItem>
-                                  <SelectItem value="pilotage-equipe">Pilotage d'Équipe & Facilitation Agile</SelectItem>
-                                  <SelectItem value="formation">Formation & Transfert de Compétences</SelectItem>
-                                  <SelectItem value="transformation">Conseil en Transformation Digitale</SelectItem>
-                                  <SelectItem value="autre">Autre demande / Conseil sur-mesure</SelectItem>
+                                  <SelectItem value="web-app">
+                                    Conception Web, Mobiles & Applications
+                                    Sur-Mesure
+                                  </SelectItem>
+                                  <SelectItem value="architecture-si">
+                                    Architecture des SI & Urbanisation
+                                  </SelectItem>
+                                  <SelectItem value="mega-hopex">
+                                    Expertise & Administration MEGA HOPEX
+                                  </SelectItem>
+                                  <SelectItem value="po-agile">
+                                    Product Ownership, Cadrage & Backlog
+                                  </SelectItem>
+                                  <SelectItem value="pilotage-equipe">
+                                    Pilotage d'Équipe & Facilitation Agile
+                                  </SelectItem>
+                                  <SelectItem value="formation">
+                                    Formation & Transfert de Compétences
+                                  </SelectItem>
+                                  <SelectItem value="transformation">
+                                    Conseil en Transformation Digitale
+                                  </SelectItem>
+                                  <SelectItem value="autre">
+                                    Autre demande / Conseil sur-mesure
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -396,17 +527,28 @@ const Contact = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>Délai Souhaité</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
                                 <FormControl>
                                   <SelectTrigger>
                                     <SelectValue placeholder="Sélectionnez votre délai" />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="asap">Dès que possible (Urgent)</SelectItem>
-                                  <SelectItem value="1-month">D'ici 1 mois</SelectItem>
-                                  <SelectItem value="3-months">Sous 3 mois</SelectItem>
-                                  <SelectItem value="flexible">Flexible / En réflexion</SelectItem>
+                                  <SelectItem value="asap">
+                                    Dès que possible (Urgent)
+                                  </SelectItem>
+                                  <SelectItem value="1-month">
+                                    D'ici 1 mois
+                                  </SelectItem>
+                                  <SelectItem value="3-months">
+                                    Sous 3 mois
+                                  </SelectItem>
+                                  <SelectItem value="flexible">
+                                    Flexible / En réflexion
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -421,10 +563,16 @@ const Contact = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Sujet de votre demande * <span className="text-xs text-muted-foreground font-normal ml-1">(au moins 4 caractères)</span>
+                              Sujet de votre demande *{" "}
+                              <span className="text-xs text-muted-foreground font-normal ml-1">
+                                (au moins 4 caractères)
+                              </span>
                             </FormLabel>
                             <FormControl>
-                              <Input placeholder="Ex: Refonte de notre site vitrine et espace client" {...field} />
+                              <Input
+                                placeholder="Ex: Refonte de notre site vitrine et espace client"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -437,7 +585,10 @@ const Contact = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Description de votre besoin * <span className="text-xs text-muted-foreground font-normal ml-1">(au moins 10 caractères)</span>
+                              Description de votre besoin *{" "}
+                              <span className="text-xs text-muted-foreground font-normal ml-1">
+                                (au moins 10 caractères)
+                              </span>
                             </FormLabel>
                             <FormControl>
                               <Textarea
@@ -455,7 +606,11 @@ const Contact = () => {
                         {!isValid && (
                           <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-700 dark:text-amber-300 font-semibold flex items-center gap-2">
                             <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" />
-                            <span>Veuillez compléter les champs obligatoires (*) : Nom, Email valide, Prestation, Sujet (min. 4 car.) et Description (min. 10 car.).</span>
+                            <span>
+                              Veuillez compléter les champs obligatoires (*) :
+                              Nom, Email valide, Prestation, Sujet (min. 4 car.)
+                              et Description (min. 10 car.).
+                            </span>
                           </div>
                         )}
 
@@ -469,7 +624,8 @@ const Contact = () => {
                             "Envoi en cours..."
                           ) : (
                             <>
-                              Envoyer ma demande de devis <Send className="h-4 w-4" />
+                              Envoyer ma demande de devis{" "}
+                              <Send className="h-4 w-4" />
                             </>
                           )}
                         </Button>
@@ -490,7 +646,9 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <p className="text-muted-foreground">
-                    Chaque message reçu est analysé personnellement sous 24 heures ouvrées pour vous apporter une première réponse précise et adaptée.
+                    Chaque message reçu est analysé personnellement sous 24
+                    heures ouvrées pour vous apporter une première réponse
+                    précise et adaptée.
                   </p>
                 </CardContent>
               </Card>
@@ -498,31 +656,47 @@ const Contact = () => {
               <Card className="border-border/80">
                 <CardHeader>
                   <div className="flex items-center gap-2 text-foreground font-bold text-lg">
-                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Vos 3 Garanties
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Vos 3
+                    Garanties
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex gap-3 items-start">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-sm block">100% en Langage Clair</span>
-                      <span className="text-xs text-muted-foreground">Zéro jargon technique incompréhensible lors de nos échanges.</span>
+                      <span className="font-semibold text-sm block">
+                        100% en Langage Clair
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        Zéro jargon technique incompréhensible lors de nos
+                        échanges.
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex gap-3 items-start">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-sm block">Transparence Tarifaire</span>
-                      <span className="text-xs text-muted-foreground">Devis détaillé et prix forfaitaire fixe garanti sans surcoût.</span>
+                      <span className="font-semibold text-sm block">
+                        Transparence Tarifaire
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        Devis détaillé et prix forfaitaire fixe garanti sans
+                        surcoût.
+                      </span>
                     </div>
                   </div>
 
                   <div className="flex gap-3 items-start">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-sm block">Confidentialité Absolue</span>
-                      <span className="text-xs text-muted-foreground">Vos idées et informations restent strictement confidentielles.</span>
+                      <span className="font-semibold text-sm block">
+                        Confidentialité Absolue
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        Vos idées et informations restent strictement
+                        confidentielles.
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -531,20 +705,34 @@ const Contact = () => {
           </div>
 
           {/* Section FAQ (S'anime au scroll quand on descend) */}
-          <div ref={faqRef} className={`max-w-4xl mx-auto scroll-fade-up ${faqVisible ? "is-visible" : ""}`}>
+          <div
+            ref={faqRef}
+            className={`max-w-4xl mx-auto scroll-fade-up ${faqVisible ? "is-visible" : ""}`}
+          >
             <div className="text-center space-y-3 mb-8">
-              <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30 text-primary font-semibold">
-                <HelpCircle className="w-3.5 h-3.5 mr-1 inline" /> Questions Fréquentes
+              <Badge
+                variant="outline"
+                className="px-3 py-1 text-xs border-primary/30 text-primary font-semibold"
+              >
+                <HelpCircle className="w-3.5 h-3.5 mr-1 inline" /> Questions
+                Fréquentes
               </Badge>
-              <h2 className="text-2xl sm:text-3xl font-extrabold">F.A.Q - Réponses à Vos Questions</h2>
+              <h2 className="text-2xl sm:text-3xl font-extrabold">
+                F.A.Q - Réponses à Vos Questions
+              </h2>
               <p className="text-muted-foreground text-sm sm:text-base">
-                Retrouvez les réponses aux questions les plus fréquemment posées avant de démarrer un projet.
+                Retrouvez les réponses aux questions les plus fréquemment posées
+                avant de démarrer un projet.
               </p>
             </div>
 
             <Accordion type="single" collapsible className="w-full space-y-3">
               {faqItems.map((item, index) => (
-                <AccordionItem key={index} value={`faq-${index}`} className="border border-border/80 rounded-xl px-4 bg-card">
+                <AccordionItem
+                  key={index}
+                  value={`faq-${index}`}
+                  className="border border-border/80 rounded-xl px-4 bg-card"
+                >
                   <AccordionTrigger className="text-left font-bold text-base py-4 hover:no-underline hover:text-primary">
                     {item.question}
                   </AccordionTrigger>
@@ -569,7 +757,8 @@ const Contact = () => {
               Confirmer l'envoi de votre demande ?
             </DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground">
-              Veuillez vérifier les informations ci-dessous avant l'envoi à RAMSIN Conseil.
+              Veuillez vérifier les informations ci-dessous avant l'envoi à
+              RAMSIN Conseil.
             </DialogDescription>
           </DialogHeader>
 
@@ -589,22 +778,29 @@ const Contact = () => {
                   <span className="text-muted-foreground flex items-center gap-1.5">
                     <User className="w-3.5 h-3.5 text-primary" /> Nom & Prénom :
                   </span>
-                  <span className="font-semibold text-foreground">{pendingData.name}</span>
+                  <span className="font-semibold text-foreground">
+                    {pendingData.name}
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-primary" /> Email :
                   </span>
-                  <span className="font-semibold text-primary">{pendingData.email}</span>
+                  <span className="font-semibold text-primary">
+                    {pendingData.email}
+                  </span>
                 </div>
 
                 {pendingData.company && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-primary" /> Entreprise :
+                      <Briefcase className="w-3.5 h-3.5 text-primary" />{" "}
+                      Entreprise :
                     </span>
-                    <span className="font-semibold text-foreground">{pendingData.company}</span>
+                    <span className="font-semibold text-foreground">
+                      {pendingData.company}
+                    </span>
                   </div>
                 )}
 
@@ -613,13 +809,16 @@ const Contact = () => {
                     <span className="text-muted-foreground flex items-center gap-1.5">
                       <Phone className="w-3.5 h-3.5 text-primary" /> Téléphone :
                     </span>
-                    <span className="font-semibold text-foreground">{pendingData.phone}</span>
+                    <span className="font-semibold text-foreground">
+                      {pendingData.phone}
+                    </span>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-primary" /> Prestation :
+                    <Sparkles className="w-3.5 h-3.5 text-primary" /> Prestation
+                    :
                   </span>
                   <span className="font-bold text-primary">
                     {formatServiceType(pendingData.serviceType)}
@@ -628,7 +827,8 @@ const Contact = () => {
 
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-primary" /> Délai souhaité :
+                    <Clock className="w-3.5 h-3.5 text-primary" /> Délai
+                    souhaité :
                   </span>
                   <span className="font-bold text-emerald-600 dark:text-emerald-400">
                     {formatTimeline(pendingData.timeline)}
@@ -637,7 +837,8 @@ const Contact = () => {
 
                 <div className="pt-2 border-t border-border/40">
                   <span className="text-muted-foreground flex items-center gap-1.5 mb-1">
-                    <FileText className="w-3.5 h-3.5 text-primary" /> Description du besoin :
+                    <FileText className="w-3.5 h-3.5 text-primary" />{" "}
+                    Description du besoin :
                   </span>
                   <p className="italic text-foreground/90 bg-background/60 p-2 rounded border border-border/50 text-xs line-clamp-3">
                     "{pendingData.message}"
