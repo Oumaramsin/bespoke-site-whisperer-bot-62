@@ -50,7 +50,7 @@ export const formatTimeline = (key?: string) => {
 
 // Clé API Resend
 const RESEND_API_KEY =
-  import.meta.env.VITE_RESEND_API_KEY || "re_EkRuUwuV_N3gc1x5rSWp6bVPNYqHp8gKB";
+  import.meta.env.VITE_RESEND_API_KEY;
 
 // Endpoint API Resend avec passage par le proxy Vite pour éviter tout blocage CORS navigateur
 const getEndpoint = () => {
@@ -140,7 +140,7 @@ export const sendBookingViaResend = async (params: SendBookingEmailParams) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "RAMSIN Conseil <onboarding@resend.dev>",
+        from: "RAMSIN Conseil <contact@ramsin.fr>",
         to: ["contact@ramsin.fr"],
         subject: `RAMSIN Conseil - RDV Réservé (${selectedDay} à ${selectedTime}) par ${name}`,
         html: adminHtml,
@@ -159,7 +159,7 @@ export const sendBookingViaResend = async (params: SendBookingEmailParams) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "RAMSIN Conseil <onboarding@resend.dev>",
+          from: "RAMSIN Conseil <contact@ramsin.fr>",
           to: recipientList,
           subject: `RAMSIN Conseil - Confirmation de votre RDV (${selectedDay} à ${selectedTime})`,
           html: clientHtml,
@@ -249,7 +249,7 @@ export const sendContactViaResend = async (params: SendContactEmailParams) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "RAMSIN Conseil <onboarding@resend.dev>",
+        from: "RAMSIN Conseil <contact@ramsin.fr>",
         to: ["contact@ramsin.fr"],
         subject: `RAMSIN Conseil - Demande de Devis de ${name} (${prettyService})`,
         html: contactHtml,
