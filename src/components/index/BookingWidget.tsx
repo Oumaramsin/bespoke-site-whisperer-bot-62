@@ -44,7 +44,7 @@ export const BookingWidget = () => {
             {/* Widget Officiel Calendly Encastré */}
             <div className="w-full overflow-hidden rounded-b-xl" style={{ minHeight: "680px" }}>
               <iframe
-                src="https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=2563eb"
+                src="https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=2563eb&locale=fr"
                 width="100%"
                 height="700"
                 frameBorder="0"
