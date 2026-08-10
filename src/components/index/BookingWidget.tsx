@@ -58,3 +58,5 @@ export const BookingWidget = () => {
     </section>
   );
 };
+
+export default BookingWidget;
