@@ -8,9 +8,9 @@ interface SEOProps {
 }
 
 export const SEO = ({
-  title = "RAMSIN | Architecture des SI & Expert MEGA Hopex",
-  description = "Conseil et expertise en Architecture des Systèmes d'Information, administration avancée MEGA Hopex, Product Ownership et conduite du changement DSI.",
-  keywords = "Architecture SI, MEGA Hopex, Consultant SI, Product Owner, DSI, Cartographie applicative, Paris, Transformation digitale",
+  title = "RAMSIN | Architecture SI (MEGA HOPEX) & Solutions Numériques Sur-Mesure",
+  description = "Cabinet d'expertise en Architecture des Systèmes d'Information (MEGA HOPEX V5) et conception de solutions web & mobiles sur-mesure. Des décisions SI plus claires et des outils adaptés à vos enjeux.",
+  keywords = "Architecture SI, MEGA HOPEX V5, Urbanisation SI, Cartographie applicative, Développement Web, Applications Mobiles, Next.js, React Native, Fresnes, Paris, DSI",
   canonical,
 }: SEOProps) => {
   useEffect(() => {

@@ -154,7 +154,7 @@ const About = () => {
   const contact = {
     email: "contact@ramsin.fr",
     phone: "+33 (0)7 61 51 88 90",
-    location: "Paris & Région Parisienne (Fresnes)",
+    location: "Basés à Fresnes (94) · Interventions Paris & Remote",
   };
 
   const handleBookingRedirect = () => {

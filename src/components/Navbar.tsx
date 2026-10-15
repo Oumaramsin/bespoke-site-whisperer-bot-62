@@ -51,7 +51,7 @@ const Navbar = () => {
 
             <Button asChild size="sm" className="ml-1 gap-1.5 font-semibold animate-pulse-glow rounded-lg">
               <Link to="/contact">
-                Demander un devis <ArrowRight className="w-3.5 h-3.5" />
+                Échanger sur votre projet <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </Button>
           </nav>
@@ -91,7 +91,7 @@ const Navbar = () => {
               ))}
               <Button asChild className="mt-2 gap-1.5" size="sm">
                 <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
-                  Demander un devis <ArrowRight className="w-3.5 h-3.5" />
+                  Échanger sur votre projet <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
             </nav>

@@ -44,9 +44,9 @@ const Footer = () => {
           <div className="space-y-3">
             <h3 className="text-xl font-bold">RAMSIN Conseil</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Cabinet d'accompagnement en architecture des systèmes
-              d'information (MEGA HOPEX V5) et création d'applications web &
-              sites e-commerce sur-mesure.
+              Cabinet d'expertise en Architecture des Systèmes d'Information
+              (MEGA HOPEX V5) et développement d'applications web & mobiles
+              sur-mesure.
             </p>
           </div>
 
@@ -117,8 +117,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                Localisation : Paris & Île-de-France (Interventions France &
-                Remote)
+                Localisation : Basés à Fresnes (94) · Interventions Paris, Île-de-France & Remote
               </li>
               <li className="pt-2 text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />

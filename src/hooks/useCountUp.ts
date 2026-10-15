@@ -8,7 +8,8 @@ interface UseCountUpOptions {
 }
 
 export const useCountUp = ({ end, duration = 2000, suffix = "", prefix = "" }: UseCountUpOptions) => {
-  const [count, setCount] = useState(0);
+  // Initialisation à 'end' pour que les crawlers/outils sans JS indexent toujours la valeur réelle
+  const [count, setCount] = useState(end);
   const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -20,10 +21,11 @@ export const useCountUp = ({ end, duration = 2000, suffix = "", prefix = "" }: U
       ([entry]) => {
         if (entry.isIntersecting && !hasStarted) {
           setHasStarted(true);
+          setCount(0); // Réinitialiser à 0 pour animer jusqu'à end
           observer.unobserve(element);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
 
     observer.observe(element);

@@ -12,8 +12,8 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="RAMSIN Conseil | Partenaire Transformation Digitale, Web & SI"
-        description="Création de sites web professionnels, d'applications sur-mesure (iOS, Android, Web) et conseil en Architecture des SI. Accompagnement de A à Z pour entreprises, commerces et entrepreneurs."
+        title="RAMSIN | Architecture SI (MEGA HOPEX) & Solutions Numériques Sur-Mesure"
+        description="Cabinet d'expertise en Architecture des Systèmes d'Information (MEGA HOPEX V5) et conception d'applications web & mobiles sur-mesure. Des décisions SI plus claires et des outils adaptés à vos enjeux."
       />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/10">
         {/* 1. HERO SECTION (Titre & Valeur Métier) */}

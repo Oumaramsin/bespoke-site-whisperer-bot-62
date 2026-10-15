@@ -322,10 +322,10 @@ const Contact = () => {
               </CardHeader>
               <CardContent>
                 <p className="font-semibold text-foreground text-sm">
-                  Paris & Région Parisienne
+                  Basés à Fresnes (94)
                   <br />
                   <span className="text-xs text-muted-foreground font-normal">
-                    Interventions dans toute la France
+                    Interventions Paris, Île-de-France & Remote
                   </span>
                 </p>
               </CardContent>
