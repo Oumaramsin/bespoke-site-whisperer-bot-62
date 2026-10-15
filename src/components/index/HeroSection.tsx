@@ -172,7 +172,7 @@ const HeroSection = () => {
                 </ul>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-border/50 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="pt-6 mt-4 border-t border-border/50 flex flex-col items-center gap-2.5">
                 <Button
                   asChild
                   size="lg"
@@ -182,6 +182,12 @@ const HeroSection = () => {
                     Échanger sur une mission SI <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
+                <Link
+                  to="/services?pole=si"
+                  className="text-xs font-semibold text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors pt-1"
+                >
+                  Découvrir les livrables & la méthode SI →
+                </Link>
               </div>
             </div>
 
@@ -222,7 +228,7 @@ const HeroSection = () => {
                 </ul>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-border/50 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="pt-6 mt-4 border-t border-border/50 flex flex-col items-center gap-2.5">
                 <Button
                   asChild
                   size="lg"
@@ -232,6 +238,12 @@ const HeroSection = () => {
                     Présenter mon projet web / mobile <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
+                <Link
+                  to="/services?pole=web"
+                  className="text-xs font-semibold text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors pt-1"
+                >
+                  Découvrir la méthode & les garanties web →
+                </Link>
               </div>
             </div>
 

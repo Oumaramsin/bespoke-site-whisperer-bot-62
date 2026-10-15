@@ -1,390 +1,651 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  Database,
-  Code,
-  Briefcase,
-  ArrowRight,
-  Sparkles,
+  Building2,
+  Smartphone,
   CheckCircle2,
+  ArrowRight,
   ShieldCheck,
-  Headphones,
+  Calendar,
   Layers,
+  FileText,
+  Compass,
+  Lock,
+  Code2,
   Clock,
-  Info,
-  Users,
-  GraduationCap,
-  TrendingUp,
+  Sparkles,
+  Award,
+  ChevronRight,
+  Workflow,
+  HelpCircle,
+  Database,
+  Phone,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 
-interface ServiceItem {
-  id: string;
-  category: string;
-  icon: any;
-  title: string;
-  subtitle: string;
-  description: string;
-  businessBenefit: string;
-  timeframe: string;
-  badgeText: string;
-  details: string[];
-  accent: string;
-}
+type ServicePole = "si" | "web";
 
-const Services = () => {
-  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+export const Services = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const services: ServiceItem[] = [
-    {
-      id: "conception-web-apps",
-      category: "web-apps",
-      icon: Code,
-      title: "Conception Web, Mobiles & Applications Sur-Mesure",
-      subtitle: "Vitrines, E-Commerce Stripe/PayPal & Logiciels Métier",
-      description: "Développement de sites internet, boutiques e-commerce, applications web Next.js/React et logiciels de gestion sur-mesure.",
-      businessBenefit: "Vous automatisez vos processus et disposez d'une présence web haut de gamme sécurisée générant des opportunités 24h/24.",
-      timeframe: "2 à 4 semaines",
-      badgeText: "Forfait Clé en Main",
-      accent: "border-l-blue-500",
-      details: [
-        "Sites vitrines professionnels et boutiques e-commerce haute conversion",
-        "Applications web modernes Next.js 16 / React 19 et applications mobiles iOS & Android",
-        "Paiements sécurisés (Stripe, PayPal, Apple Pay) & configurateurs sur-mesure",
-        "Bases de données PostgreSQL relationnelles et API REST / GraphQL sécurisées",
-        "Conteneurisation Docker, hébergement cloud et sauvegardes automatiques",
-        "Maintenance préventive, corrective et assistance technique dédiée 7j/7"
-      ]
-    },
-    {
-      id: "architecture-si",
-      category: "architecture-si",
-      icon: Layers,
-      title: "Architecture des Systèmes d'Information & Urbanisation",
-      subtitle: "Cartographie, Trajectoires Cibles & Gouvernance SI",
-      description: "Conception, cartographie et optimisation d'architectures cibles alignées avec vos objectifs stratégiques et gouvernance des standards.",
-      businessBenefit: "Vous éliminez les doublons applicatifs coûteux, réduisez la dette technique et disposez d'un plan d'évolution clair pour votre SI.",
-      timeframe: "Mission régie ou forfait",
-      badgeText: "Conseil Stratégique",
-      accent: "border-l-indigo-500",
-      details: [
-        "Conception et optimisation des architectures applicatives et techniques (SI)",
-        "Analyse et cartographie complète de l'existant applicatif et des flux SI",
-        "Conception d'architectures cibles alignées avec vos objectifs stratégiques",
-        "Définition de la trajectoire d'évolution et des plans de transition de SI",
-        "Gouvernance et mise en place des standards et règles d'architecture",
-        "Conseil stratégique et accompagnement sur les bonnes pratiques d'entreprise"
-      ]
-    },
-    {
-      id: "expert-mega-hopex",
-      category: "hopex",
-      icon: Database,
-      title: "Expertise, Administration & Configuration MEGA HOPEX",
-      subtitle: "Modélisation, Métamodèles & Tableaux de Bord V5/V2R1",
-      description: "Implémentation, configuration avancée et administration globale de la plateforme MEGA HOPEX V5 & V2R1.",
-      businessBenefit: "Vous disposez d'un référentiel MEGA HOPEX 100% fiable, automatisé par scripts et parfaitement exploitable par vos équipes.",
-      timeframe: "Mission ou accompagnement",
-      badgeText: "Expertise V5 Certifiée",
-      accent: "border-l-amber-500",
-      details: [
-        "Implémentation, paramétrage et configuration avancée de MEGA HOPEX",
-        "Administration technique et fonctionnelle de la plateforme au quotidien",
-        "Optimisation des modèles, des métamodèles et de la qualité du référentiel",
-        "Développement de scripts d'automatisation API (VB.Net / VBScript)",
-        "Création de tableaux de bord et reporting décisionnels personnalisés",
-        "Résolution de problèmes complexes et optimisation des performances"
-      ]
-    },
-    {
-      id: "product-owner",
-      category: "po-agile",
-      icon: Briefcase,
-      title: "Product Ownership, Cadrage & Gestion de Projet",
-      subtitle: "User Stories, Priorisation du Backlog & Recette",
-      description: "Recueil des besoins métiers, rédaction des user stories et priorisation du backlog produit pour une livraison sans accroc.",
-      businessBenefit: "Vos fonctionnalités métiers sont traduites sans perte avec des spécifications claires et des livrables validés à chaque étape.",
-      timeframe: "Selon le projet",
-      badgeText: "Cadrage & Agilité",
-      accent: "border-l-rose-500",
-      details: [
-        "Recueil des besoins métiers et cadrage fonctionnel des projets",
-        "Rédaction des User Stories et spécifications fonctionnelles détaillées",
-        "Gestion, découpage et priorisation continue du backlog produit",
-        "Validation des livrables métiers et acceptance testing (recette)",
-        "Coordination et communication fluide avec les équipes de développement",
-        "Garantie du respect du périmètre, du budget et du calendrier d'exécution"
-      ]
-    },
-    {
-      id: "pilotage-equipe",
-      category: "agile",
-      icon: Users,
-      title: "Pilotage d'Équipe, Facilitation Agile & Mentoring",
-      subtitle: "Encadrement, Cérémonies & Supervision Qualité",
-      description: "Animation des cérémonies Agiles, constitution et encadrement des équipes projet et supervision de la qualité des livrables.",
-      businessBenefit: "Vos équipes gagnent en maturité et en productivité grâce à un pilotage bienveillant et des rituels agiles maîtrisés.",
-      timeframe: "Régie ou accompagnement",
-      badgeText: "Management Agile",
-      accent: "border-l-violet-500",
-      details: [
-        "Encadrement, animation et coordination des ressources projet",
-        "Facilitation et animation des cérémonies Agiles (Sprint Planning, Daily, Retro)",
-        "Supervision du travail réalisé et contrôle qualité rigoureux des livrables",
-        "Développement des compétences de l'équipe et mentoring technique",
-        "Constitution et montée en puissance d'équipes projet performantes",
-        "Rapportage régulier et communication transparente avec la direction"
-      ]
-    },
-    {
-      id: "formation-transfert",
-      category: "formation",
-      icon: GraduationCap,
-      title: "Formation, Documentation & Prise en Main Utilisateurs",
-      subtitle: "Modules Sur-Mesure & Support Opérationnel",
-      description: "Conception de programmes de formation personnalisés et transfert de compétences pour une autonomie totale des utilisateurs.",
-      businessBenefit: "Vos collaborateurs s'approprient immédiatement les nouveaux outils et méthodologies avec un accompagnement sur-mesure.",
-      timeframe: "Forfait formation",
-      badgeText: "Transfert & Autonomie",
-      accent: "border-l-emerald-500",
-      details: [
-        "Conception de modules de formation sur-mesure adaptés à chaque profil",
-        "Animation de sessions de formation interactives pour les équipes",
-        "Création de guides d'utilisation, documentations et fiches réflexes",
-        "Accompagnement individuel et personnalisé à la prise en main des outils",
-        "Évaluation des acquis, suivi post-formation et plans d'amélioration",
-        "Support utilisateur réactif et assistance technique au quotidien"
-      ]
-    },
-    {
-      id: "transformation-digitale",
-      category: "transformation",
-      icon: TrendingUp,
-      title: "Conseil en Transformation Digitale & Stratégie SI",
-      subtitle: "Maturité Digitale, Alignement Métier & KPIs",
-      description: "Accompagnement stratégique et opérationnel dans vos projets de transformation digitale et d'alignement métier.",
-      businessBenefit: "Vous sécurisez votre transformation numérique avec une feuille de route claire et des résultats mesurables à chaque étape.",
-      timeframe: "Sur-mesure",
-      badgeText: "Stratégie & Impact",
-      accent: "border-l-teal-500",
-      details: [
-        "Évaluation de la maturité digitale de votre organisation et audit du SI",
-        "Définition de la stratégie de transformation digitale et feuille de route",
-        "Alignement parfait des processus métiers et des systèmes d'information",
-        "Conduite du changement et accompagnement humain des équipes",
-        "Mesure des résultats, définition des KPIs d'efficacité et optimisation",
-        "Conseil impartial sur les choix technologiques et outils du marché"
-      ]
-    }
-  ];
+  // Initialisation du pôle selon l'URL (?pole=si ou ?pole=web)
+  const poleParam = searchParams.get("pole");
+  const [activePole, setActivePole] = useState<ServicePole>(
+    poleParam === "web" ? "web" : "si"
+  );
 
-  const handleServiceQuote = (serviceTitle: string) => {
-    setSelectedService(null);
-    navigate("/contact", { state: { selectedService: serviceTitle, scrollToBooking: true } });
+  useEffect(() => {
+    if (poleParam === "web" || poleParam === "si") {
+      setActivePole(poleParam);
+    }
+  }, [poleParam]);
+
+  const switchPole = (pole: ServicePole) => {
+    setActivePole(pole);
+    setSearchParams({ pole });
+    window.scrollTo({ top: 320, behavior: "smooth" });
+  };
+
+  const handleBookingRedirect = () => {
+    navigate("/contact", { state: { scrollToBooking: true } });
   };
 
   return (
     <>
       <SEO
-        title="Services & Accompagnement | RAMSIN - Architecture SI, MEGA HOPEX & Développement Web"
-        description="Découvrez nos 7 pôles de prestations : Architecture SI, Expertise MEGA HOPEX, Product Owner, Pilotage d'Équipe, Formation, Transformation Digitale et Création Web/Apps."
+        title="Services & Expertises | RAMSIN - Architecture SI & Développement Web Sur-Mesure"
+        description="Découvrez nos deux pôles d'excellence : Conseil & Architecture SI (MEGA HOPEX V5) pour DSI, et Conception d'applications web & mobiles sur-mesure pour PME et dirigeants."
       />
 
       {/* ═══════════════════════════════════════════
-          HERO HEADER
+          HERO HEADER DES SERVICES
       ═══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden border-b border-border/60">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/8 rounded-full blur-[80px]" />
-        </div>
+      <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
+        <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center max-w-4xl space-y-5">
+        <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Offre de Services Transparente & Forfaitaire
+            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux Pôles d'Excellence Dédiés
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1]">
-            Services &
-            <span className="block gradient-text mt-1">Accompagnement Sur-Mesure</span>
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+            Des Expertises Spécialisées.
+            <span className="block gradient-text mt-1">Des Livrables Clairs & Tangibles.</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Chaque prestation est conçue pour apporter une réponse claire, directement rentable et 100% adaptée aux exigences de votre activité.
+
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed">
+            Pour répondre précisément à vos enjeux, RAMSIN structure ses prestations autour de deux parcours indépendants. Choisissez le domaine correspondant à votre besoin :
           </p>
 
-          {/* Badges de Réassurance */}
-          <div className="flex flex-wrap justify-center items-center gap-4 text-xs sm:text-sm text-muted-foreground pt-4 font-semibold">
-            <span className="flex items-center gap-1.5 bg-card px-3 py-1.5 rounded-full border border-border/80 shadow-sm">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" /> Devis Forfaitaire Ferme
-            </span>
-            <span className="flex items-center gap-1.5 bg-card px-3 py-1.5 rounded-full border border-border/80 shadow-sm">
-              <Headphones className="w-4 h-4 text-blue-500" /> Accompagnement 100% Dédié
-            </span>
-            <span className="flex items-center gap-1.5 bg-card px-3 py-1.5 rounded-full border border-border/80 shadow-sm">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Garantie Post-Livraison Offerte
-            </span>
+          {/* SÉLECTEUR DE PÔLE COMMERCIAL (SWITCHER CLÉ) */}
+          <div className="pt-4 flex justify-center">
+            <div className="p-1.5 rounded-2xl glass-card border border-border/80 inline-flex flex-col sm:flex-row gap-2 max-w-full shadow-lg">
+              <button
+                onClick={() => switchPole("si")}
+                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
+                  activePole === "si"
+                    ? "bg-blue-600 text-white shadow-md scale-[1.02]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+                }`}
+              >
+                <Building2 className="w-5 h-5 shrink-0" />
+                <span>Architecture SI & MEGA HOPEX</span>
+                <span className="hidden md:inline text-[11px] opacity-80 px-2 py-0.5 rounded-full bg-white/20">
+                  DSI & Transformation
+                </span>
+              </button>
+
+              <button
+                onClick={() => switchPole("web")}
+                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
+                  activePole === "web"
+                    ? "bg-emerald-600 text-white shadow-md scale-[1.02]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+                }`}
+              >
+                <Smartphone className="w-5 h-5 shrink-0" />
+                <span>Web & Applications Sur-Mesure</span>
+                <span className="hidden md:inline text-[11px] opacity-80 px-2 py-0.5 rounded-full bg-white/20">
+                  PME & Dirigeants
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        {/* En-tête de section */}
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            Nos 7 Pôles de Prestations
-          </h2>
-          <p className="text-sm text-muted-foreground font-medium">
-            Cliquez sur n'importe quel service ci-dessous pour ouvrir les bénéfices et le périmètre détaillé.
-          </p>
-        </div>
-
-        {/* ═══════════════════════════════════════════
-            GRILLE DE CARTES CENTRÉES
-        ═══════════════════════════════════════════ */}
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-6">
-            {services.map((service) => {
-              const IconComponent = service.icon;
-
-              return (
-                <Card
-                  key={service.id}
-                  onClick={() => setSelectedService(service)}
-                  className={`w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-16px)] max-w-md flex flex-col border border-border/80 border-l-4 ${service.accent} glass-card rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover-lift hover:shadow-xl group`}
-                >
-                  <CardHeader className="p-6 pb-3 space-y-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="p-3 bg-primary/10 rounded-2xl text-primary shrink-0 border border-primary/20 group-hover:scale-105 transition-transform">
-                        <IconComponent className="h-7 w-7" />
-                      </div>
-                      <Badge variant="secondary" className="text-[10px] font-bold bg-primary/10 text-primary border-primary/20">
-                        {service.badgeText}
-                      </Badge>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <CardTitle className="text-lg sm:text-xl font-extrabold leading-snug group-hover:text-primary transition-colors">
-                        {service.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                        {service.description}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="p-6 pt-2 flex-1 flex flex-col justify-end space-y-4">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground font-semibold pt-3 border-t border-border/60">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-primary" /> {service.timeframe}
-                      </span>
-                      <span className="text-primary font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                        Détails & Devis <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* ═══════════════════════════════════════════
-          MODAL DÉTAILS DU SERVICE (Shadcn Dialog)
+          SECTION 1 : PÔLE ARCHITECTURE SI & MEGA HOPEX
       ═══════════════════════════════════════════ */}
-      <Dialog open={!!selectedService} onOpenChange={(open) => !open && setSelectedService(null)}>
-        {selectedService && (
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-2xl border-2 border-primary/20 bg-background shadow-2xl">
-            {/* En-tête du Modal */}
-            <DialogHeader className="p-6 sm:p-7 pb-4 border-b border-border/60 bg-gradient-to-r from-primary/5 via-transparent to-transparent space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-2xl text-primary shrink-0 border border-primary/20">
-                  {(() => {
-                    const IconComponent = selectedService.icon;
-                    return <IconComponent className="h-7 w-7 text-primary" />;
-                  })()}
-                </div>
-                <div>
-                  <Badge variant="secondary" className="text-xs font-bold bg-primary/10 text-primary border-primary/20 mb-1">
-                    {selectedService.badgeText}
-                  </Badge>
-                  <DialogTitle className="text-xl sm:text-2xl font-extrabold text-foreground">
-                    {selectedService.title}
-                  </DialogTitle>
-                </div>
-              </div>
-              <DialogDescription className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                {selectedService.subtitle} — <span className="font-bold text-primary">{selectedService.timeframe}</span>
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="p-6 sm:p-7 space-y-5">
-              {/* Encadré Bénéfice Métier */}
-              <div className="bg-emerald-100 dark:bg-emerald-500/15 border-2 border-emerald-300 dark:border-emerald-500/30 p-4 sm:p-5 rounded-2xl space-y-1.5">
-                <h4 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
-                  <Sparkles className="w-4 h-4 text-emerald-500 shrink-0" /> Ce que cela vous apporte concrètement :
-                </h4>
-                <p className="text-sm sm:text-base font-medium leading-relaxed text-emerald-950 dark:text-emerald-100">
-                  {selectedService.businessBenefit}
+      {activePole === "si" && (
+        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
+          
+          {/* BANDEAU EN-TÊTE DU PÔLE SI */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-slate-950 text-white border-2 border-blue-500/30 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative z-10 max-w-3xl space-y-4">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-500/20 px-3 py-1 rounded-full">
+                  <Award className="w-3.5 h-3.5" /> Conseil & Urbanisation des Systèmes d'Information
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                  Prenez le contrôle de votre patrimoine applicatif et sécurisez vos trajectoires SI.
+                </h2>
+                <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                  DSI, Architectes d'Entreprise et Responsables de Transformation : nous intervenons pour cartographier vos flux, réduire la dette technique, structurer vos référentiels MEGA HOPEX V5 et formaliser des dossiers d'architecture technique (DAT) rigoureux.
                 </p>
+                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300 font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Expertise Certifiée MEGA HOPEX V5
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Missions Grands Comptes (Covéa, La Banque Postale)
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Régie spécialisée ou Forfait ciblé
+                  </span>
+                </div>
               </div>
+            </div>
+          </div>
 
-              {/* Périmètre & Actions Incluses */}
-              <div className="space-y-3">
-                <h4 className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-primary" /> Périmètre & Actions Incluses dans cette prestation :
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {selectedService.details.map((detail, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-muted-foreground bg-secondary/40 p-3 rounded-xl border border-border/40">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span className="font-medium text-foreground leading-relaxed">{detail}</span>
-                    </div>
-                  ))}
-                  {/* Element d'ouverture "De A à Z & Sur-Mesure" */}
-                  <div className="flex items-start gap-2.5 text-xs sm:text-sm text-primary bg-primary/10 p-3 rounded-xl border border-primary/30 col-span-1 sm:col-span-2">
-                    <Sparkles className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                    <span className="font-bold text-foreground leading-relaxed">
-                      + Autres services & intégrations sur-mesure incluses : Prise en charge intégrale de A à Z selon vos besoins.
+          {/* 1. LES PROBLÈMES QUE NOUS TRAITONS */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Les Défis d'Architecture SI que Nous Résolvons
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Une intervention ciblée sur les véritables points de friction des directions informatiques.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Cartographie applicative floue ou obsolète",
+                  desc: "Manque de visibilité sur les flux d'échanges, les composants et les interdépendances logicielles. Difficulté à évaluer l'impact d'une évolution.",
+                  solution: "Restitution d'une cartographie dynamique claire et à jour du SI.",
+                },
+                {
+                  title: "Dette technique et redondances applicatives",
+                  desc: "Multiplication des outils en silos, doublons fonctionnels coûteux et difficultés à rationaliser le portefeuille applicatif.",
+                  solution: "Matrice d'optimisation et plan de rationalisation du patrimoine.",
+                },
+                {
+                  title: "Référentiel MEGA HOPEX sous-exploité",
+                  desc: "Métamodèles complexes, données d'architecture non fiabilisées, absence d'automatisation des flux ou difficulté de prise en main.",
+                  solution: "Configuration avancée, fiabilisation du métamodèle et scripts API VB.Net.",
+                },
+                {
+                  title: "Trajectoire de transformation non documentée",
+                  desc: "Absence de Dossier d'Architecture Technique (DAT) formalisé pour sécuriser les comités d'architecture et les arbitrages DSI.",
+                  solution: "Rédaction complète des DAT et feuilles de route de transition opérationnelles.",
+                },
+              ].map((item, idx) => (
+                <div key={idx} className="p-6 rounded-2xl glass-card border border-border/80 space-y-3 hover-lift">
+                  <h4 className="text-base sm:text-lg font-bold text-foreground flex items-start gap-2.5">
+                    <span className="w-6 h-6 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs shrink-0 mt-0.5 font-black">
+                      {idx + 1}
+                    </span>
+                    <span>{item.title}</span>
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pl-8">
+                    {item.desc}
+                  </p>
+                  <div className="pl-8 pt-2">
+                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3 py-1 rounded-lg inline-block">
+                      ✓ Impact RAMSIN : {item.solution}
                     </span>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
 
-              {/* Bouton d'action Devis */}
-              <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5 font-medium">
-                  <Info className="w-4 h-4 text-primary shrink-0" />
-                  <span>Premier échange offert de 30 minutes sans engagement.</span>
+          {/* 2. LES 4 MISSIONS CONCRÈTES & LIVRABLES */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Nos Prestations d'Architecture SI & Livrables Concrets
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Chaque mission débouche sur des livrables tangibles, vérifiables et immédiatement exploitables par vos équipes.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: Layers,
+                  title: "Cartographie & Urbanisation du SI",
+                  scope: "Recensement exhaustif des briques logicielles, cartographie des flux d'échanges, découpage en zones fonctionnelles et urbanisation globale.",
+                  deliverables: [
+                    "Cartographie applicative interactive (Niveaux Fonctionnel, Applicatif, Technique)",
+                    "Matrice des flux et interfaces d'intégration",
+                    "Schémas d'urbanisation conformes aux standards d'entreprise",
+                  ],
+                },
+                {
+                  icon: Database,
+                  title: "Administration & Configuration MEGA HOPEX",
+                  scope: "Paramétrage expert de la plateforme MEGA HOPEX V5 / V2R1, modélisation des référentiels, automatisation par scripts et gouvernance des données.",
+                  deliverables: [
+                    "Métamodèle personnalisé et référentiel nettoyé",
+                    "Scripts d'automatisation des imports/exports (VB.Net / VBScript / API)",
+                    "Tableaux de bord d'arbitrage et reporting décisionnel pour la DSI",
+                  ],
+                },
+                {
+                  icon: FileText,
+                  title: "Dossiers d'Architecture Technique (DAT)",
+                  scope: "Cadrage d'architecture de vos projets majeurs, identification des contraintes de sécurité, dimensionnement et passage en comité d'architecture.",
+                  deliverables: [
+                    "Dossiers d'Architecture Technique (DAT) complets et validés",
+                    "Matrices d'impact technique et d'évaluation des risques",
+                    "Trajectoire cible (état actuel 'As-Is' vers cible 'To-Be')",
+                  ],
+                },
+                {
+                  icon: Workflow,
+                  title: "Product Ownership SI & Conduite du Changement",
+                  scope: "Rapprochement des équipes métiers et informatiques, formalisation des besoins, rédaction de spécifications fonctionnelles et animation des rituels.",
+                  deliverables: [
+                    "Backlog produit priorisé et User Stories détaillées",
+                    "Cahiers de recette et plans de validation métiers",
+                    "Sessions de formation et transfert d'autonomie aux équipes internes",
+                  ],
+                },
+              ].map((mission, idx) => {
+                const IconC = mission.icon;
+                return (
+                  <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
+                    <CardHeader className="space-y-3 pb-3">
+                      <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                        <IconC className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="text-xl font-bold text-foreground">
+                        {mission.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground leading-relaxed">
+                        {mission.scope}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 pt-2">
+                      <div className="p-3.5 rounded-xl bg-secondary/60 border border-border/60 space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">
+                          Livrables remis à la DSI :
+                        </span>
+                        <ul className="space-y-1.5 text-xs text-foreground/90 font-medium">
+                          {mission.deliverables.map((d, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                              <span>{d}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 3. MÉTHODOLOGIE DE MISSION EN 4 ÉTAPES */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Comment se déroule une Mission d'Architecture avec RAMSIN ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Une démarche cadrée, collaborative et transparente du premier échange à la restitution finale.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  step: "01",
+                  title: "Cadrage & Diagnostic",
+                  desc: "Échange avec les parties prenantes, analyse de l'existant documentaire et fixation du périmètre d'intervention.",
+                },
+                {
+                  step: "02",
+                  title: "Modélisation & Analyse",
+                  desc: "Travail dans le référentiel, entretiens techniques, identification des flux et formalisation de l'architecture.",
+                },
+                {
+                  step: "03",
+                  title: "Restitution & Validation",
+                  desc: "Présentation des livrables en comités d'architecture, confrontation aux contraintes opérationnelles et validation.",
+                },
+                {
+                  step: "04",
+                  title: "Transfert d'Autonomie",
+                  desc: "Documentation remise, ateliers de prise en main avec vos architectes internes et support de transition.",
+                },
+              ].map((step, i) => (
+                <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2 relative">
+                  <span className="text-2xl font-black text-blue-600 dark:text-blue-400 opacity-60 block">
+                    {step.step}
+                  </span>
+                  <h4 className="text-base font-bold text-foreground">{step.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE SI */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-blue-500/30 text-center space-y-6">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Vous avez une mission d'Architecture SI ou un besoin MEGA HOPEX ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Discutons de vos enjeux applicatifs, de vos échéances et des modalités d'intervention (régie ou forfait) lors d'un premier échange technique de 30 minutes.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                 <Button
-                  onClick={() => handleServiceQuote(selectedService.title)}
+                  asChild
                   size="lg"
-                  className="w-full sm:w-auto font-extrabold shadow-md cursor-pointer gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-6"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
                 >
-                  Demander un devis pour ce service <ArrowRight className="w-4 h-4" />
+                  <Link to="/contact?service=si">
+                    Échanger sur une mission d'architecture SI <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button
+                  onClick={handleBookingRedirect}
+                  variant="outline"
+                  size="lg"
+                  className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
+                >
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  Réserver un créneau de 30 min (Gratuit)
                 </Button>
               </div>
             </div>
-          </DialogContent>
-        )}
-      </Dialog>
+          </div>
 
-      {/* CTA Bas de Page */}
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          SECTION 2 : PÔLE WEB & APPLICATIONS SUR-MESURE
+      ═══════════════════════════════════════════ */}
+      {activePole === "web" && (
+        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
+          
+          {/* BANDEAU EN-TÊTE DU PÔLE WEB */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative z-10 max-w-3xl space-y-4">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full">
+                  <Code2 className="w-3.5 h-3.5" /> Développement Web & Applications Mobiles
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                  Des solutions numériques performantes, 100% propriétaires et taillées pour votre croissance.
+                </h2>
+                <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                  PME, dirigeants et entrepreneurs : nous concevons des plateformes web, applications mobiles (iOS/Android) et outils métiers clés en main. Vous êtes propriétaire de votre code source, libre de tout abonnement captif et accompagné de A à Z.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300 font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 100% Code Source Propriétaire
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Garantie 30 Jours Post-Lancement Incluse
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Stack Moderne (Next.js, React Native, TypeScript)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 1. LES PROJETS QUE NOUS CONCEVONS */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Quels Types de Projets Réalisons-Nous ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Des solutions techniques modernes, fiables et adaptées à vos objectifs commerciaux.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Code2,
+                  badge: "Web & SaaS",
+                  title: "Applications Web & Outils Métiers",
+                  desc: "Portails clients, tableaux de bord de gestion, logiciels SaaS internes et espaces membres interactifs.",
+                  stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
+                  features: [
+                    "Authentification sécurisée (JWT, rôles)",
+                    "Automatisation de flux métiers & exports",
+                    "Paiements Stripe & abonnements récurrents",
+                  ],
+                },
+                {
+                  icon: Smartphone,
+                  badge: "iOS & Android",
+                  title: "Applications Mobiles Cross-Platform",
+                  desc: "Applications natives rapides et intuitives pour smartphones et tablettes, publiées sur l'App Store et Google Play.",
+                  stack: "React Native, Expo, Notifications Push, Caméra",
+                  features: [
+                    "Une seule base de code pour iOS & Android",
+                    "Expérience utilisateur fluide à 60 FPS",
+                    "Fonctionnement hors-ligne et synchronisation cloud",
+                  ],
+                },
+                {
+                  icon: Sparkles,
+                  badge: "Haute Conversion",
+                  title: "Sites Web & E-Commerce Premium",
+                  desc: "Sites vitrines d'autorité et boutiques e-commerce conçus pour convertir vos visiteurs en demandes qualifiées.",
+                  stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
+                  features: [
+                    "Temps de chargement instantanés (Core Web Vitals)",
+                    "SEO technique optimisé pour la 1ère page Google",
+                    "Design responsive sur smartphone, tablette & desktop",
+                  ],
+                },
+              ].map((proj, idx) => {
+                const IconP = proj.icon;
+                return (
+                  <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
+                    <CardHeader className="space-y-3 pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                          <IconP className="w-6 h-6" />
+                        </div>
+                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs">
+                          {proj.badge}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl font-bold text-foreground">
+                        {proj.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground leading-relaxed">
+                        {proj.desc}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4 pt-2">
+                      <div className="space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                          Fonctionnalités clés :
+                        </span>
+                        <ul className="space-y-1.5 text-xs text-foreground font-medium">
+                          {proj.features.map((f, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
+                        <strong>Stack :</strong> {proj.stack}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 2. DÉMARCHE PROJET EN 5 ÉTAPES */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Notre Méthode de Projet en 5 Étapes Transparentes
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Vous savez exactement où en est votre projet, sans mauvaise surprise ni retard imprévu.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {[
+                {
+                  step: "01",
+                  title: "Cadrage & UX",
+                  desc: "Définition des fonctionnalités exactes, parcours utilisateurs et maquettage.",
+                },
+                {
+                  step: "02",
+                  title: "Architecture",
+                  desc: "Modélisation des données, choix des technologies et sécurisation des API.",
+                },
+                {
+                  step: "03",
+                  title: "Développement",
+                  desc: "Sprints agiles courts, démonstrations en direct et validation continue.",
+                },
+                {
+                  step: "04",
+                  title: "Recette & Tests",
+                  desc: "Vérification sur tous les appareils, audits de performance et sécurité.",
+                },
+                {
+                  step: "05",
+                  title: "Livraison & Code",
+                  desc: "Mise en ligne, remise du code source et formation vidéo à l'administration.",
+                },
+              ].map((step, i) => (
+                <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
+                  <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 opacity-60 block">
+                    {step.step}
+                  </span>
+                  <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. NOS GARANTIES CONTRACTUELLES (RÉASSURANCE DIRIGEANT) */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Nos 4 Garanties de Sérénité pour Votre Entreprise
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Les engagements concrets qui protègent votre investissement.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  icon: Lock,
+                  title: "Code 100% Propriétaire",
+                  desc: "L'intégralité du code source vous appartient dès la livraison. Aucun système captif ni abonnement obligatoire.",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "Garantie 30 Jours Incluse",
+                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la mise en ligne est corrigé immédiatement sans frais.",
+                },
+                {
+                  icon: Compass,
+                  title: "Hébergement au Choix",
+                  desc: "Déploiement sur votre infrastructure ou nos serveurs haute disponibilité (Vercel, AWS, Cloudflare, VPS).",
+                },
+                {
+                  icon: Clock,
+                  title: "Délais & Tarifs Forfaitaires",
+                  desc: "Un devis clair, un budget ferme et un planning d'exécution validé ensemble dès le départ.",
+                },
+              ].map((g, i) => {
+                const IconG = g.icon;
+                return (
+                  <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2.5">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                      <IconG className="w-5 h-5" />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">{g.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{g.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE WEB */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-emerald-500/30 text-center space-y-6">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Vous avez une idée d'application ou un site à concrétiser ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Présentez-nous votre besoin. Nous étudions la faisabilité technique et vous transmettons une proposition détaillée sous 24h ouvrées.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                >
+                  <Link to="/contact?service=web">
+                    Décrire mon projet web ou mobile <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button
+                  onClick={handleBookingRedirect}
+                  variant="outline"
+                  size="lg"
+                  className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
+                >
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  Réserver un cadrage de 30 min (Gratuit)
+                </Button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          CTA GLOBAL BAS DE PAGE
+      ═══════════════════════════════════════════ */}
       <CTASection
-        title="Vous hésitez sur la prestation adaptée à votre projet ?"
-        subtitle="Discutons-en simplement lors d'un premier échange offert de 30 minutes sans aucun engagement."
+        title="Vous hésitez sur le format ou la prestation adaptée ?"
+        subtitle="Échangeons simplement lors d'un premier rendez-vous de 30 minutes sans aucun engagement."
       />
     </>
   );
