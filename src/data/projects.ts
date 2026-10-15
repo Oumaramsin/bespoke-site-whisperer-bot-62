@@ -5,13 +5,15 @@ export interface Project {
   period: string;
   category: "fullstack" | "ecommerce-web" | "mega-hopex" | "architecture-si";
   categoryLabel: string;
+  pole: "si" | "web";
   summary: string;
   context: string;
-  problem?: string;
-  solution?: string;
-  impact?: string;
+  problem: string;
+  ramsinRole: string;
+  solution: string;
+  impact: string;
   targetAudience?: string;
-  features: string[];
+  deliverables: string[];
   tasks: string[];
   tags: string[];
   stack: string[];
@@ -21,117 +23,65 @@ export interface Project {
 
 export const PROJECTS_DATA: Project[] = [
   {
-    id: "dabari",
-    title: "Dabari - Plateforme Traiteur Africain & Transport GP",
-    clientCompany: "Dabari (Plateforme Web)",
-    period: "2024 - 2025",
-    category: "fullstack",
-    categoryLabel: "Plateforme Full-Stack",
-    summary: "Plateforme web centralisée connectant la diaspora aux traiteurs africains de proximité et au transport collaboratif de colis (GP Colis).",
-    context: "Digitaliser et sécuriser l'accès à la cuisine africaine artisanale et l'envoi de colis au pays par voyageurs GP Colis.",
-    problem: "Réservations et envois de colis gérés par messages informels, avec risques d'erreurs et perte de temps considérable.",
-    solution: "Plateforme tout-en-un avec espaces sécurisés traiteurs et voyageurs, devis instantanés et tableaux de bord de suivi.",
-    impact: "Expérience 100% sécurisée, devis instantanés et des heures de gestion manuelle économisées chaque semaine.",
-    targetAudience: "Diaspora Africaine, Chefs & Traiteurs Indépendants, Voyageurs GP Colis",
-    features: [
-      "Recherche de traiteurs par spécialité culinaire avec menus et demande de devis en ligne",
-      "Module GP Colis : publication de trajets, réservation de kilos et suivi des statuts en temps réel",
-      "Connexion sécurisée par email/SMS avec espace client personnalisé",
-      "Tableaux de bord complets pour les prestataires avec notifications automatiques"
-    ],
-    tasks: [
-      "Application web moderne avec interface fluide et rapide",
-      "Serveur sécurisé avec gestion des comptes et des données",
-      "Base de données relationnelle robuste et sauvegardée",
-      "Infrastructure conteneurisée pour garantir la fiabilité"
-    ],
-    tags: ["Next.js 16", "React", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
-    stack: ["Next.js 16", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
-    featured: true
-  },
-  {
-    id: "maison-hamdiwashukri",
-    title: "Maison HamdiWaShukri - E-Commerce Luxe & Sur-Mesure",
-    clientCompany: "Maison HamdiWaShukri",
-    period: "2024 - 2025",
-    category: "fullstack",
-    categoryLabel: "E-Commerce Luxe",
-    summary: "Plateforme e-commerce haut de gamme d'artisanat traditionnel avec configurateur sur-mesure et paiements sécurisés.",
-    context: "Allier l'authenticité de l'artisanat à une expérience d'achat de luxe avec paiement Stripe/PayPal et atelier sur-mesure.",
-    problem: "Prise de mensurations par messages informels entraînant des erreurs de confection et des retards d'atelier.",
-    solution: "Configurateur sur-mesure en ligne calculant automatiquement les mensurations avec tunnel de vente sécurisé.",
-    impact: "Zéro erreur de saisie, gain de temps massif et hausse directe des ventes en ligne à l'international.",
-    targetAudience: "Clients B2C, Artisans & Équipe Admin",
-    features: [
-      "Configurateur sur-mesure : saisie des mensurations avec calcul automatique pour l'atelier",
-      "Double paiement sécurisé par Carte Bancaire (Stripe) et PayPal",
-      "Espace client privilège avec suivi en temps réel des commandes (En Confection → Expédié → Livré)",
-      "Panel d'administration pour gérer le catalogue, les variantes, stocks et images"
-    ],
-    tasks: [
-      "Boutique en ligne moderne avec navigation fluide et rapide",
-      "Intégration des paiements sécurisés Stripe et PayPal",
-      "Espace d'administration complet pour la gestion quotidienne",
-      "Déploiement sécurisé et hébergement professionnel"
-    ],
-    tags: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL", "Docker"],
-    stack: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL", "Docker"],
-    featured: true
-  },
-  {
-    id: "leclat-du-chef",
-    title: "L'Éclat du Chef - Vitrine Digitale & Lead Generation Traiteur",
-    clientCompany: "L'Éclat du Chef (Île-de-France)",
-    period: "2024",
-    category: "ecommerce-web",
-    categoryLabel: "Site Web & Lead Generation",
-    summary: "Conception et réalisation du site web vitrine haut de gamme pour un traiteur événementiel (mariages, séminaires, buffets).",
-    context: "Créer une vitrine digitale élégante et optimiser la captation de devis qualifiés en ligne avec consultation de menus PDF.",
-    problem: "Site ancien peu attractif causant la perte de prospects et une gestion des devis par téléphone très chronophage.",
-    solution: "Vitrine moderne au design Noir & Or avec formulaire de devis automatique connecté à l'email du gérant.",
-    impact: "+35% de demandes de devis qualifiées dès le premier mois et 0% de tracas technique pour le gérant.",
-    targetAudience: "Particuliers & Entreprises",
-    features: [
-      "Design épuré et responsive aux nuances Or / Noir / Blanc",
-      "Consultation et téléchargement des menus PDF directement depuis le site",
-      "Galerie photos avec visionneuse interactive",
-      "Formulaire de demande de devis envoyé directement dans la boîte email du gérant"
-    ],
-    tasks: [
-      "Site web vitrine optimisé pour mobile, tablette et ordinateur",
-      "Formulaire de contact intelligent connecté à l'email professionnel",
-      "Hébergement fiable relié au nom de domaine officiel"
-    ],
-    tags: ["HTML5", "CSS3", "JavaScript", "Formulaire API", "GitHub Pages"],
-    stack: ["HTML5", "CSS3", "JavaScript", "Formspree", "GitHub Pages"],
-    featured: true,
-    logo: "/logos/eclat-du-chef.png"
-  },
-  {
     id: "covea-hopex-v5",
-    title: "Mission d'Architecture & Cartographie SI chez COVEA",
-    clientCompany: "COVEA",
+    title: "Gouvernance & Cartographie SI du Référentiel MEGA HOPEX",
+    clientCompany: "COVEA (Assurances MAAF, MMA, GMF)",
     period: "Juin 2023 - Présent",
     category: "mega-hopex",
-    categoryLabel: "Cartographie SI & MEGA HOPEX",
-    summary: "Gestion du référentiel cartographique SI, contrôle qualité de la documentation d'architecture et accompagnement des architectes.",
-    context: "Accompagner la DSI Covéa dans la gouvernance et l'enrichissement de la cartographie SI sur la plateforme MEGA HOPEX V5.",
-    problem: "Référentiel applicatif complexe avec risque de doublons de logiciels et manque de visibilité transverse sur le SI.",
-    solution: "Enrichissement du référentiel, documentation des flux applicatifs et élimination des incohérences.",
-    impact: "Vision claire des applications pour la DSI, réduction des coûts informatiques et zéro faille de documentation.",
-    features: [
-      "Cartographie complète des applications, flux et socles technologiques",
-      "Reporting régulier sur la qualité et la complétude du référentiel SI",
-      "Résolution des incohérences et doublons dans la cartographie"
+    categoryLabel: "Architecture SI & MEGA HOPEX",
+    pole: "si",
+    summary: "Pilotage et fiabilisation de la cartographie du Système d'Information transverse sur la plateforme MEGA HOPEX V5 au sein d'un grand groupe d'assurance.",
+    context: "La DSI du groupe Covéa gère un patrimoine de plusieurs centaines d'applications métiers critiques pour les marques MAAF, MMA et GMF.",
+    problem: "Référentiel cartographique complexe avec risques de doublons logiciels, flux inter-applicatifs non documentés et manque de visibilité transverse pour les arbitrages de transformation.",
+    ramsinRole: "Consultant Architecte SI & Référent MEGA HOPEX V5, intégré aux équipes d'urbanisation de la DSI.",
+    solution: "Refonte et enrichissement continu de la cartographie (applications, flux, socles technologiques), contrôle qualité hebdomadaire et automatisation de la gouvernance des métamodèles.",
+    impact: "Réduction drastique des doublons applicatifs, documentation transverse 100% à jour pour les comités d'architecture et visibilité totale pour la direction.",
+    deliverables: [
+      "Cartographie applicative interactive et diagrammes de flux d'échanges",
+      "Rapports hebdomadaires de complétude et qualité du référentiel SI",
+      "Documentation d'architecture standardisée pour les architectes solutions",
+      "Assainissement des métamodèles et élimination des flux obsolètes"
     ],
     tasks: [
-      "Amélioration de la documentation transverse sur les différents périmètres du SI",
-      "Collaboration étroite avec les architectes fonctionnels et solutions"
+      "Collaboration étroite avec les architectes de domaine et responsables d'applications",
+      "Contrôle qualité rigoureux et résolution des anomalies cartographiques",
+      "Accompagnement méthodologique des équipes sur les bonnes pratiques HOPEX V5"
     ],
-    tags: ["MEGA HOPEX V5", "Cartographie SI", "Qualité Référentiel", "Gouvernance SI"],
-    stack: ["MEGA HOPEX V5", "Cartographie SI", "UML", "Gouvernance SI"],
-    featured: false,
+    tags: ["MEGA HOPEX V5", "Cartographie SI", "Urbanisation", "Gouvernance Données", "UML"],
+    stack: ["MEGA HOPEX V5", "Métamodélisation", "Cartographie SI", "Gouvernance d'Entreprise"],
+    featured: true,
     logo: "/logos/covea.png"
+  },
+  {
+    id: "dabari",
+    title: "Dabari - Plateforme Web & Mobile Traiteur Africain & Fret GP",
+    clientCompany: "Dabari (Plateforme Commerciale)",
+    period: "2024 - 2026",
+    category: "fullstack",
+    categoryLabel: "Plateforme Web & Mobile",
+    pole: "web",
+    summary: "Conception intégrale d'une marketplace web & mobile connectant la diaspora africaine aux traiteurs de proximité et au transport collaboratif de colis (GP Express).",
+    context: "Digitaliser et sécuriser les commandes de restauration africaine authentique et les envois de bagages internationaux vers l'Afrique de l'Ouest.",
+    problem: "Prise de commande informelle par réseaux sociaux entraînant des erreurs récurrentes, des retards d'expédition et une absence totale de traçabilité.",
+    ramsinRole: "Lead Développeur Full-Stack & Architecte Solution (Cadrage, UI/UX, Backend Express, Frontend Next.js 15 et Mobile React Native Expo).",
+    solution: "Plateforme tout-en-un avec devis automatisés, validation d'adresses BAN/Nominatim, timeline de suivi GP en 5 étapes, système d'alertes emails et gestion des retards de vol.",
+    impact: "100% des transactions sécurisées, génération instantanée de devis et plusieurs heures de gestion manuelle économisées chaque semaine pour les traiteurs.",
+    targetAudience: "Diaspora Africaine, Traiteurs Indépendants, Voyageurs & Expéditeurs GP",
+    deliverables: [
+      "Application Web Next.js 15 (App Router, Tailwind CSS, TypeScript)",
+      "Application Mobile native iOS & Android (React Native, Expo SDK 54)",
+      "Serveur REST Express TypeScript avec ORM Prisma et PostgreSQL",
+      "Système de notifications transactionnelles par emails (Resend)",
+      "Code source 100% remis sans dépendance"
+    ],
+    tasks: [
+      "Cadrage fonctionnel et modélisation de la base de données relationnelle (11 tables)",
+      "Développement de l'API REST avec sécurité JWT et contrôle RBAC",
+      "Déploiement conteneurisé Docker et infrastructure cloud haute disponibilité"
+    ],
+    tags: ["Next.js 15", "React Native", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
+    stack: ["Next.js 15", "React Native / Expo", "Node.js Express", "PostgreSQL Prisma", "Docker"],
+    featured: true
   },
   {
     id: "lbp-architecture-solution",
@@ -139,24 +89,89 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "La Banque Postale (via Marte)",
     period: "Septembre 2022 - Mai 2023",
     category: "architecture-si",
-    categoryLabel: "Architecture Solution & Cadrage",
-    summary: "Cadrage d'architecture pour les projets de transformation digitale et cartographie des processus métiers sur le Crédit Immobilier.",
-    context: "Cadrer les évolutions du SI Banque Détail / Crédit et faire valider les Dossiers d'Architecture auprès du comité de validation.",
-    problem: "Complexité d'intégration des projets de transformation au sein d'un SI bancaire hautement sécurisé.",
-    solution: "Rédaction des dossiers d'architecture et passage réussi devant le comité de validation pour garantir la robustesse.",
-    impact: "Projets bancaires validés dans les temps avec conformité totale aux normes de sécurité et de robustesse.",
-    features: [
-      "Rédaction des Dossiers d'Architecture Applicative et Technique",
-      "Passage et soutenance devant le comité de validation",
-      "Cartographie des processus métiers et flux du Crédit Immobilier"
+    categoryLabel: "Architecture Solution & DAT",
+    pole: "si",
+    summary: "Cadrage d'architecture applicative et technique pour les projets de transformation digitale du Crédit Immobilier au sein d'un SI bancaire régulé.",
+    context: "Moderniser le parcours d'octroi de crédit immobilier pour les particuliers tout en respectant les normes strictes de conformité bancaire et de sécurité.",
+    problem: "Forte complexité d'interfaçage avec le SI bancaire historique (legacy) et risque de blocage lors des comités de validation d'architecture (Design Authority).",
+    ramsinRole: "Consultant Architecte Solution, responsable de la rédaction et de la soutenance des Dossiers d'Architecture Technique (DAT).",
+    solution: "Analyses d'impacts rigoureuses, modélisation des processus d'échange et formalisation des DAT avec validation réussie auprès des instances de gouvernance bancaire.",
+    impact: "Projets validés dans les temps impartis par le comité de sécurité bancaire, sans surcoût d'intégration ni dette technique.",
+    deliverables: [
+      "Dossiers d'Architecture Applicative et Technique (DAT) complets et validés",
+      "Matrices d'impacts adhérence projets / stratégie SI globale",
+      "Cartographie des processus métiers du crédit immobilier",
+      "Plans d'intégration des API bancaires sécurisées"
     ],
     tasks: [
-      "Cadrage de projets de transformation digitale avec analyses d'impacts",
-      "Validation des architectures auprès des instances décisionnelles"
+      "Soutenance technique devant les instances décisionnelles et Design Authority",
+      "Coordination technique avec les Squads de développement Agile",
+      "Alignement avec les référentiels de sécurité et de conformité bancaire"
     ],
-    tags: ["Architecture Solution", "Transformation Digitale", "Dossier d'Architecture", "Agile"],
-    stack: ["Architecture Solution", "DAT", "Design Authority", "MEGA HOPEX"],
-    featured: false,
+    tags: ["Architecture Solution", "Banque & Finance", "DAT", "Design Authority", "Agile"],
+    stack: ["Dossier d'Architecture DAT", "Architecture Solution", "MEGA HOPEX", "Design Authority"],
+    featured: true,
     logo: "/logos/banque-postale.png"
+  },
+  {
+    id: "maison-hamdiwashukri",
+    title: "Maison HamdiWaShukri - E-Commerce Luxe & Sur-Mesure",
+    clientCompany: "Maison HamdiWaShukri",
+    period: "2024 - 2025",
+    category: "fullstack",
+    categoryLabel: "E-Commerce Sur-Mesure",
+    pole: "web",
+    summary: "Création d'une boutique e-commerce haut de gamme d'artisanat traditionnel avec configurateur de mensurations sur-mesure et double passerelle de paiement.",
+    context: "Digitaliser les ventes d'une maison d'artisanat d'art à destination d'une clientèle internationale exigeante.",
+    problem: "Prise de mensurations manuelle par messagerie provoquant des erreurs de confection à l'atelier et freinant l'expansion des ventes.",
+    ramsinRole: "Développeur Full-Stack & Designer UX/UI (Conception du configurateur, intégration Stripe/PayPal et espace client sécurisé).",
+    solution: "Développement d'un configurateur interactif calculant automatiquement les proportions d'atelier, adossé à une boutique Next.js 15 haute performance.",
+    impact: "Zéro erreur de coupe enregistrée à l'atelier, réduction de 80% du temps de traitement des commandes et accélération des ventes à l'international.",
+    targetAudience: "Clients B2C Luxe, Artisans Couturiers, Gestionnaires",
+    deliverables: [
+      "Configurateur interactif de mensurations avec calcul d'atelier automatique",
+      "Tunnel d'achat sécurisé par Carte Bancaire (Stripe) et PayPal",
+      "Espace client avec timeline de suivi de confection en direct",
+      "Panneau d'administration complet pour les stocks, commandes et factures"
+    ],
+    tasks: [
+      "Design épuré et responsive aux standards du luxe",
+      "Optimisation des Core Web Vitals pour un chargement sous 1 seconde",
+      "Remise du code source 100% propriétaire au gérant"
+    ],
+    tags: ["Next.js 15", "React 19", "TypeScript", "Stripe Checkout", "PayPal API", "PostgreSQL"],
+    stack: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL"],
+    featured: false
+  },
+  {
+    id: "leclat-du-chef",
+    title: "L'Éclat du Chef - Vitrine Traiteur & Lead Generation",
+    clientCompany: "L'Éclat du Chef (Île-de-France)",
+    period: "2024",
+    category: "ecommerce-web",
+    categoryLabel: "Site Web Haute Conversion",
+    pole: "web",
+    summary: "Conception et mise en ligne du site vitrine d'un traiteur événementiel haut de gamme (mariages, séminaires, buffets d'entreprise).",
+    context: "Professionnaliser l'image de marque et automatiser la réception des demandes de devis d'événements privés et corporatifs.",
+    problem: "Site vieillissant et non adapté aux smartphones, entraînant la perte de prospects qualifiés et une surcharge d'appels téléphoniques.",
+    ramsinRole: "Concepteur & Développeur Web (Refonte graphique, intégration SEO locale et formulaire de devis dynamique).",
+    solution: "Site vitrine moderne Noir & Or avec consultation des menus, galerie photos haute résolution et formulaire de devis connecté directement à l'email du chef.",
+    impact: "+35% de demandes de devis qualifiées reçues dès le premier mois d'exploitation et sérénité totale pour le dirigeant.",
+    targetAudience: "Entreprises, Organisateurs de Mariages, Particuliers",
+    deliverables: [
+      "Site vitrine ultra-rapide optimisé mobile, tablette et desktop",
+      "Formulaire de demande de devis événementiel qualifiant (nombre d'invités, date, menu)",
+      "Visionneuse interactive des réalisations et menus téléchargeables",
+      "Référencement SEO local (Google Maps et recherche traiteur Île-de-France)"
+    ],
+    tasks: [
+      "Optimisation des temps de chargement pour un affichage instantané",
+      "Configuration du nom de domaine professionnel et des boîtes e-mails",
+      "Mise en place des balises de suivi et conformité RGPD"
+    ],
+    tags: ["Développement Web", "SEO Local", "Lead Generation", "Haute Performance", "Responsive"],
+    stack: ["HTML5", "CSS3 Modern", "JavaScript ES6+", "Formulaire API", "Hébergement Cloud"],
+    featured: false,
+    logo: "/logos/eclat-du-chef.png"
   }
 ];

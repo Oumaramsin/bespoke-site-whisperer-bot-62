@@ -15,42 +15,29 @@ import {
   Building2,
   Award,
   Briefcase,
-  Code,
-  Sparkles,
   Layers,
   AlertTriangle,
   TrendingUp,
   Zap,
+  Sparkles,
+  Calendar,
+  Smartphone,
+  Check,
+  UserCheck,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-/* Couleur de bordure latérale selon la catégorie */
-const categoryAccent: Record<string, string> = {
-  fullstack: "border-l-blue-500",
-  "ecommerce-web": "border-l-amber-500",
-  "mega-hopex": "border-l-violet-500",
-  "architecture-si": "border-l-emerald-500",
-};
-
-const Projects = () => {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+export const Projects = () => {
+  const [activePole, setActivePole] = useState<"all" | "si" | "web">("all");
   const { ref: ctaRef, isVisible: ctaVisible } = useScrollAnimation();
   const navigate = useNavigate();
 
   const filteredProjects =
-    activeCategory === "all"
+    activePole === "all"
       ? PROJECTS_DATA
-      : PROJECTS_DATA.filter((p) => p.category === activeCategory);
-
-  const categories = [
-    { id: "all", label: "Toutes les réalisations", count: PROJECTS_DATA.length },
-    { id: "fullstack", label: "Applications Full-Stack", count: PROJECTS_DATA.filter(p => p.category === "fullstack").length },
-    { id: "ecommerce-web", label: "E-Commerce & Sites Web", count: PROJECTS_DATA.filter(p => p.category === "ecommerce-web").length },
-    { id: "mega-hopex", label: "MEGA HOPEX & Cartographie SI", count: PROJECTS_DATA.filter(p => p.category === "mega-hopex").length },
-    { id: "architecture-si", label: "Architecture SI & Solution", count: PROJECTS_DATA.filter(p => p.category === "architecture-si").length },
-  ];
+      : PROJECTS_DATA.filter((p) => p.pole === activePole);
 
   const handleBookingRedirect = () => {
     navigate("/contact", { state: { scrollToBooking: true } });
@@ -59,207 +46,213 @@ const Projects = () => {
   return (
     <>
       <SEO
-        title="Projets & Réalisations | RAMSIN - Architecte SI & Développeur Full-Stack"
-        description="Découvrez les projets réels développés par RAMSIN Conseil : Dabari, Maison HamdiWaShukri, L'Éclat du Chef, ainsi que des missions d'Architecture SI chez COVEA et La Banque Postale."
+        title="Études de Cas & Réalisations | RAMSIN Conseil - Architecture SI & Développement Web"
+        description="Découvrez nos études de cas réelles et livrables : missions d'Architecture SI chez Covéa et La Banque Postale, ainsi que nos applications web & e-commerce Dabari et Maison HamdiWaShukri."
       />
 
       {/* ═══════════════════════════════════════════
           HERO HEADER AVEC HALO LUMINEUX
       ═══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden border-b border-border/60">
-        {/* Halo lumineux ambiant */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/8 rounded-full blur-[80px]" />
-        </div>
+      <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
+        <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center max-w-4xl space-y-6">
+        <div className="container mx-auto px-4 text-center max-w-4xl space-y-5">
           <Badge
             variant="outline"
             className="px-4 py-1.5 text-xs font-semibold border-primary/30 text-primary"
           >
             <Award className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" />
-            Portfolio & Études de Cas Réelles
+            Preuves Tangibles & Résultats Mesurables
           </Badge>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1]">
-            Projets & Réalisations
-            <span className="block gradient-text mt-1">d'Excellence</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+            Études de Cas &
+            <span className="block gradient-text mt-1">Réalisations Réelles</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            De la conception d'applications Full-Stack modernes à la gouvernance
-            du SI d'entreprise — découvrez comment RAMSIN Conseil transforme
-            les défis en succès mesurables.
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            Pas de théorie abstraite : découvrez le contexte de départ, notre rôle précis, les livrables remis et l'impact direct obtenu pour nos clients.
           </p>
 
-
+          {/* SÉLECTEUR DE CATÉGORIE / PÔLE */}
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-2">
+            <Button
+              variant={activePole === "all" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActivePole("all")}
+              className="rounded-full px-5 font-bold text-xs sm:text-sm cursor-pointer"
+            >
+              Toutes les études de cas ({PROJECTS_DATA.length})
+            </Button>
+            <Button
+              variant={activePole === "si" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActivePole("si")}
+              className="rounded-full px-5 font-bold text-xs sm:text-sm cursor-pointer gap-2"
+            >
+              <Building2 className="w-3.5 h-3.5" />
+              Architecture SI & MEGA HOPEX ({PROJECTS_DATA.filter((p) => p.pole === "si").length})
+            </Button>
+            <Button
+              variant={activePole === "web" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActivePole("web")}
+              className="rounded-full px-5 font-bold text-xs sm:text-sm cursor-pointer gap-2"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              Web & Applications Sur-Mesure ({PROJECTS_DATA.filter((p) => p.pole === "web").length})
+            </Button>
+          </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        {/* ═══════════════════════════════════════════
-            FILTRES PAR CATÉGORIES AVEC COMPTEURS
-        ═══════════════════════════════════════════ */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((cat) => (
-            <Button
-              key={cat.id}
-              variant={activeCategory === cat.id ? "default" : "outline"}
-              size="sm"
-              onClick={() => setActiveCategory(cat.id)}
-              className="rounded-full px-5 transition-all text-xs sm:text-sm font-semibold cursor-pointer gap-1.5"
-            >
-              {cat.label}
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ml-0.5 font-bold ${activeCategory === cat.id ? "bg-white/20 text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                {cat.count}
-              </span>
-            </Button>
-          ))}
-        </div>
-
-        {/* ═══════════════════════════════════════════
-            GRILLE DE PROJETS EN 2 COLONNES
-        ═══════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+      {/* ═══════════════════════════════════════════
+          GRILLE DES ÉTUDES DE CAS STRUCTURÉES
+      ═══════════════════════════════════════════ */}
+      <div className="container mx-auto px-4 py-12 md:py-16 max-w-5xl">
+        <div className="space-y-12">
           {filteredProjects.map((project: Project, index) => {
-            const accentClass = categoryAccent[project.category] || "border-l-primary";
+            const isSI = project.pole === "si";
+            const borderAccent = isSI ? "border-l-blue-500" : "border-l-emerald-500";
+            const badgeBg = isSI ? "bg-blue-500/10 text-blue-700 dark:text-blue-300" : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
 
             return (
               <Card
                 key={project.id}
-                className={`flex flex-col border border-border/80 border-l-4 ${accentClass} shadow-sm hover:shadow-xl transition-all duration-300 hover-lift glass-card rounded-2xl overflow-hidden`}
+                className={`border border-border/80 border-l-4 ${borderAccent} shadow-md hover:shadow-xl transition-all duration-300 glass-card rounded-3xl overflow-hidden`}
               >
-                {/* En-tête de carte compact */}
-                <CardHeader className="p-5 pb-3 space-y-2">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
+                {/* 1. EN-TÊTE DE L'ÉTUDE DE CAS */}
+                <CardHeader className="p-6 sm:p-8 pb-4 space-y-3 bg-secondary/30 border-b border-border/60">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
                       {project.logo && (
                         <img
                           src={project.logo}
                           alt={`Logo ${project.clientCompany}`}
-                          className="h-8 w-auto object-contain"
+                          className="h-7 w-auto object-contain"
                         />
                       )}
-                      <Badge
-                        variant="secondary"
-                        className="text-[11px] font-bold px-2.5 py-0.5 bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
-                      >
-                        <Building2 className="w-3 h-3" />
+                      <Badge variant="secondary" className={`text-xs font-bold px-3 py-1 ${badgeBg} border-0 flex items-center gap-1.5`}>
+                        <Building2 className="w-3.5 h-3.5" />
                         {project.clientCompany}
                       </Badge>
+                      <span className="text-xs text-muted-foreground font-medium hidden sm:inline">
+                        • {project.period}
+                      </span>
                     </div>
-                    <Badge
-                      variant="outline"
-                      className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground"
-                    >
+
+                    <Badge variant="outline" className="text-xs font-bold text-muted-foreground">
                       {project.categoryLabel}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-extrabold leading-snug">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-                    {project.summary}
-                  </CardDescription>
+
+                  <div>
+                    <CardTitle className="text-xl sm:text-2xl font-extrabold text-foreground leading-snug">
+                      {project.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm sm:text-base text-muted-foreground mt-1.5 leading-relaxed">
+                      {project.summary}
+                    </CardDescription>
+                  </div>
                 </CardHeader>
 
-                <CardContent className="flex-1 p-5 pt-0 space-y-3">
-                  {/* ─── PIPELINE D'IMPACT COMPACT (bande horizontale) ─── */}
-                  {(project.problem || project.solution || project.impact) && (
-                    <div className="grid grid-cols-3 gap-2 text-center">
-                      {project.problem && (
-                        <div className="p-2.5 rounded-lg bg-rose-100 dark:bg-rose-950/25 border border-rose-300 dark:border-rose-500/20">
-                          <AlertTriangle className="w-3.5 h-3.5 text-rose-500 mx-auto mb-1" />
-                          <span className="text-[10px] font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 block">Défi</span>
-                          <p className="text-xs text-foreground/85 leading-snug mt-0.5">{project.problem}</p>
-                        </div>
-                      )}
-                      {project.solution && (
-                        <div className="p-2.5 rounded-lg bg-blue-100 dark:bg-blue-950/25 border border-blue-300 dark:border-blue-500/20">
-                          <Zap className="w-3.5 h-3.5 text-blue-500 mx-auto mb-1" />
-                          <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 block">Solution</span>
-                          <p className="text-xs text-foreground/85 leading-snug mt-0.5">{project.solution}</p>
-                        </div>
-                      )}
-                      {project.impact && (
-                        <div className="p-2.5 rounded-lg bg-emerald-100 dark:bg-emerald-500/15 border border-emerald-300 dark:border-emerald-500/30">
-                          <TrendingUp className="w-3.5 h-3.5 text-emerald-500 mx-auto mb-1" />
-                          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-300 block">Impact</span>
-                          <p className="text-xs text-emerald-950 dark:text-emerald-100 font-bold leading-snug mt-0.5">{project.impact}</p>
-                        </div>
-                      )}
+                <CardContent className="p-6 sm:p-8 space-y-6">
+                  {/* 2. DÉMARCHE D'IMPACT (Contexte ➔ Problème ➔ Rôle RAMSIN) */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Contexte */}
+                    <div className="p-4 rounded-2xl bg-secondary/60 border border-border/60 space-y-1.5 text-xs">
+                      <span className="font-extrabold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 text-[10px]">
+                        <Building2 className="w-3 h-3 text-primary" /> 1. Contexte Client
+                      </span>
+                      <p className="text-foreground/90 leading-relaxed font-medium">
+                        {project.context}
+                      </p>
                     </div>
-                  )}
 
-                  {/* ─── CONTEXTE (si pas de pipeline) ─── */}
-                  {project.context && !project.problem && (
-                    <div className="bg-muted/40 p-3 rounded-lg border border-border/40 space-y-1">
-                      <h4 className="text-[10px] font-bold uppercase tracking-wider text-primary flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-amber-500" /> Contexte
-                      </h4>
-                      <p className="text-xs text-foreground leading-relaxed">{project.context}</p>
+                    {/* Problème / Défi initial */}
+                    <div className="p-4 rounded-2xl bg-rose-500/10 dark:bg-rose-950/20 border border-rose-500/30 space-y-1.5 text-xs">
+                      <span className="font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5 text-[10px]">
+                        <AlertTriangle className="w-3 h-3" /> 2. Problème / Défi
+                      </span>
+                      <p className="text-foreground/90 leading-relaxed font-medium">
+                        {project.problem}
+                      </p>
                     </div>
-                  )}
 
-                  {/* ─── FONCTIONNALITÉS PHARES ─── */}
-                  {project.features && project.features.length > 0 && (
-                    <div className="space-y-1.5">
-                      <h4 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-primary" /> Ce qui a été livré :
-                      </h4>
-                      <ul className="space-y-1">
-                        {project.features.map((feat, i) => (
-                          <li key={i} className="text-xs sm:text-sm text-muted-foreground flex items-start gap-2">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                            <span className="leading-snug">{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    {/* Intervention RAMSIN */}
+                    <div className="p-4 rounded-2xl bg-blue-500/10 dark:bg-blue-950/20 border border-blue-500/30 space-y-1.5 text-xs">
+                      <span className="font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1.5 text-[10px]">
+                        <UserCheck className="w-3 h-3" /> 3. Rôle de RAMSIN
+                      </span>
+                      <p className="text-foreground/90 leading-relaxed font-medium">
+                        {project.ramsinRole}
+                      </p>
                     </div>
-                  )}
+                  </div>
 
-                  {/* ─── TRAVAUX & CHOIX TECHNIQUES ─── */}
-                  {project.tasks && project.tasks.length > 0 && (
-                    <div className="space-y-1.5 pt-2 border-t border-border/60">
-                      <h4 className="text-sm font-bold text-foreground flex items-center gap-1.5">
-                        <Code className="w-3.5 h-3.5 text-primary" /> Comment nous l'avons réalisé :
-                      </h4>
-                      <ul className="space-y-1">
-                        {project.tasks.map((task, i) => (
-                          <li key={i} className="text-xs sm:text-sm text-muted-foreground flex items-start gap-1.5">
-                            <span className="w-1 h-1 rounded-full bg-primary shrink-0 mt-1.5" />
-                            <span className="leading-snug">{task}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  {/* 3. SOLUTION DÉPLOYÉE & RÉSULTATS MESURABLES */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Solution */}
+                    <div className="p-5 rounded-2xl bg-secondary/40 border border-border/60 space-y-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                        <Zap className="w-4 h-4 text-amber-500" /> Solution Déployée
+                      </span>
+                      <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
+                        {project.solution}
+                      </p>
                     </div>
-                  )}
 
-                  {/* ─── BADGES DE STACK TECHNIQUE ─── */}
-                  <div className="flex flex-wrap gap-1 pt-2 border-t border-border/60">
-                    {project.tags.map((tag, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => {
-                          const targetCat =
-                            tag.toLowerCase().includes("hopex") ||
-                            tag.toLowerCase().includes("mega")
-                              ? "mega-hopex"
-                              : tag.toLowerCase().includes("next") ||
-                                  tag.toLowerCase().includes("node") ||
-                                  tag.toLowerCase().includes("react")
-                                ? "fullstack"
-                                : "all";
-                          setActiveCategory(targetCat);
-                        }}
-                        className="text-[10px] font-bold bg-secondary hover:bg-primary/10 hover:text-primary text-secondary-foreground px-2 py-0.5 rounded-md border border-border/30 transition-colors cursor-pointer"
-                        title={`Filtrer par ${tag}`}
-                      >
-                        {tag}
-                      </button>
-                    ))}
+                    {/* Impact & Résultats */}
+                    <div className="p-5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/25 border-2 border-emerald-500/30 space-y-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                        <TrendingUp className="w-4 h-4 text-emerald-500" /> Résultat Mesurable & Impact
+                      </span>
+                      <p className="text-xs sm:text-sm text-emerald-950 dark:text-emerald-100 font-bold leading-relaxed">
+                        {project.impact}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 4. CE QUI A ÉTÉ CONCRÈTEMENT LIVRÉ AU CLIENT */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-card border border-border/80 space-y-2.5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-primary" /> Livrables Concrets Remis au Client :
+                    </span>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-muted-foreground">
+                      {project.deliverables.map((deliv, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <span className="text-foreground/90 font-medium">{deliv}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* 5. STACK TECHNIQUE & CTA PAR CAS */}
+                  <div className="pt-2 flex flex-wrap items-center justify-between gap-4 border-t border-border/60">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="text-xs font-semibold text-muted-foreground mr-1">Stack :</span>
+                      {project.stack.map((stk, i) => (
+                        <span
+                          key={i}
+                          className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg text-secondary-foreground border border-border/40"
+                        >
+                          {stk}
+                        </span>
+                      ))}
+                    </div>
+
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="gap-1.5 text-xs font-bold rounded-xl hover-lift border-primary/30 hover:border-primary"
+                    >
+                      <Link to={isSI ? "/contact?service=si" : "/contact?service=web"}>
+                        Échanger sur un projet similaire <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -268,30 +261,32 @@ const Projects = () => {
         </div>
 
         {/* ═══════════════════════════════════════════
-            SECTION APPEL À L'ACTION
+            BANDEAU D'APPEL À L'ACTION FINAL
         ═══════════════════════════════════════════ */}
         <div
           ref={ctaRef}
-          className={`relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-emerald-500/10 border-2 border-primary/20 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto shadow-md glass-card scroll-scale-up ${ctaVisible ? "is-visible" : ""}`}
+          className={`mt-16 bg-gradient-to-r from-primary/10 via-primary/5 to-emerald-500/10 border-2 border-primary/20 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto shadow-xl glass-card scroll-scale-up ${
+            ctaVisible ? "is-visible" : ""
+          }`}
         >
           <Briefcase className="w-12 h-12 text-primary mx-auto mb-4" />
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-4 tracking-tight">
-            Un projet web, e-commerce ou d'architecture SI à concrétiser ?
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-3 tracking-tight">
+            Vous avez un enjeu d'Architecture SI ou un projet d'application ?
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-            Discutez directement avec RAMSIN Conseil lors d'un premier échange
-            offert de 30 minutes sans aucun engagement.
+          <p className="text-muted-foreground text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
+            Échangez directement avec votre consultant lors d'un premier rendez-vous de cadrage offert de 30 minutes sans aucun engagement.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button
               size="lg"
               onClick={handleBookingRedirect}
-              className="gap-2 font-extrabold cursor-pointer shadow-md bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="gap-2 font-bold cursor-pointer shadow-md bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-7"
             >
-              Réserver mon échange (30 min) <ArrowRight className="w-4 h-4" />
+              <Calendar className="w-4 h-4" />
+              Réserver mon échange offert (30 min) <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button asChild variant="outline" size="lg" className="font-bold">
-              <Link to="/about">Consulter le profil complet</Link>
+            <Button asChild variant="outline" size="lg" className="font-bold rounded-xl px-7">
+              <Link to="/about">Consulter le parcours de l'expert</Link>
             </Button>
           </div>
         </div>

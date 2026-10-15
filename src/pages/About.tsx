@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Briefcase,
   School,
-  Wrench,
   Star,
   Mail,
   Phone,
@@ -15,12 +14,19 @@ import {
   Layers,
   CheckCircle2,
   Sparkles,
+  Award,
+  ShieldCheck,
+  Calendar,
+  ExternalLink,
+  Zap,
+  Users2,
+  HeartHandshake,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
-const About = () => {
+export const About = () => {
   const { ref: expRef, isVisible: expVisible } = useScrollAnimation();
   const { ref: eduRef, isVisible: eduVisible } = useScrollAnimation();
   const { ref: ctaRef, isVisible: ctaVisible } = useScrollAnimation();
@@ -28,80 +34,75 @@ const About = () => {
 
   const experiences = [
     {
-      title: "Consultant Architecte MEGA HOPEX",
-      company: "COVEA",
+      title: "Consultant Architecte SI & MEGA HOPEX V5",
+      company: "COVEA (Assurances MAAF, MMA, GMF)",
       logo: "/logos/covea.png",
       period: "Juin 2023 - Présent",
-      category: "Architecture SI & MEGA HOPEX",
+      category: "Architecture SI & Référentiel Entreprise",
       accent: "border-l-violet-500",
       description: [
-        "Amélioration de la documentation transverse sur les différents périmètres du SI",
-        "Échange avec les architectes fonctionnels et solutions pour sécuriser les documentations",
-        "Enrichissement de la cartographie (description application, objets gérés, flux applicatifs, technologies)",
-        "Participation à l'évolution des bonnes pratiques et de l'outillage",
-        "Gestion des manques et incohérences avec la cartographie MEGA HOPEX V5",
-        "Suivi du backlog des évolutions et reporting sur la qualité du référentiel",
+        "Pilotage et enrichissement continu de la cartographie du SI transverse (applications, flux, socles technologiques)",
+        "Collaboration directe avec les architectes de domaine et responsables d'applications",
+        "Assainissement des métamodèles et résolution des anomalies cartographiques dans MEGA HOPEX V5",
+        "Mise en place de comités de gouvernance et reporting régulier sur la qualité du référentiel SI",
       ],
     },
     {
-      title: "Consultant Architecte Solution",
+      title: "Consultant Architecte Solution & Cadrage",
       company: "La Banque Postale (via Marte)",
       logo: "/logos/banque-postale.png",
       period: "Septembre 2022 - Mai 2023",
-      category: "Architecture Solution & Cadrage",
+      category: "Architecture Solution & Secteur Bancaire",
       accent: "border-l-emerald-500",
       description: [
-        "Cadrage de projets de transformation digitale",
-        "Analyses d'impacts (Adhérence projets et Stratégie SI)",
-        "Rédaction des Dossiers d'Architecture Applicative et Technique (DAT)",
-        "Passage et soutenance des dossiers en Design Authority pour validation",
-        "Collaboration au sein des Squads pour l'intégration systémique",
-        "Cartographie des processus métiers et flux du périmètre crédit immobilier",
+        "Cadrage d'architecture applicative et technique sur les projets de transformation du Crédit Immobilier",
+        "Analyses d'impacts d'adhérence des projets à la stratégie SI d'entreprise",
+        "Rédaction complète des Dossiers d'Architecture Technique (DAT) et passage réussi en Design Authority",
+        "Modélisation des processus métiers et des flux inter-applicatifs bancaires sécurisés",
       ],
     },
     {
       title: "Consultant Solution AE MEGA HOPEX",
-      company: "Marte",
+      company: "Marte Conseil",
       logo: "/logos/marte.png",
       period: "Janvier 2020 - Septembre 2022",
-      category: "Expertise MEGA HOPEX & API",
+      category: "Expertise MEGA HOPEX & Automatisation API",
       accent: "border-l-amber-500",
       description: [
-        "Migration de MEGA 2009 vers MEGA HOPEX V2R1",
-        "Analyse de cas d'usage et portage de fonctionnalités métiers",
-        "Développement de scripts en VB.Net pour l'API MEGA HOPEX",
-        "Conception d'interfaces utilisateur personnalisées et scripts VBScript pour l'automatisation",
-        "Support technique et fonctionnel auprès des utilisateurs",
-        "Conduite du changement et formation",
+        "Accompagnement de migrations d'environnements MEGA 2009 vers MEGA HOPEX V2R1",
+        "Développement de scripts d'automatisation en VB.Net et VBScript pour l'API MEGA HOPEX",
+        "Création de tableaux de bord personnalisés et de formulaires de saisie pour les utilisateurs",
+        "Conduite du changement, support technique et formation des architectes clients",
       ],
     },
     {
-      title: "Ingénieur Études et Développement",
+      title: "Ingénieur Études et Développement Full-Stack",
       company: "Société Générale",
       logo: "/logos/societe-generale.png",
       period: "Janvier 2017 - Janvier 2019",
-      category: "Développement Web & AMOA",
+      category: "Développement Web & AMOA Bancaire",
       accent: "border-l-blue-500",
       description: [
-        "Développement d'applications web (PHP 7, Symfony 3.4, MySQL, JavaScript)",
-        "Création et consommation d'API REST",
-        "Gestion des déploiements sur environnements Linux",
-        "Animation des Daily Meetings en méthode Agile",
-        "Assistance à la maîtrise d'ouvrage (AMOA)",
+        "Conception et développement d'applications web métiers (PHP 7, Symfony, MySQL, JavaScript)",
+        "Développement et consommation d'API REST sécurisées",
+        "Déploiement et administration des environnements sur serveurs Linux",
+        "Animation des cérémonies quotidiennes en méthode Agile (Daily, Sprint Planning)",
       ],
     },
   ];
 
   const education = [
     {
-      degree: "Master 2 Expert en Systèmes d'Informations",
+      degree: "Master 2 Expert en Systèmes d'Information (Bac+5)",
       school: "Pôle Universitaire Léonard de Vinci - Sup de Vinci",
       year: "2019",
+      mention: "Spécialisation Architecture des SI, Urbanisation & Gouvernance",
     },
     {
-      degree: "Licence 3 Parcours MIAGE",
+      degree: "Licence 3 MIAGE (Méthodes Informatiques Appliquées à la Gestion des Entreprises)",
       school: "Université d'Orléans",
       year: "2017",
+      mention: "Bases de données relationnelles, Génie Logiciel & Modélisation",
     },
   ];
 
@@ -112,41 +113,40 @@ const About = () => {
       accent: "border-l-violet-500",
       items: [
         "MEGA HOPEX V5 & V2R1",
-        "Cartographie Applicative",
-        "Flux & Processus SI",
-        "Dossier d'Architecture (DAT)",
-        "Design Authority",
-        "UML & MERISE",
-        "Gouvernance Données",
+        "Cartographie Applicative & Flux",
+        "Dossier d'Architecture Technique (DAT)",
+        "Design Authority & Comités SI",
+        "Urbanisation & Trajectoire Cible",
+        "UML, ArchiMate & MERISE",
+        "Gouvernance des Référentiels",
       ],
     },
     {
-      title: "Développement Full-Stack Moderne",
+      title: "Développement Web & Mobile Full-Stack",
       icon: Code2,
       accent: "border-l-blue-500",
       items: [
-        "Next.js 16 / 15",
-        "React 19",
-        "TypeScript",
-        "Node.js & Express",
-        "JavaScript (Vanilla)",
-        "HTML5 & CSS3",
-        "PHP 7 & Symfony",
+        "Next.js 15 / 16 (App Router)",
+        "React Native & Expo (iOS / Android)",
+        "TypeScript & Node.js",
+        "Tailwind CSS & shadcn/ui",
+        "PostgreSQL & Prisma ORM",
+        "API REST & Authentification JWT",
+        "Stripe Checkout & PayPal SDK",
       ],
     },
     {
-      title: "Base de Données & DevOps",
+      title: "Méthodologie, Cloud & DevOps",
       icon: Database,
       accent: "border-l-emerald-500",
       items: [
-        "PostgreSQL",
-        "Prisma ORM",
-        "MySQL",
-        "Docker & Docker Compose",
-        "API REST & JWT",
-        "Stripe & PayPal SDK",
-        "Gitlab & Linux",
-        "VB.Net / VBScript",
+        "Product Ownership & User Stories",
+        "Méthodologie Agile / Scrum",
+        "Docker & Conteneurisation",
+        "Hébergement Cloud (Vercel, AWS, VPS)",
+        "Git, GitHub & GitLab CI/CD",
+        "Scripts API (VB.Net / Python)",
+        "Conformité RGPD & Sécurité",
       ],
     },
   ];
@@ -155,6 +155,7 @@ const About = () => {
     email: "contact@ramsin.fr",
     phone: "+33 (0)7 61 51 88 90",
     location: "Basés à Fresnes (94) · Interventions Paris & Remote",
+    linkedin: "https://www.linkedin.com/in/oumar-ramsin/",
   };
 
   const handleBookingRedirect = () => {
@@ -164,300 +165,322 @@ const About = () => {
   return (
     <>
       <SEO
-        title="À Propos - RAMSIN Conseil | Architecture SI & Développement Web"
-        description="Profil, parcours professionnel et compétences de RAMSIN Conseil, cabinet en Architecture des SI, Expert MEGA HOPEX et Développeur Full-Stack."
+        title="À Propos de RAMSIN Conseil | Consultant Fondateur & Architecte SI Senior"
+        description="Découvrez le profil de RAMSIN Conseil : 7+ années d'expérience en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
       />
 
       {/* ═══════════════════════════════════════════
           HERO HEADER AVEC HALO LUMINEUX
       ═══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden border-b border-border/60">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-emerald-500/8 rounded-full blur-[80px]" />
-        </div>
+      <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
+        <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center max-w-4xl space-y-5">
+        <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           {/* Badges de statut & qualification */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-xs">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
-              Disponible pour de nouvelles missions
+              Disponible pour missions SI & projets applicatifs
             </div>
 
-            <Badge
-              variant="outline"
-              className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
-            >
-              <Star className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" />{" "}
-              Cabinet Conseil SI & Développement Full-Stack
+            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
+              <Star className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" />
+              Cabinet Conseil & Développement Indépendant
             </Badge>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1]">
-            RAMSIN
-            <span className="block gradient-text mt-1">Conseil</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+            L'Expertise d'un Spécialiste Senior.
+            <span className="block gradient-text mt-1">La Proximité d'un Partenaire Dédié.</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Architecture des Systèmes d'Information | Expert MEGA HOPEX |
-            Conception d'Applications Full-Stack
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+            Porté par son fondateur <strong>Oumar Ramsin</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne grands comptes et dirigeants avec une exigence absolue de résultat.
           </p>
 
-          {/* Contact rapide */}
-          <div className="flex flex-wrap gap-3 justify-center text-sm pt-2">
+          {/* Liens de contact rapide & profil LinkedIn vérifié */}
+          <div className="flex flex-wrap gap-3 justify-center text-xs sm:text-sm pt-2">
             <a
               href={`mailto:${contact.email}`}
-              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium"
+              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-semibold"
             >
               <Mail className="w-3.5 h-3.5 text-primary" /> {contact.email}
             </a>
             <a
               href="tel:+33761518890"
-              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-medium"
+              className="bg-secondary/80 hover:bg-secondary px-3.5 py-2 rounded-full flex items-center gap-1.5 transition-colors font-semibold"
             >
               <Phone className="w-3.5 h-3.5 text-primary" /> {contact.phone}
             </a>
-            <span className="bg-secondary/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 font-medium">
+            <span className="bg-secondary/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 font-medium text-muted-foreground">
               <MapPin className="w-3.5 h-3.5 text-primary" /> {contact.location}
             </span>
+            <a
+              href={contact.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full flex items-center gap-1.5 transition-colors font-bold shadow-xs hover:shadow-md"
+            >
+              <ExternalLink className="w-3.5 h-3.5" /> Profil LinkedIn Vérifié
+            </a>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* ═══════════════════════════════════════════
-              SYNTHÈSE PROFIL
-          ═══════════════════════════════════════════ */}
-          <Card className="mb-14 border-2 border-primary/20 bg-gradient-to-r from-primary/5 via-background to-background glass-card rounded-2xl">
-            <CardContent className="pt-6 space-y-4 text-base leading-relaxed">
-              <p>
-                Doté d'une double compétence rare alliant{" "}
-                <strong>
-                  l'Architecture des Systèmes d'Information d'Entreprise (MEGA
-                  HOPEX)
-                </strong>{" "}
-                et{" "}
-                <strong>
-                  le Développement Web & Mobile Full-Stack moderne (Next.js,
-                  Node.js, PostgreSQL, Docker)
-                </strong>
-                , j'accompagne les DSI et les entreprises dans la structuration
-                et la numérisation de leurs activités.
-              </p>
-              <p>
-                Ma rigueur, ma curiosité technique insatiable et ma volonté
-                inébranlable sont les atouts clés qui me permettent de
-                m'intégrer avec aisance au sein des équipes (Squads Agiles,
-                Design Authorities, Comités DSI).
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* ═══════════════════════════════════════════
-              DOMAINES DE COMPÉTENCES (GLASSMORPHISM)
-          ═══════════════════════════════════════════ */}
-          <section className="mb-14">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Wrench className="h-5 w-5 text-primary" />
-              </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">
-                Domaines d'Expertise & Stack
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {skillGroups.map((group, index) => {
-                const IconComp = group.icon;
-                return (
-                  <Card
-                    key={index}
-                    className={`border border-border/80 border-l-4 ${group.accent} hover-lift glass-card rounded-2xl`}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="p-2 bg-primary/10 rounded-lg w-fit text-primary mb-2">
-                        <IconComp className="w-5 h-5" />
-                      </div>
-                      <CardTitle className="text-lg font-bold">
-                        {group.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-1.5">
-                        {group.items.map((item, i) => (
-                          <li
-                            key={i}
-                            className="text-sm text-muted-foreground flex items-center gap-2"
-                          >
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* ═══════════════════════════════════════════
-              TIMELINE D'EXPÉRIENCES PROFESSIONNELLES
-          ═══════════════════════════════════════════ */}
-          <section
-            ref={expRef}
-            className={`mb-14 scroll-fade-up ${expVisible ? "is-visible" : ""}`}
-          >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Briefcase className="h-5 w-5 text-primary" />
-              </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">
-                Expériences Professionnelles
-              </h2>
-            </div>
-
-            {/* Timeline */}
-            <div className="relative">
-              {/* Ligne verticale connectrice */}
-              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent hidden md:block" />
-
-              <div className="space-y-6">
-                {experiences.map((exp, index) => (
-                  <div key={index} className="relative md:pl-12">
-                    {/* Point sur la timeline */}
-                    <div className="absolute left-2.5 top-6 w-3 h-3 rounded-full bg-primary border-2 border-background hidden md:block" />
-
-                    <Card
-                      className={`border border-border/80 border-l-4 ${exp.accent} shadow-sm hover-lift glass-card rounded-2xl overflow-hidden`}
-                    >
-                      <CardContent className="p-5 space-y-3">
-                        {/* Header de l'expérience */}
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                          <div className="flex items-center gap-3">
-                            {exp.logo && (
-                              <img
-                                src={exp.logo}
-                                alt={`Logo ${exp.company}`}
-                                className="h-8 w-auto object-contain"
-                              />
-                            )}
-                            <div>
-                              <h3 className="text-lg font-extrabold text-foreground">
-                                {exp.title}
-                              </h3>
-                              <p className="text-sm font-bold text-primary">
-                                {exp.company}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant="outline"
-                              className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
-                            >
-                              {exp.category}
-                            </Badge>
-                            <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
-                              {exp.period}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        <ul className="space-y-1.5 pt-1">
-                          {exp.description.map((item, i) => (
-                            <li
-                              key={i}
-                              className="text-sm text-muted-foreground flex items-start gap-2.5"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-2"></span>
-                              <span className="leading-relaxed">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ═══════════════════════════════════════════
-              FORMATIONS & DIPLÔMES
-          ═══════════════════════════════════════════ */}
-          <section
-            ref={eduRef}
-            className={`mb-14 scroll-fade-up ${eduVisible ? "is-visible" : ""}`}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <School className="h-5 w-5 text-primary" />
-              </div>
-              <h2 className="text-2xl font-extrabold tracking-tight">
-                Formation & Diplômes
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {education.map((edu, index) => (
-                <Card
-                  key={index}
-                  className="border border-border/80 hover-lift glass-card rounded-2xl"
-                >
-                  <CardContent className="pt-6 space-y-2">
-                    <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full inline-block">
-                      {edu.year}
-                    </span>
-                    <h3 className="text-lg font-bold">{edu.degree}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {edu.school}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* ═══════════════════════════════════════════
-              CTA DE BAS DE PAGE
-          ═══════════════════════════════════════════ */}
-          <div
-            ref={ctaRef}
-            className={`relative overflow-hidden bg-gradient-to-r from-primary/10 via-primary/5 to-emerald-500/10 border-2 border-primary/20 rounded-3xl p-8 md:p-12 text-center shadow-md glass-card scroll-scale-up ${ctaVisible ? "is-visible" : ""}`}
-          >
-            <Sparkles className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl md:text-3xl font-extrabold mb-3 tracking-tight">
-              Travaillons ensemble sur votre projet
-            </h3>
-            <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-              Que ce soit pour une mission de conseil en architecture SI,
-              d'administration MEGA HOPEX ou pour le développement d'une
-              application web sur-mesure.
+      <div className="container mx-auto px-4 py-12 md:py-16 max-w-4xl space-y-16">
+        
+        {/* ═══════════════════════════════════════════
+            1. POURQUOI CHOISIR UN CABINET INDÉPENDANT ?
+        ═══════════════════════════════════════════ */}
+        <div className="space-y-6">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+              Pourquoi Travailler avec RAMSIN Conseil ?
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Les 4 engagements d'un modèle sans intermédiaire qui fait la différence pour votre organisation.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button
-                size="lg"
-                onClick={handleBookingRedirect}
-                className="gap-2 font-extrabold cursor-pointer shadow-md bg-emerald-600 hover:bg-emerald-700 text-white"
-              >
-                Réserver mon échange (30 min) <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="font-bold"
-                onClick={() => navigate("/projects")}
-              >
-                Voir les réalisations
-              </Button>
-            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                icon: Users2,
+                title: "1. Interlocuteur Unique Senior",
+                desc: "Pas de commercial qui disparaît après la signature ni de stagiaire envoyé en sous-traitance : vous échangez et travaillez directement avec l'expert qui conçoit vos architectures ou développe votre code.",
+              },
+              {
+                icon: Zap,
+                title: "2. Circuit Décisionnel Court & Réactivité",
+                desc: "Démarrage de mission rapide, ajustements agiles en direct et réponse garantie sous 24h ouvrées. Zéro lourdeur administrative d'ESN traditionnelle.",
+              },
+              {
+                icon: HeartHandshake,
+                title: "3. Transparence Budgétaire Totale",
+                desc: "Pas de frais de structure superflus d'agence. Des tarifs forfaitaires ou régie clairs, fixés en amont et respectés scrupuleusement.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "4. 100% Souveraineté & Propriété",
+                desc: "Vos référentiels MEGA HOPEX sont documentés pour vos équipes et votre code source applicatif vous est remis à 100% sans aucun abonnement captif.",
+              },
+            ].map((adv, i) => {
+              const IconA = adv.icon;
+              return (
+                <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2 hover-lift">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <IconA className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base font-bold text-foreground">{adv.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{adv.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
+
+        {/* ═══════════════════════════════════════════
+            2. SYNTHÈSE DE POSITIONNEMENT DU DIRIGEANT
+        ═══════════════════════════════════════════ */}
+        <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 via-background to-background glass-card rounded-3xl overflow-hidden shadow-md">
+          <CardHeader className="p-6 sm:p-8 pb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary">
+              La Philosophie RAMSIN
+            </span>
+            <CardTitle className="text-xl sm:text-2xl font-bold">
+              Allier Vision Stratégique des SI & Concrétisation Technique Réelle
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 sm:p-8 pt-0 space-y-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+            <p>
+              Dans le monde du numérique, deux univers coexistent souvent sans se comprendre : les cabinets de conseil stratégique qui produisent des schémas théoriques, et les développeurs qui codent sans vision d'ensemble du système d'information.
+            </p>
+            <p>
+              <strong>RAMSIN Conseil a été fondé pour faire le pont entre ces deux mondes.</strong> Avec 7+ années passées au cœur de DSI de grandes entreprises régulées (Covéa, La Banque Postale, Société Générale) et une maîtrise approfondie du développement Full-Stack moderne (Next.js, React Native, TypeScript, PostgreSQL), j'apporte une double compétence rare :
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm text-foreground font-semibold">
+              <div className="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                <span>Pour la DSI : Cartographies rigoureuses, conformité MEGA HOPEX V5 et passage réussi des DAT.</span>
+              </div>
+              <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <span>Pour les Métiers : Applications fluides, sécurisées, livrées dans les délais avec code propriétaire.</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ═══════════════════════════════════════════
+            3. EXPÉRIENCES & RÉFÉRENCES PROFESSIONNELLES
+        ═══════════════════════════════════════════ */}
+        <div ref={expRef} className={`space-y-6 scroll-fade-up ${expVisible ? "is-visible" : ""}`}>
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
+              <Briefcase className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Parcours Professionnel Vérifiable
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Missions exercées au sein d'environnements grands comptes et structures exigeantes.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {experiences.map((exp, i) => (
+              <Card
+                key={i}
+                className={`border border-border/80 border-l-4 ${exp.accent} glass-card hover-lift rounded-2xl`}
+              >
+                <CardHeader className="p-5 pb-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                      {exp.category}
+                    </span>
+                    <span className="text-xs font-semibold text-muted-foreground bg-secondary px-2.5 py-1 rounded-full">
+                      {exp.period}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl font-bold mt-1">
+                    {exp.title} — <span className="text-foreground/80">{exp.company}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-5 pt-2 space-y-2">
+                  <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+                    {exp.description.map((desc, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                        <span>{desc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════
+            4. FORMATION & DIPLÔMES DE HAUT NIVEAU
+        ═══════════════════════════════════════════ */}
+        <div ref={eduRef} className={`space-y-6 scroll-fade-up ${eduVisible ? "is-visible" : ""}`}>
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
+              <School className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Diplômes & Formation Supérieure
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Une formation académique solide en Architecture des SI et Informatique de Gestion.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {education.map((edu, i) => (
+              <Card key={i} className="border border-border/80 glass-card rounded-2xl hover-lift">
+                <CardHeader className="p-5 pb-2 space-y-1">
+                  <span className="text-xs font-bold text-primary">{edu.year}</span>
+                  <CardTitle className="text-base sm:text-lg font-bold">
+                    {edu.degree}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-5 pt-0 space-y-2 text-xs sm:text-sm text-muted-foreground">
+                  <p className="font-semibold text-foreground/90">{edu.school}</p>
+                  <p className="text-xs">{edu.mention}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════
+            5. COMPÉTENCES TECHNIQUES ORGANISÉES
+        ═══════════════════════════════════════════ */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
+              <Award className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Compétences & Outils Maîtrisés
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Les technologies et standards réellement déployés en production.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {skillGroups.map((grp, i) => {
+              const IconG = grp.icon;
+              return (
+                <Card key={i} className={`border border-border/80 border-l-4 ${grp.accent} glass-card rounded-2xl`}>
+                  <CardHeader className="p-4 pb-2 space-y-1">
+                    <div className="flex items-center gap-2 text-foreground font-bold text-sm">
+                      <IconG className="w-4 h-4 text-primary" />
+                      <span>{grp.title}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-1">
+                    <div className="flex flex-wrap gap-1.5">
+                      {grp.items.map((it, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg text-secondary-foreground border border-border/40"
+                        >
+                          {it}
+                        </span>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════
+            BANDEAU D'APPEL À L'ACTION
+        ═══════════════════════════════════════════ */}
+        <div
+          ref={ctaRef}
+          className={`bg-gradient-to-r from-primary/10 via-primary/5 to-emerald-500/10 border-2 border-primary/20 rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto shadow-xl glass-card scroll-scale-up ${
+            ctaVisible ? "is-visible" : ""
+          }`}
+        >
+          <Sparkles className="w-12 h-12 text-primary mx-auto mb-4" />
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-3 tracking-tight">
+            Vous souhaitez valider la faisabilité de votre mission ou projet ?
+          </h2>
+          <p className="text-muted-foreground text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
+            Échangez directement avec Oumar Ramsin lors d'une session de cadrage technique offerte de 30 minutes sans aucun engagement.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button
+              size="lg"
+              onClick={handleBookingRedirect}
+              className="gap-2 font-bold cursor-pointer shadow-md bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-7"
+            >
+              <Calendar className="w-4 h-4" />
+              Réserver mon échange offert (30 min) <ArrowRight className="w-4 h-4" />
+            </Button>
+            <Button asChild variant="outline" size="lg" className="font-bold rounded-xl px-7">
+              <Link to="/contact">Envoyer un message direct</Link>
+            </Button>
+          </div>
+        </div>
+
       </div>
     </>
   );
