@@ -64,6 +64,21 @@ export const BookingWidget = () => {
                 style={{ minWidth: "320px", height: "700px" }}
               />
             </div>
+
+            {/* Lien direct de secours si bloqueur de cookies / script tiers */}
+            <div className="py-2.5 px-4 bg-muted/30 border-t border-border/60 text-center text-xs text-muted-foreground flex flex-wrap items-center justify-center gap-2">
+              <span>Un souci de chargement du calendrier ?</span>
+              <a
+                href="https://calendly.com/contact-ramsin/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-primary hover:underline inline-flex items-center gap-1"
+              >
+                Ouvrir directement sur Calendly →
+              </a>
+              <span className="hidden sm:inline">•</span>
+              <span>ou contactez-nous au <a href="tel:+33761518890" className="font-bold text-foreground hover:underline">+33 (0)7 61 51 88 90</a></span>
+            </div>
           </CardContent>
         </Card>
       </div>

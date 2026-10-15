@@ -5,6 +5,7 @@ interface SEOProps {
   description?: string;
   keywords?: string;
   canonical?: string;
+  noIndex?: boolean;
 }
 
 export const SEO = ({
@@ -12,6 +13,7 @@ export const SEO = ({
   description = "Cabinet d'expertise en Architecture des Systèmes d'Information (MEGA HOPEX V5) et conception de solutions web & mobiles sur-mesure. Des décisions SI plus claires et des outils adaptés à vos enjeux.",
   keywords = "Architecture SI, MEGA HOPEX V5, Urbanisation SI, Cartographie applicative, Développement Web, Applications Mobiles, Next.js, React Native, Fresnes, Paris, DSI",
   canonical,
+  noIndex = false,
 }: SEOProps) => {
   useEffect(() => {
     // Modifier le titre de la page
@@ -31,13 +33,16 @@ export const SEO = ({
 
     updateMetaTag("description", description);
     updateMetaTag("keywords", keywords);
+    updateMetaTag("robots", noIndex ? "noindex, nofollow" : "index, follow");
     updateMetaTag("og:title", title, true);
     updateMetaTag("og:description", description, true);
     updateMetaTag("twitter:title", title);
     updateMetaTag("twitter:description", description);
 
-    // Mettre à jour l'URL canonique si fournie
+    // Mettre à jour l'URL canonique et og:url si fournie
     if (canonical) {
+      updateMetaTag("og:url", canonical, true);
+
       let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
       if (!link) {
         link = document.createElement("link");
@@ -46,7 +51,7 @@ export const SEO = ({
       }
       link.setAttribute("href", canonical);
     }
-  }, [title, description, keywords, canonical]);
+  }, [title, description, keywords, canonical, noIndex]);
 
   return null;
 };

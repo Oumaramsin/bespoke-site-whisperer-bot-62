@@ -14,6 +14,7 @@ const Index = () => {
       <SEO
         title="RAMSIN | Architecture SI (MEGA HOPEX) & Solutions Numériques Sur-Mesure"
         description="Cabinet d'expertise en Architecture des Systèmes d'Information (MEGA HOPEX V5) et conception d'applications web & mobiles sur-mesure. Des décisions SI plus claires et des outils adaptés à vos enjeux."
+        canonical="https://www.ramsin.fr/"
       />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/10">
         {/* 1. HERO SECTION (Titre & Valeur Métier) */}

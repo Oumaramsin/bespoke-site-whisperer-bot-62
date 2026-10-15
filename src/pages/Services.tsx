@@ -60,6 +60,7 @@ export const Services = () => {
       <SEO
         title="Services & Expertises | RAMSIN - Architecture SI & Développement Web Sur-Mesure"
         description="Découvrez nos deux pôles d'excellence : Conseil & Architecture SI (MEGA HOPEX V5) pour DSI, et Conception d'applications web & mobiles sur-mesure pour PME et dirigeants."
+        canonical="https://www.ramsin.fr/services"
       />
 
       {/* ═══════════════════════════════════════════

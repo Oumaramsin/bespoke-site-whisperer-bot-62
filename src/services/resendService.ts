@@ -26,10 +26,12 @@ interface SendContactEmailParams {
 // Convertisseurs des identifiants techniques vers des libellés élégants en français
 export const formatServiceType = (key?: string) => {
   const map: Record<string, string> = {
-    "web-app": "Conception Web, Mobiles & Applications Sur-Mesure",
+    "web-app": "Application Web & SaaS Métier Sur-Mesure",
+    "mobile-app": "Application Mobile iOS & Android (React Native)",
+    "site-vitrine": "Site Web Haute Conversion & E-Commerce",
     "architecture-si": "Architecture des SI & Urbanisation",
-    "mega-hopex": "Expertise & Administration MEGA HOPEX",
-    "po-agile": "Product Ownership, Cadrage & Backlog",
+    "mega-hopex": "Expertise & Administration MEGA HOPEX V5",
+    "po-agile": "Product Ownership SI, Cadrage & DAT",
     "pilotage-equipe": "Pilotage d'Équipe & Facilitation Agile",
     formation: "Formation & Transfert de Compétences",
     transformation: "Conseil en Transformation Digitale",

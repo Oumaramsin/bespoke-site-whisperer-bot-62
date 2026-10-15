@@ -60,9 +60,10 @@ const Navbar = () => {
           <div className="flex items-center gap-2 md:hidden">
             <ThemeToggle />
             <button
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/80"
+              className="min-h-[44px] min-w-[44px] p-2 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/80 focus:outline-hidden focus:ring-2 focus:ring-primary/40"
               onClick={toggleMenu}
-              aria-label="Toggle menu"
+              aria-label="Ouvrir ou fermer le menu de navigation"
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

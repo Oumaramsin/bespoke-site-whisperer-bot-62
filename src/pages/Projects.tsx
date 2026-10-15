@@ -48,6 +48,7 @@ export const Projects = () => {
       <SEO
         title="Études de Cas & Réalisations | RAMSIN Conseil - Architecture SI & Développement Web"
         description="Découvrez nos études de cas réelles et livrables : missions d'Architecture SI chez Covéa et La Banque Postale, ainsi que nos applications web & e-commerce Dabari et Maison HamdiWaShukri."
+        canonical="https://www.ramsin.fr/projects"
       />
 
       {/* ═══════════════════════════════════════════
@@ -129,7 +130,9 @@ export const Projects = () => {
                       {project.logo && (
                         <img
                           src={project.logo}
-                          alt={`Logo ${project.clientCompany}`}
+                          alt={`Logo officiel de l'entreprise ${project.clientCompany}`}
+                          loading="lazy"
+                          decoding="async"
                           className="h-7 w-auto object-contain"
                         />
                       )}

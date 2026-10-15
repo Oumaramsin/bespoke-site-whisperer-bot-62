@@ -20,6 +20,7 @@ const NotFound = () => {
       <SEO
         title="Page Non Trouvée (404) | RAMSIN Conseil"
         description="La page que vous recherchez n'existe pas ou a été déplacée. Retournez à l'accueil du site RAMSIN Conseil."
+        noIndex={true}
       />
 
       <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 relative overflow-hidden">

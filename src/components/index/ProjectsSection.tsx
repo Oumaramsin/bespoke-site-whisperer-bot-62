@@ -58,7 +58,9 @@ export const ProjectsSection = () => {
                     {project.logo && (
                       <img
                         src={project.logo}
-                        alt={`Logo ${project.clientCompany}`}
+                        alt={`Logo officiel de l'entreprise ${project.clientCompany}`}
+                        loading="lazy"
+                        decoding="async"
                         className="h-7 w-auto object-contain"
                       />
                     )}
