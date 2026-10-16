@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShieldCheck, Clock, MessageSquare, CheckCircle2 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { ArrowRight, ShieldCheck, Clock, MessageSquare, CheckCircle2, FileText } from "lucide-react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { trackConversionEvent } from "@/lib/analytics";
 
 interface CTASectionProps {
   title?: string;
@@ -17,6 +18,7 @@ export const CTASection = ({
   const location = useLocation();
 
   const handleBookingClick = () => {
+    trackConversionEvent("click_booking_calendly", { source: "cta_section" });
     if (location.pathname === "/") {
       const el = document.getElementById("reservation-calendrier");
       if (el) {
@@ -28,49 +30,70 @@ export const CTASection = ({
   };
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-r from-primary/10 via-primary/5 to-emerald-500/10 dark:from-slate-950 dark:via-blue-950/80 dark:to-slate-950 border-y border-primary/20 dark:border-border/40 relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-gradient-to-r from-[#123A35]/10 via-background to-[#C7F36B]/15 border-y border-border/60 relative overflow-hidden">
       {/* Halos lumineux d'arrière-plan */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/15 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/15 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#123A35]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#C7F36B]/20 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div ref={ref} className={`container mx-auto px-4 relative z-10 text-center max-w-4xl mx-auto space-y-8 scroll-fade-up ${isVisible ? "is-visible" : ""}`}>
         {/* Badge réassurance sous 24h */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 dark:bg-white/10 border border-emerald-500/30 dark:border-white/20 text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-300 shadow-sm backdrop-blur-md">
-          <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/80 border border-border/80 text-xs sm:text-sm font-bold text-foreground shadow-xs backdrop-blur-md">
+          <Clock className="w-4 h-4 text-emerald-700 shrink-0" />
           <span>Réponse sous 24h ouvrées garantie</span>
         </div>
 
         {/* Titre Principal Aéré */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground dark:text-white leading-[1.15]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
           {title}
         </h2>
 
         {/* Subtitle Aéré */}
-        <p className="text-muted-foreground dark:text-blue-100/90 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+        <p className="text-muted-foreground text-base sm:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
           {subtitle}
         </p>
 
-        {/* Bouton d'action principal */}
-        <div className="pt-2">
+        {/* Boutons d'action : Double Tunnel de Conversion */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
           <Button
             size="lg"
+            variant="lime"
             onClick={handleBookingClick}
-            className="gap-3 px-8 py-6 text-base font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xl hover:scale-[1.03] transition-all rounded-2xl cursor-pointer glow-shadow-emerald animate-pulse-glow"
+            className="gap-3 px-7 py-6 text-base font-extrabold shadow-xl hover:scale-[1.03] transition-all rounded-2xl cursor-pointer"
           >
-            Réserver mon échange gratuit <ArrowRight className="w-5 h-5" />
+            Réserver mon échange gratuit de 30 min <ArrowRight className="w-5 h-5" />
+          </Button>
+
+          <Button
+            asChild
+            size="lg"
+            variant="outline"
+            className="gap-2.5 px-6 py-6 text-base font-bold rounded-2xl glass-card hover:bg-secondary/80 border-border/80 shadow-md transition-all cursor-pointer"
+          >
+            <Link
+              to="/contact?tunnel=form#formulaire-contact"
+              state={{ scrollToForm: true }}
+              onClick={() =>
+                trackConversionEvent("click_switch_to_written_form", {
+                  source: "cta_section",
+                })
+              }
+            >
+              <FileText className="w-4 h-4 text-primary" />
+              Décrire mon besoin en 2 min
+            </Link>
           </Button>
         </div>
 
         {/* Capsules translucides de réassurance */}
         <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 pt-4 text-xs sm:text-sm font-semibold">
-          <span className="flex items-center gap-2 bg-card/80 dark:bg-white/10 border border-border/80 dark:border-white/15 px-4 py-2 rounded-full backdrop-blur-md text-foreground dark:text-slate-100 shadow-sm">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" /> Sans engagement
+          <span className="flex items-center gap-2 bg-card/90 border border-border/80 px-4 py-2 rounded-full backdrop-blur-md text-foreground shadow-sm">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> Sans engagement
           </span>
-          <span className="flex items-center gap-2 bg-card/80 dark:bg-white/10 border border-border/80 dark:border-white/15 px-4 py-2 rounded-full backdrop-blur-md text-foreground dark:text-slate-100 shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" /> 100% en langage clair
+          <span className="flex items-center gap-2 bg-card/90 border border-border/80 px-4 py-2 rounded-full backdrop-blur-md text-foreground shadow-sm">
+            <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" /> 100% en langage clair
           </span>
-          <span className="flex items-center gap-2 bg-card/80 dark:bg-white/10 border border-border/80 dark:border-white/15 px-4 py-2 rounded-full backdrop-blur-md text-foreground dark:text-slate-100 shadow-sm">
-            <MessageSquare className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" /> Conseils personnalisés
+          <span className="flex items-center gap-2 bg-card/90 border border-border/80 px-4 py-2 rounded-full backdrop-blur-md text-foreground shadow-sm">
+            <MessageSquare className="w-4 h-4 text-emerald-700 shrink-0" /> Conseils personnalisés
           </span>
         </div>
       </div>

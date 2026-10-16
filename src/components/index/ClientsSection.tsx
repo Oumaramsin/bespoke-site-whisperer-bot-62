@@ -48,7 +48,10 @@ const ClientsSection = () => {
       <div className="container mx-auto px-4">
         <div ref={ref} className={`text-center max-w-3xl mx-auto mb-8 space-y-2 scroll-fade-up ${isVisible ? "is-visible" : ""}`}>
           <p className="text-xs sm:text-sm font-bold tracking-wider text-muted-foreground uppercase flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-primary" /> Ils m'ont fait confiance sur leurs projets critiques :
+            <ShieldCheck className="w-4 h-4 text-primary" /> Missions de conseil, architecture SI & cadrage exercées au sein de leurs équipes :
+          </p>
+          <p className="text-xs text-muted-foreground/80 max-w-2xl mx-auto pt-1 font-normal">
+            Interventions d'expertise senior (MEGA HOPEX V5, dossiers d'architecture technique, gouvernance) réalisées en direct ou via nos partenaires de confiance.
           </p>
         </div>
 

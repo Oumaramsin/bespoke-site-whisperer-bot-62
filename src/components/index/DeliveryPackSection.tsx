@@ -51,7 +51,7 @@ const DeliveryPackSection = () => {
                       {item.description}
                     </p>
                   </div>
-                  <div className="pt-3 border-t border-border/60 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <div className="pt-3 border-t border-border/60 flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
                     <CheckCircle2 className="w-4 h-4" /> Inclus sans frais supplémentaires
                   </div>
                 </CardContent>

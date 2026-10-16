@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+guide_configuration_resend_ovh.md
+guide_referencement_ramsin.html
+guide_resend_vercel_maitre_de_stage.html

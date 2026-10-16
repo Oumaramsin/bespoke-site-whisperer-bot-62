@@ -12,28 +12,28 @@ export const WhyChooseUsSection = () => {
   const benefits = [
     {
       icon: Target,
-      title: "Solutions 100% Sur-Mesure",
-      description: "Chaque projet web ou applicatif est développé sur-mesure pour répondre exactement aux exigences et aux processus de votre activité."
+      title: "Conception Dédiée à Vos Enjeux",
+      description: "Chaque projet web ou applicatif est développé sur-mesure pour s'adapter précisément à vos processus métier et vos objectifs."
     },
     {
       icon: CheckCircle2,
-      title: "Accompagnement de A à Z",
-      description: "Un partenaire unique de la phase de cadrage et de design jusqu'à la mise en ligne officielle et la prise en main par vos équipes."
+      title: "Interlocuteur Unique Senior",
+      description: "Un consultant expert dédié tout au long du cycle de vie : du cadrage initial jusqu'à la mise en production et votre prise en main."
     },
     {
       icon: Cpu,
-      title: "Technologies Modernes & Sécurisées",
-      description: "Développement basé sur les meilleurs standards du marché (Next.js, React, Node.js, Docker) garantissant rapidité et sécurité."
+      title: "Socle Technique Moderne & Éprouvé",
+      description: "Développement basé sur les technologies reconnues du marché (Next.js, React, Node.js, Docker) assurant maintenabilité et robustesse."
     },
     {
       icon: Coins,
-      title: "Tarifs Compétitifs & Forfaitaires",
-      description: "Des devis clairs, forfaitaires et transparents. Aucun frais caché ni surcoût en cours de réalisation."
+      title: "Engagements Fermes & Devis Clair",
+      description: "Des propositions tarifaires transparentes et forfaitaires. Aucun coût masqué en cours de développement."
     },
     {
       icon: Headphones,
-      title: "Support Réactif & Maintenance",
-      description: "Un suivi technique continu : mises à jour régulières, sauvegardes automatiques, correction de bugs et assistance sous 24h."
+      title: "Support Réactif & Garantie 30 Jours",
+      description: "Garantie offerte 30 jours post-lancement pour corriger tout aléa, suivi technique continu et réponse garantie sous 24h ouvrées."
     }
   ];
 
@@ -42,22 +42,22 @@ export const WhyChooseUsSection = () => {
       icon: TrendingUp,
       title: "Gagner en Visibilité & Notoriété",
       badge: "+ Visibilité & SEO",
-      badgeColor: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30",
-      desc: "Positionnez votre entreprise en tête des recherches Google et valorisez votre image de marque auprès de vos prospects grâce à un site ultra-rapide et captivant."
+      badgeColor: "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/30",
+      desc: "Améliorez la visibilité de votre entreprise grâce à un référencement naturel (SEO) structuré dès la conception et une performance web soignée (Core Web Vitals)."
     },
     {
       icon: Users,
       title: "Attirer & Convertir Plus de Clients",
       badge: "+ Clients & Devis",
-      badgeColor: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
-      desc: "Transformez vos simples visiteurs en clients engagés grâce à un parcours UX/UI persuasif, des boutiques e-commerce fluides et des formulaires de devis intelligents."
+      badgeColor: "bg-emerald-500/10 text-emerald-800 border-emerald-500/30",
+      desc: "Transformez vos visiteurs en demandes qualifiées grâce à des interfaces soignées, des tunnels e-commerce fluides et des formulaires de contact sans friction."
     },
     {
       icon: ShieldCheck,
       title: "Développer Votre Chiffre d'Affaires",
       badge: "+ Business & ROI",
-      badgeColor: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30",
-      desc: "Automatisez vos tâches chronophages et générez des opportunités de vente 24h/24 sans aucune perte de temps ni gestion technique complexe."
+      badgeColor: "bg-amber-500/10 text-amber-800 border-amber-500/30",
+      desc: "Automatisez vos tâches répétitives et valorisez vos services en continu grâce à des outils numériques fiables et adaptés à votre secteur."
     }
   ];
 

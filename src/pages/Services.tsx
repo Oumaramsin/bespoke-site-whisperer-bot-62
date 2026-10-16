@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
+import { trackConversionEvent } from "@/lib/analytics";
 
 type ServicePole = "si" | "web";
 
@@ -46,12 +47,14 @@ export const Services = () => {
   }, [poleParam]);
 
   const switchPole = (pole: ServicePole) => {
+    trackConversionEvent("select_pole", { pole, source: "services_tabs" });
     setActivePole(pole);
     setSearchParams({ pole });
     window.scrollTo({ top: 320, behavior: "smooth" });
   };
 
   const handleBookingRedirect = () => {
+    trackConversionEvent("click_booking_calendly", { source: "services_page" });
     navigate("/contact", { state: { scrollToBooking: true } });
   };
 
@@ -68,7 +71,7 @@ export const Services = () => {
       ═══════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
         <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-[#123A35]/10 via-[#C7F36B]/15 to-[#123A35]/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
         <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
@@ -91,13 +94,13 @@ export const Services = () => {
                 onClick={() => switchPole("si")}
                 className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
                   activePole === "si"
-                    ? "bg-blue-600 text-white shadow-md scale-[1.02]"
+                    ? "bg-[#123A35] text-white shadow-md scale-[1.02]"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                 }`}
               >
                 <Building2 className="w-5 h-5 shrink-0" />
                 <span>Architecture SI & MEGA HOPEX</span>
-                <span className="hidden md:inline text-[11px] opacity-80 px-2 py-0.5 rounded-full bg-white/20">
+                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
                   DSI & Transformation
                 </span>
               </button>
@@ -112,7 +115,7 @@ export const Services = () => {
               >
                 <Smartphone className="w-5 h-5 shrink-0" />
                 <span>Web & Applications Sur-Mesure</span>
-                <span className="hidden md:inline text-[11px] opacity-80 px-2 py-0.5 rounded-full bg-white/20">
+                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
                   PME & Dirigeants
                 </span>
               </button>
@@ -129,27 +132,27 @@ export const Services = () => {
           
           {/* BANDEAU EN-TÊTE DU PÔLE SI */}
           <div className="container mx-auto px-4 max-w-5xl">
-            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-slate-950 text-white border-2 border-blue-500/30 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#071916] via-[#123A35] to-[#0a2622] text-white border-2 border-[#123A35]/40 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10 max-w-3xl space-y-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-500/20 px-3 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
                   <Award className="w-3.5 h-3.5" /> Conseil & Urbanisation des Systèmes d'Information
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
                   Prenez le contrôle de votre patrimoine applicatif et sécurisez vos trajectoires SI.
                 </h2>
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
                   DSI, Architectes d'Entreprise et Responsables de Transformation : nous intervenons pour cartographier vos flux, réduire la dette technique, structurer vos référentiels MEGA HOPEX V5 et formaliser des dossiers d'architecture technique (DAT) rigoureux.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300 font-medium">
+                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Expertise Certifiée MEGA HOPEX V5
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Expertise Certifiée MEGA HOPEX V5
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Missions Grands Comptes (Covéa, La Banque Postale)
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Missions Grands Comptes (Covéa, La Banque Postale)
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-blue-400" /> Régie spécialisée ou Forfait ciblé
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Régie spécialisée ou Forfait ciblé
                   </span>
                 </div>
               </div>
@@ -192,7 +195,7 @@ export const Services = () => {
               ].map((item, idx) => (
                 <div key={idx} className="p-6 rounded-2xl glass-card border border-border/80 space-y-3 hover-lift">
                   <h4 className="text-base sm:text-lg font-bold text-foreground flex items-start gap-2.5">
-                    <span className="w-6 h-6 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs shrink-0 mt-0.5 font-black">
+                    <span className="w-6 h-6 rounded-full bg-[#123A35]/10 text-[#123A35] flex items-center justify-center text-xs shrink-0 mt-0.5 font-black">
                       {idx + 1}
                     </span>
                     <span>{item.title}</span>
@@ -201,7 +204,7 @@ export const Services = () => {
                     {item.desc}
                   </p>
                   <div className="pl-8 pt-2">
-                    <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-3 py-1 rounded-lg inline-block">
+                    <span className="text-xs font-semibold text-[#123A35] bg-[#123A35]/10 px-3 py-1 rounded-lg inline-block border border-[#123A35]/15">
                       ✓ Impact RAMSIN : {item.solution}
                     </span>
                   </div>
@@ -268,7 +271,7 @@ export const Services = () => {
                 return (
                   <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
                     <CardHeader className="space-y-3 pb-3">
-                      <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                      <div className="w-12 h-12 rounded-xl bg-[#123A35]/10 text-[#123A35] flex items-center justify-center font-bold">
                         <IconC className="w-6 h-6" />
                       </div>
                       <CardTitle className="text-xl font-bold text-foreground">
@@ -280,13 +283,13 @@ export const Services = () => {
                     </CardHeader>
                     <CardContent className="space-y-3 pt-2">
                       <div className="p-3.5 rounded-xl bg-secondary/60 border border-border/60 space-y-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#123A35] block">
                           Livrables remis à la DSI :
                         </span>
                         <ul className="space-y-1.5 text-xs text-foreground/90 font-medium">
                           {mission.deliverables.map((d, i) => (
                             <li key={i} className="flex items-start gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#123A35] shrink-0 mt-0.5" />
                               <span>{d}</span>
                             </li>
                           ))}
@@ -334,7 +337,7 @@ export const Services = () => {
                 },
               ].map((step, i) => (
                 <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2 relative">
-                  <span className="text-2xl font-black text-blue-600 dark:text-blue-400 opacity-60 block">
+                  <span className="text-2xl font-black text-[#123A35] opacity-60 block">
                     {step.step}
                   </span>
                   <h4 className="text-base font-bold text-foreground">{step.title}</h4>
@@ -346,7 +349,7 @@ export const Services = () => {
 
           {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE SI */}
           <div className="container mx-auto px-4 max-w-5xl">
-            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-blue-500/30 text-center space-y-6">
+            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-[#123A35]/30 text-center space-y-6">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
                 Vous avez une mission d'Architecture SI ou un besoin MEGA HOPEX ?
               </h3>
@@ -357,7 +360,7 @@ export const Services = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                  className="bg-[#123A35] hover:bg-[#0c2724] text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
                 >
                   <Link to="/contact?service=si">
                     Échanger sur une mission d'architecture SI <ArrowRight className="w-4 h-4" />
@@ -369,7 +372,7 @@ export const Services = () => {
                   size="lg"
                   className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
                 >
-                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <Calendar className="w-4 h-4 text-[#123A35]" />
                   Réserver un créneau de 30 min (Gratuit)
                 </Button>
               </div>
@@ -387,27 +390,27 @@ export const Services = () => {
           
           {/* BANDEAU EN-TÊTE DU PÔLE WEB */}
           <div className="container mx-auto px-4 max-w-5xl">
-            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0c2420] via-[#15463f] to-[#0d2e29] text-white border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10 max-w-3xl space-y-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
                   <Code2 className="w-3.5 h-3.5" /> Développement Web & Applications Mobiles
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                  Des solutions numériques performantes, 100% propriétaires et taillées pour votre croissance.
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
+                  Des solutions numériques performantes, conçues sur-mesure et cédées en pleine propriété.
                 </h2>
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
+                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
                   PME, dirigeants et entrepreneurs : nous concevons des plateformes web, applications mobiles (iOS/Android) et outils métiers clés en main. Vous êtes propriétaire de votre code source, libre de tout abonnement captif et accompagné de A à Z.
                 </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-300 font-medium">
+                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 100% Code Source Propriétaire
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Cession Complète du Code Source
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Garantie 30 Jours Post-Lancement Incluse
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Garantie 30 Jours Post-Lancement Incluse
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Stack Moderne (Next.js, React Native, TypeScript)
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Stack Moderne (Next.js, React Native, TypeScript)
                   </span>
                 </div>
               </div>
@@ -459,7 +462,7 @@ export const Services = () => {
                   stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
                   features: [
                     "Temps de chargement instantanés (Core Web Vitals)",
-                    "SEO technique optimisé pour la 1ère page Google",
+                    "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
                     "Design responsive sur smartphone, tablette & desktop",
                   ],
                 },
@@ -469,10 +472,10 @@ export const Services = () => {
                   <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
                     <CardHeader className="space-y-3 pb-3">
                       <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
                           <IconP className="w-6 h-6" />
                         </div>
-                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs">
+                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
                           {proj.badge}
                         </Badge>
                       </div>
@@ -491,7 +494,7 @@ export const Services = () => {
                         <ul className="space-y-1.5 text-xs text-foreground font-medium">
                           {proj.features.map((f, i) => (
                             <li key={i} className="flex items-start gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                               <span>{f}</span>
                             </li>
                           ))}
@@ -548,7 +551,7 @@ export const Services = () => {
                 },
               ].map((step, i) => (
                 <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
-                  <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 opacity-60 block">
+                  <span className="text-2xl font-black text-emerald-600 opacity-60 block">
                     {step.step}
                   </span>
                   <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
@@ -573,13 +576,13 @@ export const Services = () => {
               {[
                 {
                   icon: Lock,
-                  title: "Code 100% Propriétaire",
-                  desc: "L'intégralité du code source vous appartient dès la livraison. Aucun système captif ni abonnement obligatoire.",
+                  title: "Propriété de Votre Projet",
+                  desc: "Vous êtes propriétaire de votre projet, avec cession contractuelle du code source et accès complets à vos comptes d'hébergement.",
                 },
                 {
                   icon: ShieldCheck,
                   title: "Garantie 30 Jours Incluse",
-                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la mise en ligne est corrigé immédiatement sans frais.",
+                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la livraison est pris en charge et résolu en priorité sans frais.",
                 },
                 {
                   icon: Compass,
@@ -595,7 +598,7 @@ export const Services = () => {
                 const IconG = g.icon;
                 return (
                   <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
                       <IconG className="w-5 h-5" />
                     </div>
                     <h4 className="text-base font-bold text-foreground">{g.title}</h4>

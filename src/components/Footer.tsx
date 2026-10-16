@@ -8,7 +8,7 @@ const Footer = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   const trustBadges = [
-    { icon: Lock, label: "Code 100% Propriétaire" },
+    { icon: Lock, label: "Propriété du Code & Livrables" },
     { icon: ShieldCheck, label: "Hébergement Conforme RGPD" },
     { icon: HeartHandshake, label: "Garantie 30 Jours Post-Lancement" },
     { icon: FileText, label: "Guide & Autonomie Inclus" },
@@ -119,7 +119,7 @@ const Footer = () => {
               <li>
                 Localisation : Basés à Fresnes (94) · Interventions Paris, Île-de-France & Remote
               </li>
-              <li className="pt-2 text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
+              <li className="pt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
                 <span>Réponse garantie sous 24h ouvrées</span>
               </li>

@@ -35,7 +35,7 @@ export const PROJECTS_DATA: Project[] = [
     problem: "Référentiel cartographique complexe avec risques de doublons logiciels, flux inter-applicatifs non documentés et manque de visibilité transverse pour les arbitrages de transformation.",
     ramsinRole: "Consultant Architecte SI & Référent MEGA HOPEX V5, intégré aux équipes d'urbanisation de la DSI.",
     solution: "Refonte et enrichissement continu de la cartographie (applications, flux, socles technologiques), contrôle qualité hebdomadaire et automatisation de la gouvernance des métamodèles.",
-    impact: "Réduction drastique des doublons applicatifs, documentation transverse 100% à jour pour les comités d'architecture et visibilité totale pour la direction.",
+    impact: "Cartographie transverse fiabilisée et validée en comités d'architecture, élimination des redondances et meilleure lisibilité pour les arbitrages de la DSI.",
     deliverables: [
       "Cartographie applicative interactive et diagrammes de flux d'échanges",
       "Rapports hebdomadaires de complétude et qualité du référentiel SI",
@@ -65,14 +65,14 @@ export const PROJECTS_DATA: Project[] = [
     problem: "Prise de commande informelle par réseaux sociaux entraînant des erreurs récurrentes, des retards d'expédition et une absence totale de traçabilité.",
     ramsinRole: "Lead Développeur Full-Stack & Architecte Solution (Cadrage, UI/UX, Backend Express, Frontend Next.js 15 et Mobile React Native Expo).",
     solution: "Plateforme tout-en-un avec devis automatisés, validation d'adresses BAN/Nominatim, timeline de suivi GP en 5 étapes, système d'alertes emails et gestion des retards de vol.",
-    impact: "100% des transactions sécurisées, génération instantanée de devis et plusieurs heures de gestion manuelle économisées chaque semaine pour les traiteurs.",
+    impact: "Sécurisation des paiements via Stripe, génération instantanée de devis et gain de temps substantiel sur la gestion manuelle des commandes.",
     targetAudience: "Diaspora Africaine, Traiteurs Indépendants, Voyageurs & Expéditeurs GP",
     deliverables: [
       "Application Web Next.js 15 (App Router, Tailwind CSS, TypeScript)",
       "Application Mobile native iOS & Android (React Native, Expo SDK 54)",
       "Serveur REST Express TypeScript avec ORM Prisma et PostgreSQL",
       "Système de notifications transactionnelles par emails (Resend)",
-      "Code source 100% remis sans dépendance"
+      "Cession intégrale du code source et documentation technique"
     ],
     tasks: [
       "Cadrage fonctionnel et modélisation de la base de données relationnelle (11 tables)",
@@ -96,7 +96,7 @@ export const PROJECTS_DATA: Project[] = [
     problem: "Forte complexité d'interfaçage avec le SI bancaire historique (legacy) et risque de blocage lors des comités de validation d'architecture (Design Authority).",
     ramsinRole: "Consultant Architecte Solution, responsable de la rédaction et de la soutenance des Dossiers d'Architecture Technique (DAT).",
     solution: "Analyses d'impacts rigoureuses, modélisation des processus d'échange et formalisation des DAT avec validation réussie auprès des instances de gouvernance bancaire.",
-    impact: "Projets validés dans les temps impartis par le comité de sécurité bancaire, sans surcoût d'intégration ni dette technique.",
+    impact: "Dossiers d'Architecture Technique validés en Design Authority, sécurisation des flux bancaires et respect du calendrier projet.",
     deliverables: [
       "Dossiers d'Architecture Applicative et Technique (DAT) complets et validés",
       "Matrices d'impacts adhérence projets / stratégie SI globale",
@@ -126,7 +126,7 @@ export const PROJECTS_DATA: Project[] = [
     problem: "Prise de mensurations manuelle par messagerie provoquant des erreurs de confection à l'atelier et freinant l'expansion des ventes.",
     ramsinRole: "Développeur Full-Stack & Designer UX/UI (Conception du configurateur, intégration Stripe/PayPal et espace client sécurisé).",
     solution: "Développement d'un configurateur interactif calculant automatiquement les proportions d'atelier, adossé à une boutique Next.js 15 haute performance.",
-    impact: "Zéro erreur de coupe enregistrée à l'atelier, réduction de 80% du temps de traitement des commandes et accélération des ventes à l'international.",
+    impact: "Automatisation du calcul des mensurations d'atelier, suppression des échanges manuels par messagerie et simplification du parcours d'achat international.",
     targetAudience: "Clients B2C Luxe, Artisans Couturiers, Gestionnaires",
     deliverables: [
       "Configurateur interactif de mensurations avec calcul d'atelier automatique",
@@ -137,7 +137,7 @@ export const PROJECTS_DATA: Project[] = [
     tasks: [
       "Design épuré et responsive aux standards du luxe",
       "Optimisation des Core Web Vitals pour un chargement sous 1 seconde",
-      "Remise du code source 100% propriétaire au gérant"
+      "Cession intégrale du code source et formation à l'administration"
     ],
     tags: ["Next.js 15", "React 19", "TypeScript", "Stripe Checkout", "PayPal API", "PostgreSQL"],
     stack: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL"],
@@ -156,7 +156,7 @@ export const PROJECTS_DATA: Project[] = [
     problem: "Site vieillissant et non adapté aux smartphones, entraînant la perte de prospects qualifiés et une surcharge d'appels téléphoniques.",
     ramsinRole: "Concepteur & Développeur Web (Refonte graphique, intégration SEO locale et formulaire de devis dynamique).",
     solution: "Site vitrine moderne Noir & Or avec consultation des menus, galerie photos haute résolution et formulaire de devis connecté directement à l'email du chef.",
-    impact: "+35% de demandes de devis qualifiées reçues dès le premier mois d'exploitation et sérénité totale pour le dirigeant.",
+    impact: "Réception de demandes de devis complètes et pré-qualifiées directement par email, éliminant les pertes de contacts de l'ancien site.",
     targetAudience: "Entreprises, Organisateurs de Mariages, Particuliers",
     deliverables: [
       "Site vitrine ultra-rapide optimisé mobile, tablette et desktop",

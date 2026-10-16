@@ -35,23 +35,23 @@ export const ServicesSection = () => {
           className={`grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 scroll-fade-up ${cardsVisible ? "is-visible" : ""}`}
         >
           {/* PÔLE A : ARCHITECTURE SI & MEGA HOPEX */}
-          <Card className="flex flex-col border-2 border-blue-500/30 hover:border-blue-500/60 transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
-            <div className="h-2 bg-gradient-to-r from-blue-600 to-indigo-600" />
+          <Card className="flex flex-col border-2 border-[#123A35]/30 hover:border-[#123A35] transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
+            <div className="h-2 bg-gradient-to-r from-[#123A35] via-[#1e544c] to-[#123A35]" />
             <CardHeader className="pb-4 space-y-3">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                <div className="w-12 h-12 rounded-xl bg-[#123A35]/10 text-[#123A35] flex items-center justify-center font-bold">
                   <Building2 className="w-6 h-6" />
                 </div>
-                <Badge variant="secondary" className="bg-blue-500/10 text-blue-700 dark:text-blue-300 text-xs font-bold">
+                <Badge variant="secondary" className="bg-[#123A35]/10 text-[#123A35] text-xs font-bold border border-[#123A35]/20">
                   Pour DSI & Dir. Transformation
                 </Badge>
               </div>
 
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 block">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#123A35] block">
                   Conseil Stratégique & Opérationnel
                 </span>
-                <CardTitle className="text-2xl font-bold mt-1">
+                <CardTitle className="text-2xl font-bold mt-1 text-foreground">
                   Architecture des SI & MEGA HOPEX
                 </CardTitle>
               </div>
@@ -74,7 +74,7 @@ export const ServicesSection = () => {
                     "Trajectoires cibles, urbanisation et accompagnement Product Owner SI",
                   ].map((sub, i) => (
                     <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/50 p-2.5 rounded-xl border border-border/40">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                       <span>{sub}</span>
                     </div>
                   ))}
@@ -82,14 +82,14 @@ export const ServicesSection = () => {
               </div>
 
               <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <Button asChild size="sm" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl gap-2">
+                <Button asChild size="sm" className="w-full sm:w-auto bg-[#123A35] hover:bg-[#0d2a26] text-white font-semibold rounded-xl gap-2 shadow-sm">
                   <Link to="/services?pole=si">
                     Découvrir l'offre Architecture SI <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </Button>
                 <Link
                   to="/contact?service=si"
-                  className="text-xs font-bold text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+                  className="text-xs font-bold text-muted-foreground hover:text-[#123A35] inline-flex items-center gap-1 transition-colors"
                 >
                   Discuter d'une mission →
                 </Link>
@@ -98,23 +98,23 @@ export const ServicesSection = () => {
           </Card>
 
           {/* PÔLE B : DÉVELOPPEMENT WEB & APPLICATIONS SUR-MESURE */}
-          <Card className="flex flex-col border-2 border-emerald-500/30 hover:border-emerald-500/60 transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
-            <div className="h-2 bg-gradient-to-r from-emerald-600 to-teal-600" />
+          <Card className="flex flex-col border-2 border-emerald-500/30 hover:border-emerald-600 transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
+            <div className="h-2 bg-gradient-to-r from-emerald-600 to-[#123A35]" />
             <CardHeader className="pb-4 space-y-3">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
                   <Smartphone className="w-6 h-6" />
                 </div>
-                <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-bold">
+                <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
                   Pour PME, Dirigeants & Startups
                 </Badge>
               </div>
 
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 block">
                   Solutions Numériques Clé en Main
                 </span>
-                <CardTitle className="text-2xl font-bold mt-1">
+                <CardTitle className="text-2xl font-bold mt-1 text-foreground">
                   Web & Applications Sur-Mesure
                 </CardTitle>
               </div>
@@ -133,11 +133,11 @@ export const ServicesSection = () => {
                   {[
                     "Applications Web & SaaS Métier (tableaux de bord, espaces clients)",
                     "Applications Mobiles Cross-Platform (iOS & Android avec React Native)",
-                    "Code 100% Propriétaire remis dès la livraison (zéro dépendance)",
+                    "Propriété intégrale de votre projet (code source et livrables cédés)",
                     "Garantie 30 jours incluse, hébergement souverain et support réactif",
                   ].map((sub, i) => (
                     <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/50 p-2.5 rounded-xl border border-border/40">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <span>{sub}</span>
                     </div>
                   ))}
@@ -145,14 +145,14 @@ export const ServicesSection = () => {
               </div>
 
               <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <Button asChild size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl gap-2">
+                <Button asChild size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl gap-2 shadow-sm">
                   <Link to="/services?pole=web">
                     Découvrir l'offre Web & Mobile <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </Button>
                 <Link
                   to="/contact?service=web"
-                  className="text-xs font-bold text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
+                  className="text-xs font-bold text-muted-foreground hover:text-emerald-700 inline-flex items-center gap-1 transition-colors"
                 >
                   Présenter mon projet →
                 </Link>

@@ -56,7 +56,7 @@ export const Projects = () => {
       ═══════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
         <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-[#123A35]/10 via-[#C7F36B]/15 to-[#123A35]/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
         <div className="container mx-auto px-4 text-center max-w-4xl space-y-5">
           <Badge
@@ -115,8 +115,8 @@ export const Projects = () => {
         <div className="space-y-12">
           {filteredProjects.map((project: Project, index) => {
             const isSI = project.pole === "si";
-            const borderAccent = isSI ? "border-l-blue-500" : "border-l-emerald-500";
-            const badgeBg = isSI ? "bg-blue-500/10 text-blue-700 dark:text-blue-300" : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
+            const borderAccent = isSI ? "border-l-[#123A35]" : "border-l-emerald-600";
+            const badgeBg = isSI ? "bg-[#123A35]/10 text-[#123A35] border border-[#123A35]/20" : "bg-emerald-500/10 text-emerald-800 border border-emerald-500/20";
 
             return (
               <Card
@@ -136,7 +136,7 @@ export const Projects = () => {
                           className="h-7 w-auto object-contain"
                         />
                       )}
-                      <Badge variant="secondary" className={`text-xs font-bold px-3 py-1 ${badgeBg} border-0 flex items-center gap-1.5`}>
+                      <Badge variant="secondary" className={`text-xs font-bold px-3 py-1 ${badgeBg} flex items-center gap-1.5`}>
                         <Building2 className="w-3.5 h-3.5" />
                         {project.clientCompany}
                       </Badge>
@@ -174,8 +174,8 @@ export const Projects = () => {
                     </div>
 
                     {/* Problème / Défi initial */}
-                    <div className="p-4 rounded-2xl bg-rose-500/10 dark:bg-rose-950/20 border border-rose-500/30 space-y-1.5 text-xs">
-                      <span className="font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5 text-[10px]">
+                    <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 space-y-1.5 text-xs">
+                      <span className="font-extrabold uppercase tracking-wider text-rose-700 flex items-center gap-1.5 text-[10px]">
                         <AlertTriangle className="w-3 h-3" /> 2. Problème / Défi
                       </span>
                       <p className="text-foreground/90 leading-relaxed font-medium">
@@ -184,8 +184,8 @@ export const Projects = () => {
                     </div>
 
                     {/* Intervention RAMSIN */}
-                    <div className="p-4 rounded-2xl bg-blue-500/10 dark:bg-blue-950/20 border border-blue-500/30 space-y-1.5 text-xs">
-                      <span className="font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-1.5 text-[10px]">
+                    <div className="p-4 rounded-2xl bg-[#123A35]/10 border border-[#123A35]/25 space-y-1.5 text-xs">
+                      <span className="font-extrabold uppercase tracking-wider text-[#123A35] flex items-center gap-1.5 text-[10px]">
                         <UserCheck className="w-3 h-3" /> 3. Rôle de RAMSIN
                       </span>
                       <p className="text-foreground/90 leading-relaxed font-medium">
@@ -207,11 +207,11 @@ export const Projects = () => {
                     </div>
 
                     {/* Impact & Résultats */}
-                    <div className="p-5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-950/25 border-2 border-emerald-500/30 space-y-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-                        <TrendingUp className="w-4 h-4 text-emerald-500" /> Résultat Mesurable & Impact
+                    <div className="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-500/30 space-y-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+                        <TrendingUp className="w-4 h-4 text-emerald-600" /> Résultat Mesurable & Impact
                       </span>
-                      <p className="text-xs sm:text-sm text-emerald-950 dark:text-emerald-100 font-bold leading-relaxed">
+                      <p className="text-xs sm:text-sm text-emerald-950 font-bold leading-relaxed">
                         {project.impact}
                       </p>
                     </div>
@@ -225,7 +225,7 @@ export const Projects = () => {
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-muted-foreground">
                       {project.deliverables.map((deliv, i) => (
                         <li key={i} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                           <span className="text-foreground/90 font-medium">{deliv}</span>
                         </li>
                       ))}

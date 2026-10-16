@@ -39,7 +39,7 @@ export const About = () => {
       logo: "/logos/covea.png",
       period: "Juin 2023 - Présent",
       category: "Architecture SI & Référentiel Entreprise",
-      accent: "border-l-violet-500",
+      accent: "border-l-[#123A35]",
       description: [
         "Pilotage et enrichissement continu de la cartographie du SI transverse (applications, flux, socles technologiques)",
         "Collaboration directe avec les architectes de domaine et responsables d'applications",
@@ -53,7 +53,7 @@ export const About = () => {
       logo: "/logos/banque-postale.png",
       period: "Septembre 2022 - Mai 2023",
       category: "Architecture Solution & Secteur Bancaire",
-      accent: "border-l-emerald-500",
+      accent: "border-l-emerald-600",
       description: [
         "Cadrage d'architecture applicative et technique sur les projets de transformation du Crédit Immobilier",
         "Analyses d'impacts d'adhérence des projets à la stratégie SI d'entreprise",
@@ -67,7 +67,7 @@ export const About = () => {
       logo: "/logos/marte.png",
       period: "Janvier 2020 - Septembre 2022",
       category: "Expertise MEGA HOPEX & Automatisation API",
-      accent: "border-l-amber-500",
+      accent: "border-l-[#123A35]",
       description: [
         "Accompagnement de migrations d'environnements MEGA 2009 vers MEGA HOPEX V2R1",
         "Développement de scripts d'automatisation en VB.Net et VBScript pour l'API MEGA HOPEX",
@@ -81,7 +81,7 @@ export const About = () => {
       logo: "/logos/societe-generale.png",
       period: "Janvier 2017 - Janvier 2019",
       category: "Développement Web & AMOA Bancaire",
-      accent: "border-l-blue-500",
+      accent: "border-l-emerald-600",
       description: [
         "Conception et développement d'applications web métiers (PHP 7, Symfony, MySQL, JavaScript)",
         "Développement et consommation d'API REST sécurisées",
@@ -110,7 +110,7 @@ export const About = () => {
     {
       title: "Architecture & Cartographie SI",
       icon: Layers,
-      accent: "border-l-violet-500",
+      accent: "border-l-[#123A35]",
       items: [
         "MEGA HOPEX V5 & V2R1",
         "Cartographie Applicative & Flux",
@@ -124,7 +124,7 @@ export const About = () => {
     {
       title: "Développement Web & Mobile Full-Stack",
       icon: Code2,
-      accent: "border-l-blue-500",
+      accent: "border-l-emerald-600",
       items: [
         "Next.js 15 / 16 (App Router)",
         "React Native & Expo (iOS / Android)",
@@ -138,7 +138,7 @@ export const About = () => {
     {
       title: "Méthodologie, Cloud & DevOps",
       icon: Database,
-      accent: "border-l-emerald-500",
+      accent: "border-l-[#123A35]",
       items: [
         "Product Ownership & User Stories",
         "Méthodologie Agile / Scrum",
@@ -166,7 +166,7 @@ export const About = () => {
     <>
       <SEO
         title="À Propos de RAMSIN Conseil | Consultant Fondateur & Architecte SI Senior"
-        description="Découvrez le profil de RAMSIN Conseil : 7+ années d'expérience en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
+        description="Découvrez le profil de RAMSIN Conseil : 7 ans d'expérience professionnelle en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
         canonical="https://www.ramsin.fr/about"
       />
 
@@ -175,12 +175,12 @@ export const About = () => {
       ═══════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-b border-border/60 pt-12 pb-16 md:pt-18 md:pb-22">
         <div className="absolute inset-0 -z-10 dot-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-blue-500/10 via-emerald-500/8 to-blue-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-r from-[#123A35]/10 via-[#C7F36B]/15 to-[#123A35]/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
         <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           {/* Badges de statut & qualification */}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-xs">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-bold text-emerald-800 shadow-xs">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -224,7 +224,7 @@ export const About = () => {
               href={contact.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full flex items-center gap-1.5 transition-colors font-bold shadow-xs hover:shadow-md"
+              className="bg-[#0A66C2] hover:bg-[#084e96] text-white px-4 py-2 rounded-full flex items-center gap-1.5 transition-colors font-bold shadow-xs hover:shadow-md"
             >
               <ExternalLink className="w-3.5 h-3.5" /> Profil LinkedIn Vérifié
             </a>
@@ -266,8 +266,8 @@ export const About = () => {
               },
               {
                 icon: ShieldCheck,
-                title: "4. 100% Souveraineté & Propriété",
-                desc: "Vos référentiels MEGA HOPEX sont documentés pour vos équipes et votre code source applicatif vous est remis à 100% sans aucun abonnement captif.",
+                title: "4. Souveraineté & Propriété Contractuelle",
+                desc: "Vos référentiels d'architecture sont documentés pour vos équipes internes et l'intégralité du code source applicatif vous est cédée sans aucun abonnement captif.",
               },
             ].map((adv, i) => {
               const IconA = adv.icon;
@@ -301,15 +301,15 @@ export const About = () => {
               Dans le monde du numérique, deux univers coexistent souvent sans se comprendre : les cabinets de conseil stratégique qui produisent des schémas théoriques, et les développeurs qui codent sans vision d'ensemble du système d'information.
             </p>
             <p>
-              <strong>RAMSIN Conseil a été fondé pour faire le pont entre ces deux mondes.</strong> Avec 7+ années passées au cœur de DSI de grandes entreprises régulées (Covéa, La Banque Postale, Société Générale) et une maîtrise approfondie du développement Full-Stack moderne (Next.js, React Native, TypeScript, PostgreSQL), j'apporte une double compétence rare :
+              <strong>RAMSIN Conseil a été fondé pour faire le pont entre ces deux mondes.</strong> Fort de 7 années d'expérience professionnelle au cœur de DSI de grandes entreprises régulées (Covéa, La Banque Postale, Société Générale) et d'une maîtrise approfondie du développement Full-Stack moderne (Next.js, React Native, TypeScript, PostgreSQL), j'apporte une double compétence rare :
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm text-foreground font-semibold">
-              <div className="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+              <div className="p-3.5 rounded-xl bg-[#123A35]/10 border border-[#123A35]/25 flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                 <span>Pour la DSI : Cartographies rigoureuses, conformité MEGA HOPEX V5 et passage réussi des DAT.</span>
               </div>
               <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <span>Pour les Métiers : Applications fluides, sécurisées, livrées dans les délais avec code propriétaire.</span>
               </div>
             </div>
@@ -357,7 +357,7 @@ export const About = () => {
                   <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
                     {exp.description.map((desc, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{desc}</span>
                       </li>
                     ))}

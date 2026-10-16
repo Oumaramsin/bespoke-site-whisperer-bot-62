@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ArrowRight } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,13 +42,8 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
-            
-            {/* Bascule de Mode Sombre / Clair */}
-            <div className="pl-2 pr-1">
-              <ThemeToggle />
-            </div>
 
-            <Button asChild size="sm" className="ml-1 gap-1.5 font-semibold animate-pulse-glow rounded-lg">
+            <Button asChild size="sm" variant="lime" className="ml-2 gap-1.5 rounded-lg font-extrabold shadow-sm hover:shadow-md transition-all">
               <Link to="/contact">
                 Échanger sur votre projet <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -58,7 +52,6 @@ const Navbar = () => {
 
           {/* Mobile Actions & Menu Button */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
             <button
               className="min-h-[44px] min-w-[44px] p-2 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/80 focus:outline-hidden focus:ring-2 focus:ring-primary/40"
               onClick={toggleMenu}
@@ -90,7 +83,7 @@ const Navbar = () => {
                   {item.name}
                 </Link>
               ))}
-              <Button asChild className="mt-2 gap-1.5" size="sm">
+              <Button asChild variant="lime" className="mt-2 gap-1.5 font-extrabold" size="sm">
                 <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                   Échanger sur votre projet <ArrowRight className="w-3.5 h-3.5" />
                 </Link>

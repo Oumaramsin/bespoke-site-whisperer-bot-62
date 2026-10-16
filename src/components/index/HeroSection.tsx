@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCountUp } from "@/hooks/useCountUp";
+import { trackConversionEvent } from "@/lib/analytics";
+import MethodMotionSection from "@/components/index/MethodMotionSection";
 
 const AnimatedKPI = ({
   value,
@@ -35,7 +37,7 @@ const AnimatedKPI = ({
       <span
         ref={ref}
         aria-label={`${value}${suffix} ${label}`}
-        className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 block tracking-tight"
+        className="text-2xl sm:text-3xl font-black text-[#123A35] block tracking-tight"
       >
         {displayValue}
       </span>
@@ -61,7 +63,7 @@ const TextKPI = ({
   sublabel?: string;
 }) => (
   <div className="p-4 sm:p-5 rounded-2xl glass-card text-center space-y-1 hover-lift">
-    <span className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400 block tracking-tight">
+    <span className="text-2xl sm:text-3xl font-black text-[#123A35] block tracking-tight">
       {value}
     </span>
     <span className="text-xs sm:text-sm text-foreground font-bold block">
@@ -79,6 +81,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   const scrollToReservation = () => {
+    trackConversionEvent("click_booking_calendly", { source: "hero_banner" });
     const el = document.getElementById("reservation-calendrier");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
@@ -93,14 +96,14 @@ const HeroSection = () => {
       <div className="absolute inset-0 dot-grid-pattern -z-10 pointer-events-none" />
 
       {/* Halo lumineux subtil */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[520px] bg-gradient-to-b from-blue-500/10 via-indigo-500/5 to-transparent -z-10 pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[520px] bg-gradient-to-b from-[#123A35]/10 via-[#C7F36B]/5 to-transparent -z-10 pointer-events-none" />
 
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto space-y-10 text-center">
           
           {/* 1. BADGES D'ACCÈS & STATUT */}
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-card border-emerald-500/30 text-emerald-800 text-xs font-semibold shadow-xs">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -132,17 +135,22 @@ const HeroSection = () => {
             </p>
           </div>
 
+          {/* 2.5 LECTEUR CINÉMA MOTION DESIGN : Démonstration vivante & problème client */}
+          <div className="pt-1 pb-2">
+            <MethodMotionSection embedded />
+          </div>
+
           {/* 3. DÉCISION IMMÉDIATE : LES DEUX PARCOURS COMMERCIAUX */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left pt-2">
             
             {/* PARCOURS A : ARCHITECTURE SI & MEGA HOPEX */}
-            <div className="p-6 sm:p-8 rounded-2xl glass-card border border-blue-500/30 hover:border-blue-500/60 transition-all hover-lift flex flex-col justify-between relative group">
+            <div className="p-6 sm:p-8 rounded-2xl glass-card border border-[#123A35]/25 hover:border-[#123A35]/60 transition-all hover-lift flex flex-col justify-between relative group">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+                  <div className="w-12 h-12 rounded-xl bg-[#123A35]/10 text-[#123A35] flex items-center justify-center font-bold">
                     <Building2 className="w-6 h-6" />
                   </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#123A35]/10 text-[#123A35]">
                     Pour DSI & Dir. Transformation
                   </span>
                 </div>
@@ -158,15 +166,15 @@ const HeroSection = () => {
 
                 <ul className="space-y-2 text-xs sm:text-sm text-foreground/90 pt-1">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                     <span>Livrables tangibles : cartographies, matrices d'impact, roadmap</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                     <span>Certification MEGA HOPEX & retours d'expérience grands comptes</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                     <span>Aide à la décision stratégique & autonomisation de vos équipes</span>
                   </li>
                 </ul>
@@ -176,15 +184,18 @@ const HeroSection = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl gap-2 shadow-md hover:shadow-lg transition-all"
+                  className="w-full bg-[#123A35] hover:bg-[#1b5049] text-white font-bold rounded-xl gap-2 shadow-md hover:shadow-lg transition-all"
                 >
-                  <Link to="/contact?service=si">
+                  <Link
+                    to="/contact?service=si"
+                    onClick={() => trackConversionEvent("select_pole", { pole: "si", source: "hero_card" })}
+                  >
                     Échanger sur une mission SI <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Link
                   to="/services?pole=si"
-                  className="text-xs font-semibold text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors pt-1"
+                  className="text-xs font-semibold text-muted-foreground hover:text-[#123A35] transition-colors pt-1"
                 >
                   Découvrir les livrables & la méthode SI →
                 </Link>
@@ -192,13 +203,13 @@ const HeroSection = () => {
             </div>
 
             {/* PARCOURS B : DÉVELOPPEMENT WEB & APPLICATIONS SUR-MESURE */}
-            <div className="p-6 sm:p-8 rounded-2xl glass-card border border-emerald-500/30 hover:border-emerald-500/60 transition-all hover-lift flex flex-col justify-between relative group">
+            <div className="p-6 sm:p-8 rounded-2xl glass-card border border-[#C7F36B]/60 hover:border-[#C7F36B] transition-all hover-lift flex flex-col justify-between relative group shadow-xs">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                  <div className="w-12 h-12 rounded-xl bg-[#C7F36B]/25 text-[#123A35] flex items-center justify-center font-bold">
                     <Smartphone className="w-6 h-6" />
                   </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#C7F36B]/30 text-[#123A35]">
                     Pour PME, Dirigeants & Startups
                   </span>
                 </div>
@@ -214,15 +225,15 @@ const HeroSection = () => {
 
                 <ul className="space-y-2 text-xs sm:text-sm text-foreground/90 pt-1">
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                    <span><strong>100% Code Propriétaire</strong> remis sans dépendance ni abonnement</span>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                    <span><strong>Propriété intégrale de votre projet</strong> : code source et comptes cédés sans abonnement captif</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <span>Méthode agile transparente : cadrage, démo continue, mise en prod</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <span>Technologies modernes pérennes : Next.js, React Native, TypeScript</span>
                   </li>
                 </ul>
@@ -232,15 +243,19 @@ const HeroSection = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl gap-2 shadow-md hover:shadow-lg transition-all"
+                  variant="lime"
+                  className="w-full rounded-xl gap-2 font-extrabold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
                 >
-                  <Link to="/contact?service=web">
+                  <Link
+                    to="/contact?service=web"
+                    onClick={() => trackConversionEvent("select_pole", { pole: "web", source: "hero_card" })}
+                  >
                     Présenter mon projet web / mobile <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Link
                   to="/services?pole=web"
-                  className="text-xs font-semibold text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors pt-1"
+                  className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors pt-1"
                 >
                   Découvrir la méthode & les garanties web →
                 </Link>
@@ -249,25 +264,37 @@ const HeroSection = () => {
 
           </div>
 
-          {/* 4. BANDEAU DE CONTACT DIRECT MULTICANIMAL */}
+          {/* 4. BANDEAU DE CONTACT DIRECT MULTICANAL (Double CTA) */}
           <div className="p-4 sm:p-5 rounded-2xl bg-secondary/50 border border-border/80 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm">
             <div className="flex items-center gap-2 text-foreground font-semibold">
               <Calendar className="w-4 h-4 text-primary" />
               <span>Besoin d'un premier avis d'expert ?</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-muted-foreground">
               <button
                 onClick={scrollToReservation}
                 className="text-primary font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
               >
-                Réserver un créneau de 30 min (Gratuit) →
+                Réserver un créneau de 30 min (Offert) →
               </button>
+
+              <span className="text-border">ou</span>
+
+              <Link
+                to="/contact?tunnel=form#formulaire-contact"
+                state={{ scrollToForm: true }}
+                onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "hero_banner" })}
+                className="text-foreground hover:text-primary font-bold underline decoration-primary/40 inline-flex items-center gap-1"
+              >
+                Décrire mon besoin en 2 min
+              </Link>
 
               <span className="hidden sm:inline text-border">|</span>
 
               <a
                 href="tel:+33761518890"
+                onClick={() => trackConversionEvent("click_phone")}
                 className="hover:text-foreground font-medium inline-flex items-center gap-1.5 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-primary" /> +33 (0)7 61 51 88 90
@@ -277,6 +304,7 @@ const HeroSection = () => {
 
               <a
                 href="mailto:contact@ramsin.fr"
+                onClick={() => trackConversionEvent("copy_email")}
                 className="hover:text-foreground font-medium inline-flex items-center gap-1.5 transition-colors"
               >
                 <Mail className="w-3.5 h-3.5 text-primary" /> contact@ramsin.fr
@@ -289,39 +317,38 @@ const HeroSection = () => {
             <AnimatedKPI
               value={7}
               label="Années d'Expérience SI"
-              sublabel="Covéa, La Banque Postale"
+              sublabel="En DSI & Grands Comptes"
               suffix="+"
             />
             <TextKPI
               value="V5 Certifiée"
               label="Expertise MEGA HOPEX"
-              sublabel="Architecture & Référentiels"
-            />
-            <AnimatedKPI
-              value={100}
-              label="Code 100% Propriétaire"
-              sublabel="Liberté & Sérénité totale"
-              suffix="%"
+              sublabel="Cartographie & Référentiels"
             />
             <TextKPI
-              value="Full-Stack"
-              label="Web & Mobile Réactifs"
-              sublabel="Next.js, React Native, Node"
+              value="Cédé à 100%"
+              label="Propriété de Vos Livrables"
+              sublabel="Code source & comptes remis"
+            />
+            <TextKPI
+              value="Bac+5"
+              label="Diplôme Expert SI"
+              sublabel="Master 2 MIAGE & Ingénierie"
             />
           </div>
 
           {/* 6. ENGAGEMENTS DE RÉASSURANCE CLIENT */}
           <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 text-xs sm:text-sm text-muted-foreground pt-2 font-medium">
             <span className="flex items-center gap-2">
-              <HeartHandshake className="w-4 h-4 text-blue-600" /> Échange
-              initial 30 min offert
+              <HeartHandshake className="w-4 h-4 text-primary" /> Échange
+              initial 30 min offert & sans engagement
             </span>
             <span className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-blue-600" /> Explications
-              100% en langage clair
+              <ShieldCheck className="w-4 h-4 text-primary" /> Explications
+              en langage clair & sans jargon
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse sous
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse garantie sous
               24h ouvrées
             </span>
           </div>

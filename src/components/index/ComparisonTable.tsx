@@ -21,12 +21,12 @@ const ComparisonTable = () => {
     {
       criterion: "Propriété & Liberté",
       traditional: "Code propriétaire fermé, client verrouillé et dépendant pour chaque modification.",
-      ramsin: "Propriété 100% à votre nom (code source, domaine, serveurs) + Guide d'autonomie."
+      ramsin: "Vous restez propriétaire de votre projet : code source complet, accès aux comptes et livrables remis."
     },
     {
       criterion: "Garantie Post-Lancement",
       traditional: "Aucune assistance offerte ou facturation au prix fort dès le moindre besoin.",
-      ramsin: "Garantie 30 jours offerte : correction immédiate et gratuite du moindre dysfonctionnement."
+      ramsin: "Garantie 30 jours offerte : prise en charge et résolution prioritaire sans frais de tout aléa technique."
     }
   ];
 
@@ -70,13 +70,13 @@ const ComparisonTable = () => {
                 <ShieldCheck className="w-4 h-4 text-primary hidden sm:inline" />
                 <span>Critères de Projet</span>
               </div>
-              <div className="col-span-4 sm:col-span-4 text-rose-600 dark:text-rose-400 flex items-center gap-2 font-extrabold px-3 py-1.5 rounded-xl bg-rose-500/15 dark:bg-rose-950/40 border border-rose-500/30 w-fit shadow-2xs">
+              <div className="col-span-4 sm:col-span-4 text-rose-700 flex items-center gap-2 font-extrabold px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 w-fit shadow-2xs">
                 <div className="w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
                   <X className="w-3 h-3 stroke-[3]" />
                 </div>
                 <span className="truncate">Agence / Méthode Classique</span>
               </div>
-              <div className="col-span-4 sm:col-span-5 text-emerald-700 dark:text-emerald-300 flex items-center justify-between font-black p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/20 via-emerald-500/15 to-emerald-500/20 border border-emerald-500/40 shadow-xs">
+              <div className="col-span-4 sm:col-span-5 text-emerald-800 flex items-center justify-between font-black p-2.5 rounded-xl bg-gradient-to-r from-emerald-500/20 via-emerald-500/15 to-emerald-500/20 border border-emerald-500/40 shadow-xs">
                 <span className="flex items-center gap-2 truncate">
                   <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
                     <Check className="w-3 h-3 stroke-[3]" />
@@ -103,18 +103,18 @@ const ComparisonTable = () => {
 
                   {/* Colonne Méthode Classique */}
                   <div className="col-span-4 sm:col-span-4 text-muted-foreground pr-3 flex items-start gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 mt-0.5">
                       <X className="w-3 h-3 stroke-[2.5]" />
                     </div>
                     <span className="leading-relaxed font-medium">{row.traditional}</span>
                   </div>
 
                   {/* Colonne Mon Accompagnement Ramsin (Mise en avant stylisée) */}
-                  <div className="col-span-4 sm:col-span-5 font-semibold text-foreground bg-emerald-500/10 dark:bg-emerald-500/15 p-3.5 rounded-xl border border-emerald-500/30 flex items-start gap-2.5 shadow-2xs">
+                  <div className="col-span-4 sm:col-span-5 font-semibold text-foreground bg-emerald-50 p-3.5 rounded-xl border border-emerald-500/30 flex items-start gap-2.5 shadow-2xs">
                     <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                       <Check className="w-3 h-3" />
                     </div>
-                    <span className="leading-relaxed text-emerald-950 dark:text-emerald-200 font-bold">
+                    <span className="leading-relaxed text-emerald-950 font-bold">
                       {row.ramsin}
                     </span>
                   </div>

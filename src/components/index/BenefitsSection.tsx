@@ -60,7 +60,7 @@ const BenefitsSection = () => {
                   <div className="p-3 bg-primary/10 rounded-xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     <IconComp className="w-6 h-6" />
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                     {item.highlight}
                   </span>
                 </div>
@@ -78,7 +78,7 @@ const BenefitsSection = () => {
                   {item.description}
                 </p>
 
-                <div className="pt-2 flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                <div className="pt-2 flex items-center gap-1.5 text-xs text-emerald-700 font-semibold">
                   <CheckCircle2 className="w-4 h-4" /> Promesse respectée sur 100% de nos projets
                 </div>
               </div>

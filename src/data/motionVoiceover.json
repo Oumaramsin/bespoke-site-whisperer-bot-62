@@ -1,0 +1,180 @@
+{
+  "scenes": [
+    {
+      "id": 1,
+      "speaker": "narrator",
+      "title": "L'accroche",
+      "shortTitle": "L'accroche",
+      "start": 0.0,
+      "end": 4.466,
+      "cues": [
+        {
+          "start": 0.48,
+          "end": 3.946,
+          "text": "Votre entreprise évolue. Mais est-ce que vos outils évoluent avec elle ?"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "speaker": "narrator",
+      "title": "Reconnaître le problème",
+      "shortTitle": "Le problème",
+      "start": 4.466,
+      "end": 13.986,
+      "cues": [
+        {
+          "start": 4.946,
+          "end": 7.955,
+          "text": "Des fichiers Excel partout. Des tâches répétées."
+        },
+        {
+          "start": 8.335,
+          "end": 11.341,
+          "text": "Un site qui reçoit des visites, mais génère trop peu de demandes."
+        },
+        {
+          "start": 11.721,
+          "end": 13.466,
+          "text": "Une idée d'application qui n'avance pas."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "speaker": "narrator",
+      "title": "Le coût du problème",
+      "shortTitle": "Le coût réel",
+      "start": 13.986,
+      "end": 25.386,
+      "cues": [
+        {
+          "start": 14.466,
+          "end": 20.895,
+          "text": "Alors, vos équipes compensent. Elles copient, ressaisissent, relancent. Jour après jour."
+        },
+        {
+          "start": 21.275,
+          "end": 24.866,
+          "text": "Et ce temps-là, elles ne le consacrent pas à vos clients ni à votre croissance."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "speaker": "oumar",
+      "title": "Oumar Sidibé · Fondateur",
+      "shortTitle": "Oumar Sidibé",
+      "start": 25.386,
+      "end": 34.099,
+      "cues": [
+        {
+          "start": 25.866,
+          "end": 28.722,
+          "text": "Je suis Oumar Sidibé, fondateur de RAMSIN."
+        },
+        {
+          "start": 29.102,
+          "end": 33.579,
+          "text": "J'aide les entreprises à transformer leurs besoins métier en solutions web et mobiles concrètes."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "speaker": "narrator",
+      "title": "La méthode : partir du vrai besoin",
+      "shortTitle": "La méthode",
+      "start": 34.099,
+      "end": 44.46,
+      "cues": [
+        {
+          "start": 34.579,
+          "end": 39.064,
+          "text": "On commence par comprendre ce qui bloque, qui utilise la solution et ce qu'il faut vraiment améliorer."
+        },
+        {
+          "start": 39.444,
+          "end": 43.94,
+          "text": "Puis on définit les priorités, le périmètre, les étapes et le budget avant de développer."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "speaker": "narrator",
+      "title": "Des solutions concrètes",
+      "shortTitle": "Les solutions",
+      "start": 44.46,
+      "end": 54.347,
+      "cues": [
+        {
+          "start": 44.94,
+          "end": 47.952,
+          "text": "Nous concevons un site pensé pour transformer les visiteurs en demandes,"
+        },
+        {
+          "start": 48.331,
+          "end": 50.946,
+          "text": "une application web pour simplifier vos opérations,"
+        },
+        {
+          "start": 51.326,
+          "end": 53.827,
+          "text": "ou une application mobile adaptée à vos utilisateurs."
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "speaker": "narrator",
+      "title": "Rassurer sur la réalisation",
+      "shortTitle": "La réalisation",
+      "start": 54.347,
+      "end": 63.645,
+      "cues": [
+        {
+          "start": 54.827,
+          "end": 59.378,
+          "text": "Vous voyez le produit prendre forme. Vous validez les étapes, vous testez la solution"
+        },
+        {
+          "start": 59.758,
+          "end": 63.125,
+          "text": "et vous gardez de la visibilité sur ce qui est construit et ce qui sera livré."
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "speaker": "oumar",
+      "title": "Passer à l'action",
+      "shortTitle": "Passer à l'action",
+      "start": 63.645,
+      "end": 82.138,
+      "cues": [
+        {
+          "start": 64.125,
+          "end": 67.953,
+          "text": "Vous n'avez pas besoin d'avoir toutes les réponses, ni un cahier des charges parfait."
+        },
+        {
+          "start": 68.333,
+          "end": 72.169,
+          "text": "Vous avez juste besoin d'expliquer ce qui vous ralentit ou ce que vous voulez créer."
+        },
+        {
+          "start": 72.549,
+          "end": 76.901,
+          "text": "Parlons-en lors d'un premier échange de 30 minutes, gratuit et sans engagement."
+        },
+        {
+          "start": 77.281,
+          "end": 81.618,
+          "text": "RAMSIN. Des outils numériques conçus pour faire avancer votre activité."
+        }
+      ]
+    }
+  ],
+  "total": 82.138
+}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Award, AlertTriangle, TrendingUp, Sparkles, Building2, CheckCircle2, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { trackConversionEvent } from "@/lib/analytics";
 
 export const ProjectsSection = () => {
   const featuredProjects = PROJECTS_DATA.filter((p) => p.featured).slice(0, 3);
@@ -14,7 +15,7 @@ export const ProjectsSection = () => {
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-secondary/15 via-background to-secondary/15 relative overflow-hidden">
       {/* Background radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-r from-blue-500/5 via-emerald-500/5 to-purple-500/5 blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-r from-[#123A35]/5 via-[#C7F36B]/5 to-emerald-500/5 blur-3xl pointer-events-none -z-10" />
 
       {/* Wave separator top */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-[1px]">
@@ -83,8 +84,8 @@ export const ProjectsSection = () => {
                 <div className="space-y-3.5">
                   {/* 1. Défi Initial */}
                   {project.problem && (
-                    <div className="p-3.5 rounded-xl bg-rose-500/10 dark:bg-rose-950/30 border border-rose-500/25 text-xs space-y-1">
-                      <div className="font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                    <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs space-y-1">
+                      <div className="font-extrabold text-rose-700 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
                         <AlertTriangle className="w-3.5 h-3.5" /> 1. Le Défi Initial
                       </div>
                       <p className="text-foreground/90 font-medium leading-relaxed">
@@ -95,8 +96,8 @@ export const ProjectsSection = () => {
 
                   {/* 2. Intervention RAMSIN */}
                   {project.solution && (
-                    <div className="p-3.5 rounded-xl bg-primary/10 dark:bg-primary/15 border border-primary/25 text-xs space-y-1">
-                      <div className="font-extrabold text-primary flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                    <div className="p-3.5 rounded-xl bg-[#123A35]/10 border border-[#123A35]/25 text-xs space-y-1">
+                      <div className="font-extrabold text-[#123A35] flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
                         <Sparkles className="w-3.5 h-3.5 text-amber-500" /> 2. La Solution Sur-Mesure
                       </div>
                       <p className="text-foreground/90 font-medium leading-relaxed">
@@ -107,11 +108,11 @@ export const ProjectsSection = () => {
 
                   {/* 3. Résultat & Impact Métier */}
                   {project.impact && (
-                    <div className="p-3.5 rounded-xl bg-emerald-500/15 dark:bg-emerald-500/20 border-2 border-emerald-500/40 text-xs space-y-1 shadow-2xs">
-                      <div className="font-black text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
-                        <TrendingUp className="w-3.5 h-3.5 text-emerald-500" /> 3. Résultat & Impact Concret
+                    <div className="p-3.5 rounded-xl bg-emerald-50 border-2 border-emerald-500/30 text-xs space-y-1 shadow-2xs">
+                      <div className="font-black text-emerald-800 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                        <TrendingUp className="w-3.5 h-3.5 text-emerald-600" /> 3. Résultat & Impact Concret
                       </div>
-                      <p className="text-emerald-950 dark:text-emerald-100 font-extrabold leading-relaxed">
+                      <p className="text-emerald-950 font-extrabold leading-relaxed">
                         {project.impact}
                       </p>
                     </div>
@@ -130,6 +131,12 @@ export const ProjectsSection = () => {
 
                   <Link
                     to="/projects"
+                    onClick={() =>
+                      trackConversionEvent("click_case_study", {
+                        projectId: project.id,
+                        title: project.title,
+                      })
+                    }
                     className="text-xs font-extrabold text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-1 group-hover:translate-x-1"
                   >
                     Voir l'étude de cas complète <ArrowUpRight className="w-4 h-4 ml-0.5" />

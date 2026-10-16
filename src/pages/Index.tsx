@@ -17,19 +17,19 @@ const Index = () => {
         canonical="https://www.ramsin.fr/"
       />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/10">
-        {/* 1. HERO SECTION (Titre & Valeur Métier) */}
+        {/* 1. HERO SECTION (Titre, Vidéo Motion Design & Choix de Parcours) */}
         <HeroSection />
 
         {/* 2. BANDEAU DE PREUVE SOCIALE IMMÉDIATE (Logos Grands Groupes) */}
         <ClientsSection />
 
-        {/* 3. ÉTUDES DE CAS (Problème ➔ Solution ➔ Impact) */}
+        {/* 4. ÉTUDES DE CAS (Problème ➔ Solution ➔ Impact) */}
         <ProjectsSection />
 
-        {/* 4. OFFRES & SERVICES COMPLET (Sites Web, Apps, Maintenance & Architecture SI) */}
+        {/* 5. OFFRES & SERVICES COMPLET (Sites Web, Apps, Maintenance & Architecture SI) */}
         <ServicesSection />
 
-        {/* 5. NOTRE ENGAGEMENT POUR VOTRE CROISSANCE (Vos 3 Objectifs & 5 Piliers) */}
+        {/* 6. NOTRE ENGAGEMENT POUR VOTRE CROISSANCE (Vos 3 Objectifs & 5 Piliers) */}
         <WhyChooseUsSection />
 
         {/* 6. TABLEAU COMPARATIF (Méthode Classique ❌ vs L'Approche RAMSIN ✅) */}

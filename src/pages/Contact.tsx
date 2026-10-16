@@ -64,6 +64,7 @@ import {
   formatServiceType,
   formatTimeline,
 } from "@/services/resendService";
+import { trackConversionEvent } from "@/lib/analytics";
 
 const formSchema = z.object({
   name: z
@@ -93,12 +94,20 @@ export const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<FormValues | null>(null);
   const [honeypot, setHoneypot] = useState("");
+  const [hasTrackedFormStart, setHasTrackedFormStart] = useState(false);
   const { toast } = useToast();
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
   const { ref: formRef, isVisible: formVisible } = useScrollAnimation();
   const { ref: faqRef, isVisible: faqVisible } = useScrollAnimation();
+
+  // Détection du mode express tunnel
+  const isExpressTunnel =
+    location.hash === "#formulaire-contact" ||
+    Boolean(location.state?.scrollToForm) ||
+    searchParams.get("tunnel") === "form" ||
+    searchParams.get("mode") === "form";
 
   // Détection du service passé en paramètre URL ou state
   const serviceParam = searchParams.get("service") || searchParams.get("need");
@@ -118,9 +127,29 @@ export const Contact = () => {
     },
   });
 
+  const handleFormInteraction = () => {
+    if (!hasTrackedFormStart) {
+      setHasTrackedFormStart(true);
+      trackConversionEvent("start_form_contact", {
+        tunnel: isExpressTunnel ? "express_2min" : "direct",
+      });
+    }
+  };
+
   useEffect(() => {
-    // Gestion du scroll automatique vers le calendrier
-    if (location.state?.scrollToBooking) {
+    // Gestion du tunnel express vers le formulaire écrit
+    if (isExpressTunnel) {
+      const el = document.getElementById("formulaire-contact");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
+      }
+    } else if (
+      location.state?.scrollToBooking ||
+      searchParams.get("tunnel") === "booking" ||
+      location.hash === "#reservation-calendrier"
+    ) {
       const el = document.getElementById("reservation-calendrier");
       if (el) {
         setTimeout(() => {
@@ -143,7 +172,7 @@ export const Contact = () => {
         form.setValue("subject", "Demande d'expertise : MEGA HOPEX V5");
       }
     }
-  }, [location.state, form]);
+  }, [location.state, location.hash, searchParams, form, isExpressTunnel]);
 
   // Envoi direct sans popup intrusif pour maximiser la conversion
   const onSubmit = async (data: FormValues) => {
@@ -167,6 +196,13 @@ export const Contact = () => {
         message: data.message,
       });
 
+      // Suivi de conversion éthique
+      trackConversionEvent("submit_contact_form", {
+        serviceType: data.serviceType,
+        timeline: data.timeline,
+        pole: data.serviceType.includes("si") || data.serviceType.includes("hopex") ? "si" : "web",
+      });
+
       setSubmittedData(data);
       setSubmitted(true);
       form.reset();
@@ -177,6 +213,12 @@ export const Contact = () => {
       });
     } catch (error) {
       // En cas de secours, afficher quand même la confirmation pour ne pas frustrer le prospect
+      trackConversionEvent("submit_contact_form", {
+        serviceType: data.serviceType,
+        timeline: data.timeline,
+        fallback: true,
+      });
+
       setSubmittedData(data);
       setSubmitted(true);
       form.reset();
@@ -199,7 +241,7 @@ export const Contact = () => {
     {
       question: "Quelle est la différence entre une mission SI et un projet Web ?",
       answer:
-        "Pour l'Architecture SI (MEGA HOPEX, urbanisation, DAT), nous intervenons auprès des DSI sous forme de mission en régie ou forfait de cadrage. Pour les projets Web et mobiles, nous prenons en charge la conception de A à Z avec un devis forfaitaire ferme et remise du code source 100% propriétaire.",
+        "Pour l'Architecture SI (MEGA HOPEX, urbanisation, DAT), nous intervenons auprès des DSI sous forme de mission en régie ou forfait de cadrage d'architecture. Pour les projets Web et mobiles, nous assurons la conception avec un devis forfaitaire ferme et cession contractuelle des droits sur le code source développé.",
     },
     {
       question: "Quel est le délai habituel pour démarrer une mission ou un projet ?",
@@ -207,14 +249,14 @@ export const Contact = () => {
         "Grâce à notre structure indépendante réactive sans lourdeur administrative, nous pouvons généralement démarrer une mission ou un projet sous 1 à 2 semaines après validation de la proposition.",
     },
     {
-      question: "Suis-je 100% propriétaire de mon code et de mes livrables ?",
+      question: "Suis-je propriétaire de mon projet et de mes livrables ?",
       answer:
-        "Absolument. Contrairement aux agences qui imposent des abonnements captifs ou des technologies fermées, nous vous remettons l'intégralité du code source sur votre propre dépôt GitHub/GitLab ainsi que tous les fichiers d'architecture sans aucune dépendance.",
+        "Absolument. Vous restez pleinement propriétaire de votre projet : le code source complet vous est transféré sur votre propre dépôt (GitHub/GitLab) et tous les comptes d'hébergement sont configurés à votre nom, sans aucun abonnement captif.",
     },
     {
       question: "Que se passe-t-il après la livraison de mon projet web/mobile ?",
       answer:
-        "Tous nos développements bénéficient d'une garantie de 30 jours offerte post-lancement : tout dysfonctionnement est résolu immédiatement sans frais. Nous assurons également une session de prise en main et proposons des forfaits de maintenance pour votre sérénité.",
+        "Tous nos développements bénéficient d'une garantie de 30 jours offerte post-lancement : tout dysfonctionnement identifié est corrigé en priorité sans frais. Nous assurons également une session de prise en main pour votre autonomie et pouvons proposer des forfaits de maintenance préventive.",
     },
   ];
 
@@ -266,10 +308,12 @@ export const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <CopyEmailButton
-                  email="contact@ramsin.fr"
-                  className="w-full justify-center text-xs sm:text-sm py-1.5"
-                />
+                <div onClick={() => trackConversionEvent("copy_email")}>
+                  <CopyEmailButton
+                    email="contact@ramsin.fr"
+                    className="w-full justify-center text-xs sm:text-sm py-1.5"
+                  />
+                </div>
               </CardContent>
             </Card>
 
@@ -286,6 +330,7 @@ export const Contact = () => {
               <CardContent>
                 <a
                   href="tel:+33761518890"
+                  onClick={() => trackConversionEvent("click_phone")}
                   className="font-bold text-primary hover:underline text-base inline-block py-1"
                 >
                   +33 (0)7 61 51 88 90
@@ -328,14 +373,30 @@ export const Contact = () => {
             }`}
           >
             {/* Colonne Formulaire (8 colonnes) */}
-            <Card className="lg:col-span-8 border-border/80 shadow-md glass-card rounded-2xl">
+            <Card
+              id="formulaire-contact"
+              className={`lg:col-span-8 border-border/80 shadow-md glass-card rounded-2xl transition-all ${
+                isExpressTunnel
+                  ? "ring-2 ring-primary border-primary/50 shadow-xl bg-gradient-to-b from-primary/5 via-card to-card"
+                  : ""
+              }`}
+            >
               <CardHeader className="space-y-1.5 pb-4">
-                <Badge
-                  variant="outline"
-                  className="w-fit px-3 py-0.5 text-xs border-primary/30 text-primary font-semibold"
-                >
-                  Option Alternative : Message Écrit
-                </Badge>
+                {isExpressTunnel ? (
+                  <div className="p-3 mb-2 rounded-xl bg-primary/10 border border-primary/30 flex items-center gap-2.5 text-xs text-primary font-bold animate-pulse-gentle">
+                    <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
+                    <span>
+                      Tunnel Express 2 min : Décrivez votre besoin sans délai ci-dessous. Oumar Ramsin étudie votre demande et vous répond sous 24h ouvrées.
+                    </span>
+                  </div>
+                ) : (
+                  <Badge
+                    variant="outline"
+                    className="w-fit px-3 py-0.5 text-xs border-primary/30 text-primary font-semibold"
+                  >
+                    Option Alternative : Message Écrit (2 min)
+                  </Badge>
+                )}
                 <CardTitle className="text-2xl font-bold">
                   Décrivez Votre Projet ou Votre Besoin
                 </CardTitle>
@@ -385,7 +446,7 @@ export const Contact = () => {
                       </div>
                     )}
 
-                    <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-800 dark:text-emerald-300 max-w-lg mx-auto flex items-center justify-center gap-2 font-medium">
+                    <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm text-emerald-800 max-w-lg mx-auto flex items-center justify-center gap-2 font-medium">
                       <Clock className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span>Engagement de réponse : Un retour circonstancié vous parviendra sous 24h ouvrées.</span>
                     </div>
@@ -412,7 +473,11 @@ export const Contact = () => {
                 ) : (
                   /* FORMULAIRE ACCESSIBLE W3C & QUALIFIANT */
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      onFocusCapture={handleFormInteraction}
+                      className="space-y-5"
+                    >
                       
                       {/* Honeypot Bot Trap (Caché aux humains, détecte les spammeurs) */}
                       <div className="hidden" aria-hidden="true">
@@ -555,7 +620,7 @@ export const Contact = () => {
                                   </SelectGroup>
 
                                   <SelectGroup className="pt-1.5 border-t border-border/40">
-                                    <SelectLabel className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                                    <SelectLabel className="font-bold text-emerald-700 flex items-center gap-1.5">
                                       <Smartphone className="w-3.5 h-3.5" /> Web & Applications Sur-Mesure
                                     </SelectLabel>
                                     <SelectItem value="web-app">

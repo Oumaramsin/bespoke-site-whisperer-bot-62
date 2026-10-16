@@ -1,13 +1,27 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Calendar as CalendarIcon, Clock, ShieldCheck, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { trackConversionEvent } from "@/lib/analytics";
 
 export const BookingWidget = () => {
   const { ref: widgetRef, isVisible: widgetVisible } = useScrollAnimation();
 
   useEffect(() => {
+    // Écoute des événements Calendly (prise de rendez-vous confirmée)
+    const handleCalendlyMessage = (e: MessageEvent) => {
+      if (e.data && e.data.event) {
+        if (e.data.event === "calendly.event_scheduled") {
+          trackConversionEvent("schedule_meeting_calendly", {
+            serviceType: "calendly_30min",
+          });
+        }
+      }
+    };
+    window.addEventListener("message", handleCalendlyMessage);
+
     // Chargement du script officiel Calendly
     const head = document.querySelector("head");
     const script = document.createElement("script");
@@ -17,6 +31,7 @@ export const BookingWidget = () => {
 
     return () => {
       // Nettoyage au démontage
+      window.removeEventListener("message", handleCalendlyMessage);
       head?.removeChild(script);
     };
   }, []);
@@ -46,7 +61,7 @@ export const BookingWidget = () => {
             </CardDescription>
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-[11px] font-semibold text-muted-foreground">
-              <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+              <span className="flex items-center gap-1 text-emerald-700">
                 <ShieldCheck className="w-3 h-3" /> 100% Sans Engagement
               </span>
               <span className="flex items-center gap-1 text-primary">
@@ -60,7 +75,7 @@ export const BookingWidget = () => {
             <div className="w-full overflow-hidden rounded-b-xl">
               <div
                 className="calendly-inline-widget w-full rounded-b-xl"
-                data-url="https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=2563eb&locale=fr"
+                data-url="https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=123a35&locale=fr"
                 style={{ minWidth: "320px", height: "700px" }}
               />
             </div>
@@ -72,15 +87,40 @@ export const BookingWidget = () => {
                 href="https://calendly.com/contact-ramsin/30min"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackConversionEvent("click_booking_calendly", { destination: "external" })}
                 className="font-bold text-primary hover:underline inline-flex items-center gap-1"
               >
                 Ouvrir directement sur Calendly →
               </a>
               <span className="hidden sm:inline">•</span>
-              <span>ou contactez-nous au <a href="tel:+33761518890" className="font-bold text-foreground hover:underline">+33 (0)7 61 51 88 90</a></span>
+              <span>
+                ou contactez-nous au{" "}
+                <a
+                  href="tel:+33761518890"
+                  onClick={() => trackConversionEvent("click_phone")}
+                  className="font-bold text-foreground hover:underline"
+                >
+                  +33 (0)7 61 51 88 90
+                </a>
+              </span>
             </div>
           </CardContent>
         </Card>
+
+        {/* Entrée de contact alternative : formulaire express 2 min */}
+        <div className="max-w-xl mx-auto mt-6 text-center p-4 rounded-2xl bg-secondary/40 border border-border/80 text-xs sm:text-sm">
+          <p className="text-muted-foreground font-medium">
+            Vous préférez formaliser votre demande par écrit avant d'échanger ?
+          </p>
+          <Link
+            to="/contact?tunnel=form#formulaire-contact"
+            state={{ scrollToForm: true }}
+            onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "booking_widget" })}
+            className="mt-1.5 inline-flex items-center gap-1.5 font-bold text-primary hover:underline text-sm"
+          >
+            Décrire votre besoin en 2 minutes via notre formulaire express →
+          </Link>
+        </div>
       </div>
     </section>
   );
