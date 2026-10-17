@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
@@ -12,9 +12,15 @@ import ScrollToTop from "./components/ScrollToTop";
 const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
 const Projects = lazy(() => import("./pages/Projects"));
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+const RedirectProjectDetail = () => {
+  const { projectId } = useParams<{ projectId: string }>();
+  return <Navigate to={`/projets/${projectId}`} replace />;
+};
 
 const queryClient = new QueryClient();
 
@@ -37,8 +43,19 @@ const App = () => (
               <Route element={<Layout />}>
                 <Route path="/" element={<Index />} />
                 <Route path="/services" element={<Services />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/about" element={<About />} />
+
+                {/* Routes Projets en Français */}
+                <Route path="/projets" element={<Projects />} />
+                <Route path="/projets/:projectId" element={<ProjectDetail />} />
+
+                {/* Redirections de compatibilité pour /projects */}
+                <Route path="/projects" element={<Navigate to="/projets" replace />} />
+                <Route path="/projects/:projectId" element={<RedirectProjectDetail />} />
+
+                {/* Route À Propos en Français avec redirection */}
+                <Route path="/a-propos" element={<About />} />
+                <Route path="/about" element={<Navigate to="/a-propos" replace />} />
+
                 <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />
               </Route>

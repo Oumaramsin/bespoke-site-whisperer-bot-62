@@ -78,16 +78,8 @@ export const trackConversionEvent = (
       window.dispatchEvent(customEvent);
     }
 
-    // 4. Log lisible en développement
-    if (import.meta.env.DEV) {
-      console.log(
-        `%c[RAMSIN Conversion]%c ${eventName}`,
-        "background: #123A35; color: #C7F36B; font-weight: bold; padding: 2px 6px; border-radius: 4px;",
-        "color: #123A35; font-weight: bold;",
-        payload
-      );
-    }
-  } catch (err) {
-    console.warn("Analytics event tracking error:", err);
+    // 4. Événement enregistré silencieusement
+  } catch {
+    // Silencieux en production
   }
 };

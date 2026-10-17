@@ -106,7 +106,7 @@ export const ServicesSection = () => {
                   <Smartphone className="w-6 h-6" />
                 </div>
                 <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
-                  Pour PME, Dirigeants & Startups
+                  Pour Porteurs de Projet & Entreprises
                 </Badge>
               </div>
 

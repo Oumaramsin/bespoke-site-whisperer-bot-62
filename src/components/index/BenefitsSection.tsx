@@ -15,11 +15,11 @@ const BenefitsSection = () => {
       title: "Devis Ferme & Délais Respectés",
       fearResolved: "Résout : \"Le projet va prendre du retard et exploser le budget\"",
       description: "Engagement strict sur devis ferme et calendrier jalonné étape par étape. Zéro frais caché, zéro mauvaise surprise à la livraison.",
-      highlight: "Budget & planning 100% garantis"
+      highlight: "Budget & planning forfaitaires"
     },
     {
       icon: Key,
-      title: "100% Propriété & Autonomie Garanties",
+      title: "Pleine Propriété & Autonomie",
       fearResolved: "Résout : \"Une fois livré, je serai bloqué et dépendant du développeur\"",
       description: "Le code, le domaine et tous les accès vous appartiennent à 100 %. Un guide d'utilisation pas-à-pas vous est transmis pour gérer votre contenu en toute autonomie.",
       highlight: "Guide d'autonomie inclus"

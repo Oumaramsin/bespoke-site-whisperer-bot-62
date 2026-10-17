@@ -167,7 +167,7 @@ export const About = () => {
       <SEO
         title="À Propos de RAMSIN Conseil | Consultant Fondateur & Architecte SI Senior"
         description="Découvrez le profil de RAMSIN Conseil : 7 ans d'expérience professionnelle en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
-        canonical="https://www.ramsin.fr/about"
+        canonical="https://www.ramsin.fr/a-propos"
       />
 
       {/* ═══════════════════════════════════════════

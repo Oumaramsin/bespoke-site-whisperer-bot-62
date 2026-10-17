@@ -58,7 +58,7 @@ const AboutSection = () => {
 
           <div className="text-center pt-4">
             <Button asChild size="lg" variant="outline" className="gap-2 font-semibold hover-lift">
-              <Link to="/about">
+              <Link to="/a-propos">
                 Consulter le parcours & compétences <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>

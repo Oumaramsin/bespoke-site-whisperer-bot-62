@@ -2,9 +2,7 @@ import HeroSection from "@/components/index/HeroSection";
 import ClientsSection from "@/components/index/ClientsSection";
 import ProjectsSection from "@/components/index/ProjectsSection";
 import ServicesSection from "@/components/index/ServicesSection";
-import WhyChooseUsSection from "@/components/index/WhyChooseUsSection";
-import ComparisonTable from "@/components/index/ComparisonTable";
-import ProcessSection from "@/components/index/ProcessSection";
+import GuaranteesSection from "@/components/index/GuaranteesSection";
 import BookingWidget from "@/components/index/BookingWidget";
 import SEO from "@/components/SEO";
 
@@ -20,25 +18,19 @@ const Index = () => {
         {/* 1. HERO SECTION (Titre, Vidéo Motion Design & Choix de Parcours) */}
         <HeroSection />
 
-        {/* 2. BANDEAU DE PREUVE SOCIALE IMMÉDIATE (Logos Grands Groupes) */}
+        {/* 2. PREUVE SOCIALE & EXPÉRIENCE GRANDS COMPTES (Covéa, La Banque Postale, Société Générale) */}
         <ClientsSection />
 
-        {/* 4. ÉTUDES DE CAS (Problème ➔ Solution ➔ Impact) */}
+        {/* 3. ÉTUDES DE CAS EN VEDETTE (Dabari, Maison HamdiWaShukri, L'Éclat du Chef) */}
         <ProjectsSection />
 
-        {/* 5. OFFRES & SERVICES COMPLET (Sites Web, Apps, Maintenance & Architecture SI) */}
+        {/* 4. NOS 2 PÔLES D'EXCELLENCE DÉDIÉS (Architecture SI & Web/Mobile) */}
         <ServicesSection />
 
-        {/* 6. NOTRE ENGAGEMENT POUR VOTRE CROISSANCE (Vos 3 Objectifs & 5 Piliers) */}
-        <WhyChooseUsSection />
+        {/* 5. NOS 3 GARANTIES CONCRÈTES (Budget forfaitaire, Zéro boîte noire, Code cédé & Garantie 30j) */}
+        <GuaranteesSection />
 
-        {/* 6. TABLEAU COMPARATIF (Méthode Classique ❌ vs L'Approche RAMSIN ✅) */}
-        <ComparisonTable />
-
-        {/* 7. MÉTHODOLOGIE EN 4 ÉTAPES */}
-        <ProcessSection />
-
-        {/* 8. WIDGET DE RÉSERVATION D'APPEL & CONTACT DIRECT (Point d'atterrissage final) */}
+        {/* 6. CONVERSION FINALE : RÉSERVATION DE CADRAGE OFFERT (30 MIN) */}
         <BookingWidget />
       </div>
     </>

@@ -271,7 +271,7 @@ export const Contact = () => {
     <>
       <SEO
         title="Contact & Prise de RDV | RAMSIN Conseil - Échangez sur Vos Projets"
-        description="Contactez RAMSIN Conseil pour vos besoins en Architecture SI (MEGA HOPEX V5) ou conception d'applications web & mobiles sur-mesure. Réponse garantie sous 24h ouvrées."
+        description="Contactez RAMSIN Conseil pour vos besoins en Architecture SI (MEGA HOPEX V5) ou conception d'applications web & mobiles sur-mesure. Réponse assurée sous 24h ouvrées."
         canonical="https://www.ramsin.fr/contact"
       />
 
@@ -800,7 +800,7 @@ export const Contact = () => {
                         Transparence Forfaitaire
                       </span>
                       <span className="text-xs text-muted-foreground leading-relaxed">
-                        Devis clair, périmètre maîtrisé et budget ferme garanti sans aucun surcoût imprévu.
+                        Devis clair, périmètre maîtrisé et budget forfaitaire ferme sans aucun surcoût imprévu.
                       </span>
                     </div>
                   </div>

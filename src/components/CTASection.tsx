@@ -39,7 +39,7 @@ export const CTASection = ({
         {/* Badge réassurance sous 24h */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/80 border border-border/80 text-xs sm:text-sm font-bold text-foreground shadow-xs backdrop-blur-md">
           <Clock className="w-4 h-4 text-emerald-700 shrink-0" />
-          <span>Réponse sous 24h ouvrées garantie</span>
+          <span>Réponse assurée sous 24h ouvrées</span>
         </div>
 
         {/* Titre Principal Aéré */}
@@ -60,7 +60,7 @@ export const CTASection = ({
             onClick={handleBookingClick}
             className="gap-3 px-7 py-6 text-base font-extrabold shadow-xl hover:scale-[1.03] transition-all rounded-2xl cursor-pointer"
           >
-            Réserver mon échange gratuit de 30 min <ArrowRight className="w-5 h-5" />
+            Réserver un échange de cadrage (30 min) <ArrowRight className="w-5 h-5" />
           </Button>
 
           <Button
@@ -79,7 +79,7 @@ export const CTASection = ({
               }
             >
               <FileText className="w-4 h-4 text-primary" />
-              Décrire mon besoin en 2 min
+              Transmettre mon besoin par écrit
             </Link>
           </Button>
         </div>
@@ -90,10 +90,10 @@ export const CTASection = ({
             <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" /> Sans engagement
           </span>
           <span className="flex items-center gap-2 bg-card/90 border border-border/80 px-4 py-2 rounded-full backdrop-blur-md text-foreground shadow-sm">
-            <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" /> 100% en langage clair
+            <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" /> Échange sans jargon
           </span>
           <span className="flex items-center gap-2 bg-card/90 border border-border/80 px-4 py-2 rounded-full backdrop-blur-md text-foreground shadow-sm">
-            <MessageSquare className="w-4 h-4 text-emerald-700 shrink-0" /> Conseils personnalisés
+            <MessageSquare className="w-4 h-4 text-emerald-700 shrink-0" /> Conseils pragmatiques
           </span>
         </div>
       </div>

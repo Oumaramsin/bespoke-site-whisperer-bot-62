@@ -24,6 +24,7 @@ import {
   Smartphone,
   Check,
   UserCheck,
+  ArrowUpRight,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
@@ -48,7 +49,7 @@ export const Projects = () => {
       <SEO
         title="Études de Cas & Réalisations | RAMSIN Conseil - Architecture SI & Développement Web"
         description="Découvrez nos études de cas réelles et livrables : missions d'Architecture SI chez Covéa et La Banque Postale, ainsi que nos applications web & e-commerce Dabari et Maison HamdiWaShukri."
-        canonical="https://www.ramsin.fr/projects"
+        canonical="https://www.ramsin.fr/projets"
       />
 
       {/* ═══════════════════════════════════════════
@@ -161,6 +162,37 @@ export const Projects = () => {
                 </CardHeader>
 
                 <CardContent className="p-6 sm:p-8 space-y-6">
+                  {/* Aperçu Visuel de l'Interface Réelle */}
+                  {project.image && (
+                    <div className="rounded-2xl border border-border/80 overflow-hidden bg-muted/40 shadow-xs mb-6">
+                      <div className="px-4 py-2.5 bg-muted/70 border-b border-border/60 flex items-center justify-between text-xs font-mono text-muted-foreground">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-rose-400/80 inline-block" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80 inline-block" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 inline-block" />
+                          <span className="ml-2 text-[11px] font-sans font-medium text-foreground">
+                            Interface de production déployée
+                          </span>
+                        </div>
+                        {project.metric && (
+                          <div className="flex items-center gap-1.5 bg-[#C7F36B] text-[#123A35] font-extrabold px-2.5 py-0.5 rounded-md text-[11px]">
+                            <span>{project.metric.value}</span>
+                            <span>{project.metric.label}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="max-h-[420px] overflow-hidden bg-slate-900/5">
+                        <img
+                          src={project.image}
+                          alt={`Aperçu écran de l'interface ${project.title}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-auto object-cover object-top hover:scale-[1.01] transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   {/* 2. DÉMARCHE D'IMPACT (Contexte ➔ Problème ➔ Rôle RAMSIN) */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Contexte */}
@@ -246,16 +278,29 @@ export const Projects = () => {
                       ))}
                     </div>
 
-                    <Button
-                      asChild
-                      size="sm"
-                      variant="outline"
-                      className="gap-1.5 text-xs font-bold rounded-xl hover-lift border-primary/30 hover:border-primary"
-                    >
-                      <Link to={isSI ? "/contact?service=si" : "/contact?service=web"}>
-                        Échanger sur un projet similaire <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </Button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Button
+                        asChild
+                        size="sm"
+                        variant="lime"
+                        className="gap-1.5 text-xs font-bold rounded-xl shadow-xs hover-lift"
+                      >
+                        <Link to={`/projets/${project.id}`}>
+                          Étude de cas complète <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </Button>
+
+                      <Button
+                        asChild
+                        size="sm"
+                        variant="outline"
+                        className="gap-1.5 text-xs font-bold rounded-xl hover-lift border-primary/30 hover:border-primary"
+                      >
+                        <Link to={isSI ? "/contact?service=si" : "/contact?service=web"}>
+                          Échanger sur un projet similaire <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -289,7 +334,7 @@ export const Projects = () => {
               Réserver mon échange offert (30 min) <ArrowRight className="w-4 h-4" />
             </Button>
             <Button asChild variant="outline" size="lg" className="font-bold rounded-xl px-7">
-              <Link to="/about">Consulter le parcours de l'expert</Link>
+              <Link to="/a-propos">Consulter le parcours de l'expert</Link>
             </Button>
           </div>
         </div>

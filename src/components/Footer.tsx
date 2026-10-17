@@ -73,7 +73,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/projects"
+                  to="/projets"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Réalisations & Portfolio
@@ -81,7 +81,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/about"
+                  to="/a-propos"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   À Propos de RAMSIN
@@ -121,7 +121,7 @@ const Footer = () => {
               </li>
               <li className="pt-2 text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
-                <span>Réponse garantie sous 24h ouvrées</span>
+                <span>Réponse assurée sous 24h ouvrées</span>
               </li>
             </ul>
           </div>

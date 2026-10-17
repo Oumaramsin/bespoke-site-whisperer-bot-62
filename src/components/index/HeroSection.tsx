@@ -190,7 +190,7 @@ const HeroSection = () => {
                     to="/contact?service=si"
                     onClick={() => trackConversionEvent("select_pole", { pole: "si", source: "hero_card" })}
                   >
-                    Échanger sur une mission SI <ArrowRight className="w-4 h-4" />
+                    Échanger sur votre besoin SI <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Link
@@ -210,7 +210,7 @@ const HeroSection = () => {
                     <Smartphone className="w-6 h-6" />
                   </div>
                   <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#C7F36B]/30 text-[#123A35]">
-                    Pour PME, Dirigeants & Startups
+                    Pour Porteurs de Projet & Entreprises
                   </span>
                 </div>
 
@@ -250,7 +250,7 @@ const HeroSection = () => {
                     to="/contact?service=web"
                     onClick={() => trackConversionEvent("select_pole", { pole: "web", source: "hero_card" })}
                   >
-                    Présenter mon projet web / mobile <ArrowRight className="w-4 h-4" />
+                    Échanger sur votre projet Web / Mobile <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
                 <Link
@@ -276,7 +276,7 @@ const HeroSection = () => {
                 onClick={scrollToReservation}
                 className="text-primary font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
               >
-                Réserver un créneau de 30 min (Offert) →
+                Planifier un cadrage de 30 min (Offert) →
               </button>
 
               <span className="text-border">ou</span>
@@ -287,7 +287,7 @@ const HeroSection = () => {
                 onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "hero_banner" })}
                 className="text-foreground hover:text-primary font-bold underline decoration-primary/40 inline-flex items-center gap-1"
               >
-                Décrire mon besoin en 2 min
+                Transmettre votre besoin par écrit →
               </Link>
 
               <span className="hidden sm:inline text-border">|</span>
@@ -348,7 +348,7 @@ const HeroSection = () => {
               en langage clair & sans jargon
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse garantie sous
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse assurée sous
               24h ouvrées
             </span>
           </div>

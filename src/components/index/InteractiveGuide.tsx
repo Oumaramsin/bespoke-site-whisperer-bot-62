@@ -18,7 +18,7 @@ const InteractiveGuide = () => {
       exampleTitle: "Exemple de Réalisation : Dabari",
       exampleDesc: "Plateforme communautaire traiteur & transport collaboratif GP Colis (Next.js 16, React, Node.js, PostgreSQL, Docker).",
       features: ["Authentification sécurisée (JWT)", "Tableaux de bord interactifs", "Administration complète"],
-      targetLink: "/projects",
+      targetLink: "/projets/dabari",
       buttonText: "Découvrir le projet Dabari"
     },
     {
@@ -30,7 +30,7 @@ const InteractiveGuide = () => {
       exampleTitle: "Exemples : L'Éclat du Chef & Maison HamdiWaShukri",
       exampleDesc: "Vitrine événementielle traiteur avec devis automatique et boutique de luxe avec atelier sur-mesure & paiements Stripe/PayPal.",
       features: ["Paiement sécurisé Stripe / PayPal", "Configurateur sur-mesure", "Demande de devis sans rechargement"],
-      targetLink: "/projects",
+      targetLink: "/projets/maison-hamdiwashukri",
       buttonText: "Découvrir ces réalisations"
     },
     {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type CSSProperties, type ReactNode, type KeyboardEvent, type MouseEvent } from "react";
+import { useState, useEffect, useRef, type KeyboardEvent, type MouseEvent } from "react";
 import {
   Play,
   Pause,
@@ -8,21 +8,17 @@ import {
   Subtitles,
   Sparkles,
   Calendar,
-  Laptop,
-  ArrowRight,
-  Smartphone,
   Eye,
-  AlertTriangle,
-  FileSpreadsheet,
-  MousePointerClick,
-  Layers,
   Check,
   Mic,
-  Lightbulb,
-  TrendingUp,
   Maximize,
   Minimize,
   ChevronDown,
+  HelpCircle,
+  Clock,
+  Code2,
+  Wallet,
+  ArrowRight,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,28 +28,30 @@ import { trackConversionEvent } from "@/lib/analytics";
 import voiceover from "@/data/motionVoiceover.json";
 
 /* ──────────────────────────────────────────────────────────
-   TIMELINE : générée avec la voix off (scripts/generate_motion_voiceover.py)
-   La piste audio est l'horloge unique : animations, sous-titres et
-   barre de progression en dérivent → synchro parfaite.
+   TIMELINE : Synchronisée avec le film Master 1080p V2 (83 s)
+   Voix off : Remy HD — Mixage broadcast -16 LUFS
    ────────────────────────────────────────────────────────── */
 interface Cue {
   start: number;
   end: number;
   text: string;
 }
+
 interface Scene {
   id: number;
-  speaker: "narrator" | "oumar";
+  key: string;
+  speaker: string;
   title: string;
-  shortTitle?: string;
   start: number;
   end: number;
   cues: Cue[];
 }
 
 const SCENES = voiceover.scenes as Scene[];
-const TOTAL = voiceover.total as number;
-const AUDIO_SRC = "/audio/ramsin-motion.mp3";
+const TOTAL = (voiceover.total as number) || 83.1;
+const VIDEO_SRC = "/videos/ramsin-motion-1080p.mp4";
+const POSTER_SRC = "/videos/cover_1080p.png";
+const VTT_SRC = "/videos/subtitles.vtt";
 
 const fmt = (sec: number) => {
   const s = Math.max(0, Math.floor(sec));
@@ -61,470 +59,28 @@ const fmt = (sec: number) => {
 };
 
 const VALUE_PILLARS = [
-  { icon: AlertTriangle, title: "1. Fin du bricolage manuel", text: "Arrêtez de compenser des outils mal adaptés avec du temps perdu" },
-  { icon: Layers, title: "2. Cadrage avant tout", text: "Comprendre et prioriser votre besoin réel avant d'écrire une ligne de code" },
-  { icon: TrendingUp, title: "3. Solutions sur-mesure", text: "Sites web convertissants, applications web et mobile pensées pour vos équipes" },
-  { icon: Eye, title: "4. Zéro boîte noire", text: "Visibilité continue, validations à chaque étape et code source 100% à votre nom" },
+  {
+    icon: HelpCircle,
+    title: "1. Pas de cahier des charges requis",
+    text: "Venez simplement avec votre idée ou votre besoin métier, même griffonné sur un carnet.",
+  },
+  {
+    icon: Wallet,
+    title: "2. Devis forfaitaire garanti",
+    text: "Un montant fixe et un calendrier clair validés avant d'écrire la moindre ligne de code.",
+  },
+  {
+    icon: Eye,
+    title: "3. Démos hebdomadaires en direct",
+    text: "Vous testez les écrans chaque semaine avec votre architecte senior : zéro effet tunnel.",
+  },
+  {
+    icon: Code2,
+    title: "4. Code 100 % à votre nom",
+    text: "Propriété intégrale cédée dès la livraison finale : code source, hébergements et aucun abonnement captif.",
+  },
 ];
 
-/* ──────────────────────────────────────────────────────────
-   ANIMATIONS (CSS) — cinéma, calmes, nobles, progressives
-   Palette : Vert forêt (#071816), Citron (#C7F36B), Ivoire (#F8FAFC)
-   ────────────────────────────────────────────────────────── */
-const MOTION_CSS = `
-@keyframes rm-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@keyframes rm-pop{0%{opacity:0;transform:scale(.78)}70%{transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
-@keyframes rm-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes rm-fade{from{opacity:0}to{opacity:1}}
-@keyframes rm-left{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
-@keyframes rm-right{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}
-@keyframes rm-ring{0%{transform:scale(.92);opacity:.4}100%{transform:scale(1.55);opacity:0}}
-@keyframes rm-bar{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
-@keyframes rm-wipe{0%{transform:translateX(-101%)}50%{transform:translateX(0)}100%{transform:translateX(101%)}}
-@keyframes rm-zoom{from{transform:scale(1)}to{transform:scale(1.025)}}
-.rm-paused *{animation-play-state:paused!important}
-@media (prefers-reduced-motion: reduce){.rm-stage *{animation:none!important;opacity:1!important;transform:none!important;filter:none!important;stroke-dashoffset:0!important}}
-`;
-
-const EASE = "cubic-bezier(.2,.8,.2,1)";
-const A = (name: string, delay = 0, dur = 0.5) => `${name} ${dur}s ${Math.max(0, delay)}s both ${EASE}`;
-const LOOP = (name: string, dur = 3, delay = 0) => `${name} ${dur}s ${Math.max(0, delay)}s infinite ease-in-out`;
-const st = (...anims: string[]): CSSProperties => ({ animation: anims.join(", ") });
-const at = (cs: number[], i: number, off = 0) => Math.max(0, (cs[i] ?? 0) + off);
-const LIME = "#C7F36B";
-const FOREST_CARD = "rgba(10,34,30,0.85)";
-
-interface SceneProps {
-  /** début de chaque phrase, en secondes depuis le début de la scène */
-  cs: number[];
-}
-
-const Card = ({ children, style, className = "" }: { children: ReactNode; style?: CSSProperties; className?: string }) => (
-  <div
-    className={`rounded-2xl border border-white/15 backdrop-blur px-3.5 py-3 text-xs sm:text-sm font-semibold text-slate-100 shadow-lg ${className}`}
-    style={{ background: FOREST_CARD, ...style }}
-  >
-    {children}
-  </div>
-);
-
-const Pill = ({ children, style, accent = false }: { children: ReactNode; style?: CSSProperties; accent?: boolean }) => (
-  <span
-    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${
-      accent ? "text-[#102a24]" : "text-white border border-white/20 bg-white/10"
-    }`}
-    style={{ ...(accent ? { background: LIME } : {}), ...style }}
-  >
-    {children}
-  </span>
-);
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 1 — L'accroche
-   « Votre entreprise évolue. Mais est-ce que vos outils évoluent avec elle ? »
-   ────────────────────────────────────────────────────────── */
-const SceneHook = ({ cs }: SceneProps) => (
-  <div className="relative w-full max-w-2xl flex flex-col items-center justify-center text-center">
-    <div className="relative w-full h-28 sm:h-36 flex items-center justify-center mb-4">
-      <div
-        className="absolute w-48 sm:w-64 h-16 sm:h-20 rounded-xl border border-white/10 bg-white/[0.04] p-2 text-left -translate-y-4 -translate-x-12 opacity-40"
-        style={st(A("rm-left", at(cs, 0), 0.5))}
-      >
-        <div className="h-2 w-1/3 rounded bg-white/20 mb-1.5" />
-        <div className="h-1.5 w-2/3 rounded bg-white/10" />
-      </div>
-      <div
-        className="absolute w-52 sm:w-72 h-20 sm:h-24 rounded-xl border border-white/15 bg-white/[0.06] p-2.5 text-left translate-y-2 translate-x-8 opacity-70"
-        style={st(A("rm-right", at(cs, 0, 0.2), 0.5))}
-      >
-        <div className="h-2 w-1/2 rounded bg-[#C7F36B]/40 mb-1.5" />
-        <div className="h-1.5 w-3/4 rounded bg-white/15" />
-      </div>
-      <div
-        className="relative z-10 w-56 sm:w-80 rounded-xl border border-[#C7F36B]/40 bg-[#071816]/90 p-3 shadow-2xl"
-        style={st(A("rm-pop", at(cs, 0, 0.4), 0.6))}
-      >
-        <div className="flex items-center gap-1.5 mb-1.5">
-          <span className="w-2 h-2 rounded-full bg-red-400" />
-          <span className="w-2 h-2 rounded-full bg-amber-400" />
-          <span className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span className="text-[10px] text-slate-300 ml-1 font-mono">outils_metier.app</span>
-        </div>
-        <div className="h-2.5 w-2/3 rounded bg-white/30" />
-      </div>
-    </div>
-
-    <div
-      className="px-6 py-4 rounded-2xl border border-white/20 bg-[#071816]/95 backdrop-blur-md shadow-2xl"
-      style={st(A("rm-up", at(cs, 0, 0.7), 0.6))}
-    >
-      <h3 className="text-base sm:text-2xl font-black text-white tracking-tight uppercase">
-        Votre activité avance.
-        <span className="block text-[#C7F36B] mt-0.5">Vos outils suivent-ils ?</span>
-      </h3>
-    </div>
-  </div>
-);
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 2 — Reconnaître le problème
-   1. Trop de manuel (Excel) · 2. Pas assez de demandes (Site) · 3. Toujours pas concrétisé (App)
-   ────────────────────────────────────────────────────────── */
-const SceneRecognizeProblem = ({ cs }: SceneProps) => {
-  const cards = [
-    {
-      icon: FileSpreadsheet,
-      title: "Fichiers Excel partout",
-      tag: "Trop de manuel",
-      desc: "Données copiées-collées, ressaisies quotidiennes",
-      delay: at(cs, 0),
-    },
-    {
-      icon: MousePointerClick,
-      title: "Site qui ne convertit pas",
-      tag: "Pas assez de demandes",
-      desc: "Des visites mais un formulaire souvent vide",
-      delay: at(cs, 1),
-    },
-    {
-      icon: Lightbulb,
-      title: "Idée d'application bloquée",
-      tag: "Pas concrétisé",
-      desc: "L'ambition est là, mais les étapes manquent",
-      delay: at(cs, 2),
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-3xl">
-      {cards.map((c) => (
-        <div
-          key={c.title}
-          className="rounded-2xl border border-white/15 bg-white/[0.06] p-3.5 sm:p-4 flex flex-col justify-between"
-          style={st(A("rm-up", c.delay, 0.55))}
-        >
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <c.icon className="w-5 h-5 text-[#C7F36B]" />
-              <span className="text-[10px] font-bold text-amber-300 bg-amber-400/15 border border-amber-300/30 px-2 py-0.5 rounded-full">
-                {c.tag}
-              </span>
-            </div>
-            <h4 className="text-xs sm:text-sm font-extrabold text-white mb-1">{c.title}</h4>
-            <p className="text-[11px] text-slate-300 leading-snug">{c.desc}</p>
-          </div>
-          <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
-            <span>Friction</span>
-            <span className="text-rose-300">Temps perdu</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 3 — Faire ressentir le coût du problème
-   « Alors, vos équipes compensent... »
-   ────────────────────────────────────────────────────────── */
-const SceneCostOfProblem = ({ cs }: SceneProps) => (
-  <div className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-2xl text-center">
-    <div className="flex flex-wrap items-center justify-center gap-2" style={st(A("rm-pop", at(cs, 0), 0.55))}>
-      {["Copier des données", "Ressaisir les e-mails", "Relancer manuellement", "Compenser les outils"].map((t, idx) => (
-        <span
-          key={t}
-          className="px-3 py-1.5 rounded-xl border border-rose-400/30 bg-rose-500/10 text-xs font-semibold text-rose-200"
-          style={st(A("rm-pop", at(cs, 0, idx * 0.4), 0.4))}
-        >
-          {t}
-        </span>
-      ))}
-    </div>
-
-    <div
-      className="p-5 sm:p-7 rounded-3xl border-2 border-[#C7F36B] shadow-2xl space-y-2"
-      style={{ background: "rgba(7,24,22,0.95)", ...st(A("rm-up", at(cs, 1), 0.6)) }}
-    >
-      <span className="text-[11px] font-mono text-[#C7F36B] tracking-wider uppercase block">Constat clé</span>
-      <h3 className="text-base sm:text-2xl font-black text-white tracking-tight uppercase leading-snug">
-        Ce qui vous ralentit ne devrait pas être votre outil.
-      </h3>
-      <p className="text-xs text-slate-300">Ce temps perdu devrait être consacré à vos clients et à votre croissance.</p>
-    </div>
-  </div>
-);
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 4 — Introduire RAMSIN et Oumar Sidibé
-   « Je suis Oumar Sidibé, fondateur de RAMSIN... »
-   ────────────────────────────────────────────────────────── */
-const SceneMeetOumar = ({ cs }: SceneProps) => (
-  <div className="flex flex-col items-center justify-center gap-5 w-full max-w-2xl text-center">
-    <div className="space-y-2" style={st(A("rm-pop", at(cs, 0), 0.6))}>
-      <div className="inline-block px-4 py-1.5 rounded-full border border-[#C7F36B]/40 bg-[#C7F36B]/15 text-[#C7F36B] font-mono text-xs font-bold">
-        Fondateur & Développeur
-      </div>
-      <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Oumar Sidibé</h3>
-      <p className="text-xs sm:text-sm text-slate-300 font-medium">Fondateur de RAMSIN</p>
-    </div>
-
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full" style={st(A("rm-up", at(cs, 1), 0.6))}>
-      <Card className="text-center !p-3">
-        <Laptop className="w-5 h-5 text-[#C7F36B] mx-auto mb-1.5" />
-        <span className="block text-white text-xs sm:text-sm font-extrabold">Sites Web</span>
-        <span className="text-[10px] text-slate-300">Orientés conversion</span>
-      </Card>
-      <Card className="text-center !p-3">
-        <Layers className="w-5 h-5 text-[#C7F36B] mx-auto mb-1.5" />
-        <span className="block text-white text-xs sm:text-sm font-extrabold">Applications Web</span>
-        <span className="text-[10px] text-slate-300">Opérations simplifiées</span>
-      </Card>
-      <Card className="text-center !p-3">
-        <Smartphone className="w-5 h-5 text-[#C7F36B] mx-auto mb-1.5" />
-        <span className="block text-white text-xs sm:text-sm font-extrabold">Applications Mobiles</span>
-        <span className="text-[10px] text-slate-300">Expérience fluide</span>
-      </Card>
-    </div>
-
-    <p className="text-xs text-slate-300 italic" style={st(A("rm-fade", at(cs, 1, 1), 0.5))}>
-      Transformer vos besoins métier en solutions concrètes, sans intermédiaire.
-    </p>
-  </div>
-);
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 5 — La méthode : partir du vrai besoin
-   COMPRENDRE → PRIORISER → CONCEVOIR
-   ────────────────────────────────────────────────────────── */
-const SceneMethod = ({ cs }: SceneProps) => {
-  const steps = [
-    { step: "01", label: "Comprendre", sub: "Ce qui bloque & qui l'utilise" },
-    { step: "02", label: "Prioriser", sub: "L'essentiel avant le superflu" },
-    { step: "03", label: "Concevoir", sub: "Périmètre, étapes & budget" },
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-3xl">
-      <Pill accent style={st(A("rm-pop", at(cs, 0), 0.5))}>
-        <Sparkles className="w-3.5 h-3.5" /> La démarche RAMSIN
-      </Pill>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
-        {steps.map((s, idx) => (
-          <div
-            key={s.label}
-            className="rounded-2xl border border-white/15 bg-white/[0.06] p-4 text-center relative"
-            style={st(A("rm-up", at(cs, 0, idx * 0.5), 0.55))}
-          >
-            <span className="text-xs font-mono font-bold text-[#C7F36B] block mb-1">ÉTAPE {s.step}</span>
-            <div className="text-base sm:text-lg font-black text-white">{s.label}</div>
-            <div className="text-[11px] text-slate-300 mt-1">{s.sub}</div>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="w-full px-4 py-3 rounded-xl border border-white/15 bg-black/30 flex items-center justify-between text-xs text-slate-200"
-        style={st(A("rm-fade", at(cs, 1), 0.5))}
-      >
-        <span className="flex items-center gap-2">
-          <Check className="w-4 h-4 text-[#C7F36B]" /> Un plan concret défini avant de lancer le moindre développement
-        </span>
-        <span className="font-mono text-[#C7F36B] text-[11px] hidden sm:inline">0 surprise</span>
-      </div>
-    </div>
-  );
-};
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 6 — Montrer les solutions, pas simplement les promettre
-   ATTIRER · SIMPLIFIER · CONCRÉTISER
-   ────────────────────────────────────────────────────────── */
-const SceneSolutions = ({ cs }: SceneProps) => {
-  const solutions = [
-    {
-      action: "ATTIRER",
-      type: "Site Web",
-      result: "Transforme les visiteurs en demandes qualifiées",
-      delay: at(cs, 0),
-    },
-    {
-      action: "SIMPLIFIER",
-      type: "Application Web",
-      result: "Remplace les fichiers dispersés par un outil structuré",
-      delay: at(cs, 1),
-    },
-    {
-      action: "CONCRÉTISER",
-      type: "Application Mobile",
-      result: "Un parcours intuitif entre les mains de vos utilisateurs",
-      delay: at(cs, 2),
-    },
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-3xl">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
-        {solutions.map((sol) => (
-          <div
-            key={sol.action}
-            className="rounded-2xl border border-white/15 bg-white/[0.06] p-4 text-left flex flex-col justify-between"
-            style={st(A("rm-up", sol.delay, 0.55))}
-          >
-            <div>
-              <span className="text-[10px] font-mono font-black text-[#C7F36B] tracking-widest block mb-1">
-                {sol.action}
-              </span>
-              <h4 className="text-sm sm:text-base font-extrabold text-white mb-1.5">{sol.type}</h4>
-              <p className="text-[11px] text-slate-300 leading-snug">{sol.result}</p>
-            </div>
-            <div className="mt-3 pt-2 border-t border-white/10 flex items-center gap-1.5 text-[10px] text-[#C7F36B] font-bold">
-              <Check className="w-3.5 h-3.5" /> Solution sur-mesure
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="px-6 py-2.5 rounded-full border border-white/20 bg-white/10 text-xs sm:text-sm font-extrabold text-white tracking-wide"
-        style={st(A("rm-pop", at(cs, 2, 0.8), 0.5))}
-      >
-        ATTIRER · SIMPLIFIER · CONCRÉTISER
-      </div>
-    </div>
-  );
-};
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 7 — Rassurer sur la réalisation
-   VOUS VISUALISEZ · VOUS VALIDEZ · VOUS GARDEZ LA MAÎTRISE
-   ────────────────────────────────────────────────────────── */
-const SceneReassurance = ({ cs }: SceneProps) => {
-  const steps = [
-    { title: "VOUS VISUALISEZ", desc: "Le produit prend forme sous vos yeux avec des démos régulières" },
-    { title: "VOUS VALIDEZ", desc: "Chaque étape et fonctionnalité est testée avec vous avant déploiement" },
-    { title: "VOUS GARDEZ LA MAÎTRISE", desc: "Code source à votre nom, aucun abonnement captif, visibilité 100%" },
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-4 sm:gap-6 w-full max-w-3xl">
-      <Pill accent style={st(A("rm-pop", at(cs, 0), 0.5))}>
-        <Eye className="w-3.5 h-3.5" /> Réalisation sans boîte noire
-      </Pill>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
-        {steps.map((stItem, idx) => (
-          <div
-            key={stItem.title}
-            className="rounded-2xl border border-white/15 bg-white/[0.06] p-4 text-center"
-            style={st(A("rm-up", at(cs, 0, idx * 0.6), 0.55))}
-          >
-            <span className="w-6 h-6 mx-auto rounded-full bg-[#C7F36B] text-[#102a24] flex items-center justify-center font-bold text-xs mb-2">
-              ✓
-            </span>
-            <div className="text-xs sm:text-sm font-black text-white tracking-wide mb-1">{stItem.title}</div>
-            <p className="text-[11px] text-slate-300 leading-snug">{stItem.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="px-6 py-2.5 rounded-xl border border-white/15 bg-black/30 text-xs text-slate-300 text-center"
-        style={st(A("rm-fade", at(cs, 1), 0.5))}
-      >
-        De la visibilité sur ce qui est construit et ce qui sera livré.
-      </div>
-    </div>
-  );
-};
-
-/* ──────────────────────────────────────────────────────────
-   SCÈNE 8 — Transformer l'intérêt en prise de contact
-   « Vous n'avez pas besoin d'avoir toutes les réponses... »
-   ────────────────────────────────────────────────────────── */
-const SceneCallToAction = ({ cs }: SceneProps) => (
-  <div className="flex flex-col items-center gap-4 text-center max-w-xl mx-auto">
-    <div className="space-y-1" style={st(A("rm-pop", at(cs, 0), 0.5))}>
-      <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">RAMSIN</h3>
-      <p className="text-xs sm:text-sm text-[#C7F36B] font-semibold">
-        Des outils numériques conçus pour faire avancer votre activité.
-      </p>
-    </div>
-
-    <p className="text-xs sm:text-sm text-slate-200" style={st(A("rm-up", at(cs, 1), 0.5))}>
-      Vous avez juste besoin d'expliquer ce qui vous ralentit ou ce que vous voulez créer.
-    </p>
-
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2" style={st(A("rm-up", at(cs, 2), 0.6))}>
-      <Button asChild size="lg" variant="lime" className="gap-2 font-black text-sm px-7 py-6 rounded-xl shadow-xl hover:scale-105 transition-all">
-        <Link
-          to="/contact?tunnel=booking#reservation-calendrier"
-          state={{ scrollToBooking: true }}
-          onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_scene8" })}
-        >
-          <Calendar className="w-4 h-4" /> Parler de mon projet (30 min)
-        </Link>
-      </Button>
-      <Button asChild variant="outline" size="lg" className="font-semibold text-xs text-white border-white/30 bg-white/10 hover:bg-white/20">
-        <Link
-          to="/contact?tunnel=form#formulaire-contact"
-          state={{ scrollToForm: true }}
-          onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "method_motion_scene8" })}
-        >
-          Je préfère décrire mon besoin par écrit →
-        </Link>
-      </Button>
-    </div>
-
-    <div className="text-[11px] text-slate-300 pt-1 flex items-center justify-center gap-3" style={st(A("rm-fade", at(cs, 3), 0.5))}>
-      <span>30 minutes</span>
-      <span>•</span>
-      <span className="text-[#C7F36B]">Gratuit</span>
-      <span>•</span>
-      <span>Sans engagement</span>
-    </div>
-  </div>
-);
-
-const SceneVisual = ({ id, cs }: { id: number; cs: number[] }) => {
-  switch (id) {
-    case 1: return <SceneHook cs={cs} />;
-    case 2: return <SceneRecognizeProblem cs={cs} />;
-    case 3: return <SceneCostOfProblem cs={cs} />;
-    case 4: return <SceneMeetOumar cs={cs} />;
-    case 5: return <SceneMethod cs={cs} />;
-    case 6: return <SceneSolutions cs={cs} />;
-    case 7: return <SceneReassurance cs={cs} />;
-    default: return <SceneCallToAction cs={cs} />;
-  }
-};
-
-/* ── Sous-titre karaoké ──────────────────────────────────── */
-const Caption = ({ cue, t }: { cue: Cue; t: number }) => {
-  const words = cue.text.split(" ");
-  const total = cue.text.length || 1;
-  const p = Math.min(1, Math.max(0, (t - cue.start) / Math.max(0.3, (cue.end - cue.start) * 0.94)));
-  let acc = 0;
-  return (
-    <p className="text-sm sm:text-base md:text-lg font-bold leading-relaxed tracking-tight text-slate-100">
-      {words.map((w, i) => {
-        const center = (acc + w.length / 2) / total;
-        acc += w.length + 1;
-        const lit = center <= p;
-        return (
-          <span key={i} className="transition-colors duration-150" style={{ color: lit ? "#FFFFFF" : "rgba(203,213,225,.42)" }}>
-            {w}{" "}
-          </span>
-        );
-      })}
-    </p>
-  );
-};
-
-/* ──────────────────────────────────────────────────────────
-   COMPOSANT PRINCIPAL — LECTEUR CINÉMA HAUT DE GAMME
-   Sans bandeau Mac OS, timeline vidéo continue continue
-   ────────────────────────────────────────────────────────── */
 type Status = "idle" | "playing" | "paused" | "ended";
 
 export interface MethodMotionSectionProps {
@@ -534,125 +90,150 @@ export interface MethodMotionSectionProps {
 export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionProps) => {
   const { ref, isVisible } = useScrollAnimation();
   const [status, setStatus] = useState<Status>("idle");
-  const [t, setT] = useState(0);
-  const [runKey, setRunKey] = useState(0);
-  const [voiceOn, setVoiceOn] = useState(true);
-  const [showSubtitles, setShowSubtitles] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(TOTAL);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showSubtitles, setShowSubtitles] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
+  const [showControls, setShowControls] = useState(true);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const playerRef = useRef<HTMLDivElement>(null);
-  const statusRef = useRef<Status>("idle");
-  const fb = useRef({ on: false, base: 0, started: 0 });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hideControlsTimeout = useRef<number | null>(null);
 
-  useEffect(() => {
-    statusRef.current = status;
-  }, [status]);
-
-  const readTime = () => {
-    const a = audioRef.current;
-    if (!fb.current.on && a) return a.currentTime;
-    return fb.current.base + (performance.now() - fb.current.started) / 1000;
+  // Synchronisation du temps de lecture
+  const onTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
   };
 
-  const startFallback = (from: number) => {
-    fb.current = { on: true, base: from, started: performance.now() };
+  const onLoadedMetadata = () => {
+    if (videoRef.current && videoRef.current.duration) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  // Gestion des contrôles auto-masquants pendant la lecture
+  const resetControlsTimer = () => {
+    setShowControls(true);
+    if (hideControlsTimeout.current) {
+      window.clearTimeout(hideControlsTimeout.current);
+    }
+    if (status === "playing") {
+      hideControlsTimeout.current = window.setTimeout(() => {
+        setShowControls(false);
+      }, 3500);
+    }
   };
 
   useEffect(() => {
-    if (status !== "playing") return;
-    let raf = 0;
-    const tick = () => {
-      const cur = readTime();
-      if (fb.current.on && cur >= TOTAL) {
-        setT(TOTAL);
-        setStatus("ended");
-        return;
-      }
-      setT((prev) => (Math.abs(cur - prev) > 0.03 ? cur : prev));
-      raf = requestAnimationFrame(tick);
+    resetControlsTimer();
+    return () => {
+      if (hideControlsTimeout.current) window.clearTimeout(hideControlsTimeout.current);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
   }, [status]);
 
+  // Pause automatique si la vidéo sort de l'écran
   useEffect(() => {
-    if (audioRef.current) audioRef.current.muted = !voiceOn;
-  }, [voiceOn]);
-
-  useEffect(() => {
-    const el = playerRef.current;
+    const el = containerRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting && statusRef.current === "playing") doPause();
+        if (!entry.isIntersecting && videoRef.current && !videoRef.current.paused) {
+          videoRef.current.pause();
+          setStatus("paused");
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
-    io.observe(el);
-    return () => io.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
+  // Détection du plein écran natif
   useEffect(() => {
-    const handleFsChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
-    };
+    const handleFsChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
     document.addEventListener("fullscreenchange", handleFsChange);
     return () => document.removeEventListener("fullscreenchange", handleFsChange);
   }, []);
 
-  useEffect(() => {
-    const a = audioRef.current;
-    return () => {
-      a?.pause();
-    };
-  }, []);
-
-  const playFrom = (time?: number) => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (typeof time === "number") {
-      const bounded = Math.max(0, Math.min(TOTAL, time));
-      a.currentTime = bounded;
-      setT(bounded);
-      setRunKey((k) => k + 1);
-    }
-    const from = typeof time === "number" ? time : a.currentTime;
-    if (fb.current.on) fb.current = { on: true, base: from, started: performance.now() };
-    a.muted = !voiceOn;
-    const p = a.play();
-    setStatus("playing");
-    if (p && typeof p.catch === "function") p.catch(() => startFallback(from));
-  };
-
-  function doPause() {
-    const a = audioRef.current;
-    if (fb.current.on) fb.current.base = readTime();
-    a?.pause();
-    setStatus("paused");
-  }
-
+  // Actions de lecture
   const handlePlay = () => {
-    if (status === "paused") {
-      trackConversionEvent("watch_method_motion", { action: "resume", time: Math.round(t) });
-      playFrom();
-      return;
+    const v = videoRef.current;
+    if (!v) return;
+
+    if (status === "ended") {
+      v.currentTime = 0;
+      setCurrentTime(0);
     }
-    trackConversionEvent("watch_method_motion", { action: status === "ended" ? "replay" : "play", time: 0 });
-    playFrom(0);
+
+    trackConversionEvent("watch_method_motion", {
+      action: status === "paused" ? "resume" : status === "ended" ? "replay" : "play",
+      time: Math.round(v.currentTime),
+    });
+
+    v.play()
+      .then(() => setStatus("playing"))
+      .catch(() => {
+        // En cas de blocage autoplay, démarrer en muet
+        v.muted = true;
+        setIsMuted(true);
+        v.play().then(() => setStatus("playing"));
+      });
   };
 
-  const handleScrubberChange = (newTime: number) => {
-    const bounded = Math.max(0, Math.min(TOTAL, newTime));
+  const handlePause = () => {
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      setStatus("paused");
+    }
+  };
+
+  const togglePlay = () => {
+    if (status === "playing") handlePause();
+    else handlePlay();
+  };
+
+  const seekTo = (seconds: number) => {
+    const v = videoRef.current;
+    if (!v) return;
+    const bounded = Math.max(0, Math.min(duration, seconds));
+    v.currentTime = bounded;
+    setCurrentTime(bounded);
     trackConversionEvent("watch_method_motion", { action: "scrub", time: Math.round(bounded) });
-    playFrom(bounded);
+    if (v.paused && status !== "idle") {
+      v.play().then(() => setStatus("playing"));
+    }
+  };
+
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !isMuted;
+    setIsMuted(!isMuted);
+    trackConversionEvent("watch_method_motion", { action: !isMuted ? "mute" : "unmute" });
+  };
+
+  const toggleSubtitles = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    const next = !showSubtitles;
+    setShowSubtitles(next);
+
+    // Contrôle du track WebVTT natif
+    if (v.textTracks && v.textTracks[0]) {
+      v.textTracks[0].mode = next ? "showing" : "hidden";
+    }
+
+    trackConversionEvent("watch_method_motion", { action: next ? "subtitles_on" : "subtitles_off" });
   };
 
   const toggleFullscreen = async () => {
-    const el = playerRef.current;
+    const el = containerRef.current;
     if (!el) return;
     try {
       if (!document.fullscreenElement) {
@@ -661,323 +242,310 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         await document.exitFullscreen();
       }
     } catch {
-      // Ignorer si bloqué par permission
+      // Ignorer si la permission est refusée
     }
-  };
-
-  const toggleVoice = () => {
-    trackConversionEvent("watch_method_motion", { action: voiceOn ? "voice_off" : "voice_on" });
-    setVoiceOn((v) => !v);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.target instanceof HTMLElement && ["BUTTON", "A", "INPUT"].includes(e.target.tagName) && e.key === " ") return;
     if (e.key === " " || e.key === "k") {
       e.preventDefault();
-      status === "playing" ? doPause() : handlePlay();
+      togglePlay();
     } else if (e.key === "ArrowRight") {
-      handleScrubberChange(Math.min(TOTAL, t + 5));
+      seekTo(currentTime + 5);
     } else if (e.key === "ArrowLeft") {
-      handleScrubberChange(Math.max(0, t - 5));
+      seekTo(currentTime - 5);
     } else if (e.key === "m") {
-      toggleVoice();
+      toggleMute();
+    } else if (e.key === "c") {
+      toggleSubtitles();
     } else if (e.key === "f") {
       toggleFullscreen();
     }
   };
 
-  let sceneIdx = SCENES.findIndex((s) => t < s.end);
-  if (sceneIdx < 0) sceneIdx = SCENES.length - 1;
-  const scene = SCENES[sceneIdx];
-  const cs = scene.cues.map((c) => c.start - scene.start);
-  const sceneDur = scene.end - scene.start;
-
-  const cueNow = [...scene.cues].reverse().find((c) => t >= c.start - 0.05);
-  const showCue = cueNow && t < cueNow.end + 0.6 ? cueNow : undefined;
+  // Trouver la scène active
+  const activeScene = SCENES.find((s) => currentTime >= s.start && currentTime < s.end) ?? SCENES[0];
 
   const playerMarkup = (
     <div
-      ref={playerRef}
-      className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-[0_20px_70px_-15px_rgba(0,0,0,0.8),0_0_45px_rgba(199,243,107,0.12)] border border-white/15 bg-[#071816] outline-none focus-visible:ring-2 focus-visible:ring-primary/60 group"
+      ref={containerRef}
+      onMouseMove={resetControlsTimer}
+      onTouchStart={resetControlsTimer}
+      onKeyDown={onKeyDown}
       tabIndex={0}
       role="region"
-      aria-label="Vidéo motion design RAMSIN : Et si vos outils travaillaient enfin pour vous ? Espace : lecture/pause, flèches : avancer/reculer de 5s, M : son, F : plein écran."
-      onKeyDown={onKeyDown}
+      aria-label="Film RAMSIN : De l'idée au projet concret sans stress. Espace : lecture/pause, flèches : avancer/reculer de 5 s, M : son, C : sous-titres, F : plein écran."
+      className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-[0_25px_80px_-15px_rgba(0,0,0,0.85),0_0_50px_rgba(199,243,107,0.18)] border border-white/15 bg-[#071816] outline-none focus-visible:ring-2 focus-visible:ring-[#C7F36B]/60 group select-none"
     >
-          <audio
-            ref={audioRef}
-            src={AUDIO_SRC}
-            preload={isVisible ? "auto" : "none"}
-            onEnded={() => {
-              setT(TOTAL);
-              setStatus("ended");
-              trackConversionEvent("watch_method_motion", { action: "complete", duration: TOTAL });
-            }}
-            onError={() => {
-              if (statusRef.current === "playing") startFallback(t);
-            }}
-          />
+      {/* ── Élément Vidéo HTML5 1080p ── */}
+      <div className="relative w-full aspect-video bg-black overflow-hidden flex items-center justify-center">
+        <video
+          ref={videoRef}
+          src={VIDEO_SRC}
+          poster={POSTER_SRC}
+          preload={isVisible ? "auto" : "metadata"}
+          playsInline
+          onTimeUpdate={onTimeUpdate}
+          onLoadedMetadata={onLoadedMetadata}
+          onEnded={() => {
+            setStatus("ended");
+            trackConversionEvent("watch_method_motion", { action: "complete", duration: Math.round(duration) });
+          }}
+          onClick={togglePlay}
+          className="w-full h-full object-cover cursor-pointer"
+        >
+          <track kind="subtitles" src={VTT_SRC} srcLang="fr" label="Français" default={false} />
+        </video>
 
-          {/* Écran vidéo principal (ratio 16:9 cinématographique) */}
-          <div className={`rm-stage relative w-full aspect-[4/3] sm:aspect-video bg-[#071816] overflow-hidden select-none ${status === "playing" ? "" : "rm-paused"}`}>
-            {status === "idle" ? (
-              <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-6 sm:p-12">
-                <img
-                  src="/images/method-motion-poster.jpg"
-                  alt="Aperçu du motion design RAMSIN : Et si vos outils travaillaient enfin pour vous ?"
-                  className="absolute inset-0 w-full h-full object-cover opacity-25 filter saturate-150"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071816] via-[#071816]/75 to-[#071816]/40" />
-
-                {/* Grand bouton de lecture central avec onde lumineuse */}
-                <div className="relative z-10 space-y-5 max-w-xl">
-                  <div className="relative inline-block mx-auto">
-                    <span className="absolute -inset-4 rounded-full border-2 border-[#C7F36B]/40 animate-ping opacity-40 pointer-events-none" />
-                    <Button
-                      size="lg"
-                      variant="lime"
-                      onClick={handlePlay}
-                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-0 flex items-center justify-center shadow-[0_0_50px_rgba(199,243,107,0.5)] hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                      aria-label="Lancer la vidéo"
-                    >
-                      <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-current translate-x-1" />
-                    </Button>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <h3 className="text-xl sm:text-3xl font-black text-white tracking-tight">
-                      Regarder le film ({fmt(TOTAL)})
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-md mx-auto">
-                      Découvrez comment transformer vos tâches répétitives et votre présence en ligne en véritables leviers de croissance.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-center gap-3 text-[11px] font-mono text-slate-400">
-                    <span>16:9 Haute Définition</span>
-                    <span>•</span>
-                    <span>Voix naturelles françaises</span>
-                    <span>•</span>
-                    <span>Sous-titres synchronisés</span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="relative w-full h-full flex flex-col text-white">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#051412] via-[#08201b] to-[#04100e]" />
-                <div
-                  className="absolute inset-0 opacity-[0.06]"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)",
-                    backgroundSize: "32px 32px",
-                  }}
-                />
-                <div className="absolute -top-24 -right-16 w-80 h-80 rounded-full blur-3xl bg-[#C7F36B]/10 pointer-events-none" />
-
-                {/* Transition discrète entre scènes */}
-                <div key={`w-${scene.id}-${runKey}`} className="absolute inset-0 z-20 pointer-events-none overflow-hidden" aria-hidden="true">
-                  <div className="h-full w-full" style={{ background: LIME, animation: "rm-wipe .5s ease-in-out both" }} />
-                </div>
-
-                {/* Badge discret haut gauche : titre du passage en cours */}
-                <div className="relative z-10 flex items-center justify-between p-3 sm:p-5">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-black/40 border border-white/10 backdrop-blur-md text-[11px] sm:text-xs text-white">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C7F36B]" />
-                    <span className="font-bold">{scene.shortTitle || scene.title}</span>
-                  </div>
-
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-black/40 border border-white/10 backdrop-blur-md text-[11px] text-slate-300">
-                    <Mic className="w-3 h-3 text-[#C7F36B]" />
-                    <span>{scene.speaker === "oumar" ? "Oumar Sidibé" : "Voix off"}</span>
-                  </div>
-                </div>
-
-                {/* Visuel animé central */}
-                <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-4 sm:px-8 pb-3">
-                  <div
-                    key={`${scene.id}-${runKey}`}
-                    className="w-full h-full flex items-center justify-center"
-                    style={{ animation: `rm-zoom ${sceneDur}s linear both` }}
-                  >
-                    <SceneVisual id={scene.id} cs={cs} />
-                  </div>
-                </div>
-
-                {/* Sous-titres karaoké flottants au-dessus de la barre de contrôle */}
-                <div className="relative z-10 px-4 sm:px-8 pb-16 sm:pb-20 min-h-[56px] flex items-end justify-center pointer-events-none">
-                  {showSubtitles && showCue && (
-                    <div className="w-full max-w-2xl bg-[#071816]/92 backdrop-blur-md px-4 py-2 rounded-xl border border-white/15 text-center shadow-2xl">
-                      <Caption cue={showCue} t={t} />
-                    </div>
-                  )}
-                </div>
-
-                {/* Écran de fin de vidéo */}
-                {status === "ended" && (
-                  <div className="absolute inset-0 z-30 bg-[#051412]/94 backdrop-blur-md flex flex-col items-center justify-center gap-4 p-6 text-center">
-                    <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                      Et si vos outils travaillaient enfin pour vous ?
-                    </h3>
-                    <p className="text-sm text-slate-300 max-w-md">
-                      Échangez directement avec Oumar Sidibé : 30 minutes offertes pour qualifier votre projet sans engagement.
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                      <Button asChild variant="lime" size="lg" className="gap-2 font-black text-sm px-6 py-5 rounded-xl shadow-xl">
-                        <Link
-                          to="/contact?tunnel=booking#reservation-calendrier"
-                          state={{ scrollToBooking: true }}
-                          onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_end" })}
-                        >
-                          <Calendar className="w-4 h-4" /> Parler de mon projet (30 min)
-                        </Link>
-                      </Button>
-                      <Button asChild variant="outline" size="lg" className="font-semibold text-xs text-white border-white/40 hover:bg-white/10">
-                        <Link
-                          to="/contact?tunnel=form#formulaire-contact"
-                          state={{ scrollToForm: true }}
-                          onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "method_motion_end" })}
-                        >
-                          Décrire mon besoin par écrit
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="lg" onClick={handlePlay} className="gap-2 text-white hover:bg-white/10">
-                        <RotateCcw className="w-4 h-4" /> Revoir
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* ──────────────────────────────────────────────────────────
-             BARRE DE CONTRÔLES CINÉMA MODERNE (FLOTTANTE EN BAS DU LECTEUR)
-             Véritable Scrubber de temps continu (comme YouTube/Vimeo)
-             ────────────────────────────────────────────────────────── */}
-          <div className="p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/85 to-black/60 border-t border-white/10 space-y-2.5">
-            {/* Scrubber de timeline continue (choix direct du temps) */}
-            <div className="relative group/timeline py-1 cursor-pointer">
-              {/* Tooltip de prévisualisation du temps au survol */}
-              {hoverTime !== null && (
-                <div
-                  className="absolute -top-7 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono font-bold text-[#C7F36B] pointer-events-none z-30"
-                  style={{ left: `${(hoverTime / TOTAL) * 100}%` }}
-                >
-                  {fmt(hoverTime)}
-                </div>
-              )}
-
-              {/* Barre de progression continue */}
-              <div
-                className="relative h-1.5 sm:h-2 rounded-full bg-white/20 group-hover/timeline:h-2.5 transition-all overflow-hidden"
-                onClick={(e: MouseEvent<HTMLDivElement>) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                  handleScrubberChange(pct * TOTAL);
-                }}
-                onMouseMove={(e: MouseEvent<HTMLDivElement>) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                  setHoverTime(pct * TOTAL);
-                }}
-                onMouseLeave={() => setHoverTime(null)}
+        {/* ── Overlay Écran d'accueil (Idle) ── */}
+        {status === "idle" && (
+          <div
+            onClick={handlePlay}
+            className="absolute inset-0 bg-gradient-to-t from-[#071816]/95 via-[#071816]/65 to-transparent flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-opacity duration-300"
+          >
+            <div className="relative inline-block mb-3 sm:mb-5 group-hover:scale-105 transition-transform duration-300">
+              <span className="absolute -inset-3 sm:-inset-5 rounded-full border-2 border-[#C7F36B]/40 animate-ping opacity-60 pointer-events-none" />
+              <button
+                type="button"
+                className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-[#C7F36B] text-[#071816] p-0 flex items-center justify-center shadow-[0_0_55px_rgba(199,243,107,0.6)] cursor-pointer hover:bg-[#d6ff7d] active:scale-95 transition-all"
+                aria-label="Lancer le film publicitaire"
               >
-                {/* Remplissage de lecture */}
-                <div
-                  className="h-full bg-[#C7F36B] transition-[width] duration-75 relative rounded-full"
-                  style={{ width: `${Math.min(100, (t / TOTAL) * 100)}%` }}
-                />
-              </div>
+                <Play className="w-7 h-7 sm:w-11 sm:h-11 fill-current translate-x-0.5 sm:translate-x-1" />
+              </button>
+            </div>
 
-              {/* Slider invisible accessible pour glisser le curseur avec précision */}
-              <input
-                type="range"
-                min={0}
-                max={TOTAL}
-                step={0.1}
-                value={Math.min(t, TOTAL)}
-                onChange={(e) => handleScrubberChange(parseFloat(e.target.value))}
-                aria-label="Position de lecture dans la vidéo"
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            <div className="space-y-1 sm:space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider mb-1">
+                <Sparkles className="w-3 h-3 text-[#C7F36B]" /> Film d'accompagnement ({fmt(TOTAL)})
+              </div>
+              <h3 className="text-lg sm:text-3xl font-black text-white tracking-tight leading-snug">
+                Vous avez un projet web ou mobile ?
+                <span className="block text-[#C7F36B]">Découvrez la méthode RAMSIN en images.</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto hidden sm:block">
+                Pas de jargon intimidant, devis forfaitaire ferme garanti, et vous testez vos écrans chaque semaine en direct.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ── Overlay Scène & Intervenant (En haut pendant la lecture) ── */}
+        {status !== "idle" && (
+          <div
+            className={`absolute top-0 left-0 right-0 p-3 sm:p-5 flex items-center justify-between z-20 pointer-events-none transition-opacity duration-300 ${
+              showControls ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-black/60 border border-white/15 backdrop-blur-md text-[10px] sm:text-xs text-white font-semibold">
+              <span className="w-2 h-2 rounded-full bg-[#C7F36B] animate-pulse" />
+              <span>{activeScene.title}</span>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-black/60 border border-white/15 backdrop-blur-md text-[10px] sm:text-xs text-slate-300 font-mono">
+              <Mic className="w-3 h-3 text-[#C7F36B]" />
+              <span>Voix off · Remy HD</span>
+            </div>
+          </div>
+        )}
+
+        {/* ── Overlay Écran de Fin (Ended) ── */}
+        {status === "ended" && (
+          <div className="absolute inset-0 z-30 bg-[#051412]/95 backdrop-blur-md flex flex-col items-center justify-center gap-4 sm:gap-6 p-6 sm:p-8 text-center animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-xs font-bold font-mono uppercase tracking-wider">
+              <Check className="w-3.5 h-3.5" /> Du premier échange au produit en production
+            </div>
+
+            <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight max-w-lg">
+              Donnez vie à votre projet dès aujourd'hui.
+            </h3>
+
+            <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed">
+              30 minutes offertes avec <strong>Oumar Sidibé</strong> pour clarifier votre besoin, définir vos priorités et estimer votre budget, sans aucun engagement.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full max-w-md justify-center">
+              <Button asChild variant="lime" size="lg" className="w-full sm:w-auto gap-2 font-black text-xs sm:text-sm px-6 py-4 rounded-xl shadow-xl hover:scale-105 transition-all">
+                <Link
+                  to="/contact?tunnel=booking#reservation-calendrier"
+                  state={{ scrollToBooking: true }}
+                  onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_end" })}
+                >
+                  <Calendar className="w-4 h-4" /> Réserver mon échange offert (30 min)
+                </Link>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handlePlay}
+                className="w-full sm:w-auto gap-2 text-white border-white/30 bg-white/5 hover:bg-white/15 font-semibold text-xs py-4 rounded-xl"
+              >
+                <RotateCcw className="w-4 h-4" /> Revoir la vidéo
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Barre de Contrôles RAMSIN ── */}
+      <div
+        className={`p-3 sm:p-4 bg-gradient-to-t from-black via-black/95 to-black/80 border-t border-white/10 space-y-2.5 transition-opacity duration-300 ${
+          showControls || status !== "playing" ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Timeline Interactive & Marqueurs de Chapitres */}
+        <div className="relative group/timeline py-1.5 cursor-pointer">
+          {/* Tooltip de survol */}
+          {hoverTime !== null && (
+            <div
+              className="absolute -top-8 -translate-x-1/2 px-2.5 py-1 rounded-lg bg-black/95 border border-[#C7F36B]/40 text-[10px] font-mono font-bold text-[#C7F36B] pointer-events-none z-30 whitespace-nowrap shadow-xl"
+              style={{ left: `${Math.min(95, Math.max(5, (hoverTime / duration) * 100))}%` }}
+            >
+              {fmt(hoverTime)} · {(SCENES.find((s) => hoverTime < s.end) ?? SCENES[SCENES.length - 1]).title}
+            </div>
+          )}
+
+          <div
+            onClick={(e: MouseEvent<HTMLDivElement>) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const clickPercent = (e.clientX - rect.left) / rect.width;
+              seekTo(Math.max(0, Math.min(1, clickPercent)) * duration);
+            }}
+            onMouseMove={(e: MouseEvent<HTMLDivElement>) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const movePercent = (e.clientX - rect.left) / rect.width;
+              setHoverTime(Math.max(0, Math.min(1, movePercent)) * duration);
+            }}
+            onMouseLeave={() => setHoverTime(null)}
+            className="relative h-2 rounded-full bg-white/20 group-hover/timeline:h-3 transition-all overflow-hidden"
+          >
+            {/* Barre de progression remplie */}
+            <div
+              className="h-full bg-gradient-to-r from-emerald-400 to-[#C7F36B] transition-[width] duration-75 relative rounded-full"
+              style={{ width: `${Math.min(100, (currentTime / duration) * 100)}%` }}
+            />
+
+            {/* Séparateurs de chapitres */}
+            {SCENES.slice(1).map((s) => (
+              <span
+                key={s.key}
+                className="absolute top-0 bottom-0 w-[2px] bg-black/70 pointer-events-none"
+                style={{ left: `${(s.start / duration) * 100}%` }}
+                title={s.title}
               />
-            </div>
-
-            {/* Rangée de boutons de commande */}
-            <div className="flex items-center justify-between gap-3 text-xs text-white">
-              {/* Gauche : Play/Pause, Recommencer, Temps précis */}
-              <div className="flex items-center gap-2 sm:gap-3">
-                <button
-                  onClick={status === "playing" ? doPause : handlePlay}
-                  className="w-8 h-8 rounded-lg bg-[#C7F36B] text-[#102a24] hover:bg-[#b8ea55] flex items-center justify-center font-bold cursor-pointer transition-transform active:scale-95"
-                  aria-label={status === "playing" ? "Pause" : "Lecture"}
-                  title={status === "playing" ? "Mettre en pause (Espace)" : "Lire (Espace)"}
-                >
-                  {status === "playing" ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current translate-x-0.5" />}
-                </button>
-
-                <button
-                  onClick={() => handleScrubberChange(0)}
-                  className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer transition-colors"
-                  title="Recommencer depuis le début"
-                  aria-label="Recommencer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </button>
-
-                <span className="font-mono text-xs text-slate-300 tabular-nums">
-                  <span className="text-white font-bold">{fmt(Math.min(t, TOTAL))}</span>
-                  <span className="text-slate-500 mx-1">/</span>
-                  <span>{fmt(TOTAL)}</span>
-                </span>
-              </div>
-
-              {/* Droite : Son, Sous-titres, Plein écran, Transcription */}
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <button
-                  onClick={toggleVoice}
-                  className={`px-2.5 py-1 rounded-lg border text-xs flex items-center gap-1 cursor-pointer transition-colors ${
-                    voiceOn ? "bg-[#C7F36B]/15 border-[#C7F36B]/40 text-[#C7F36B]" : "border-white/15 text-slate-400 hover:text-white"
-                  }`}
-                  title={voiceOn ? "Couper le son (M)" : "Activer le son (M)"}
-                  aria-label={voiceOn ? "Couper le son" : "Activer le son"}
-                >
-                  {voiceOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-                  <span className="hidden sm:inline">{voiceOn ? "Son" : "Muet"}</span>
-                </button>
-
-                <button
-                  onClick={() => setShowSubtitles(!showSubtitles)}
-                  className={`px-2.5 py-1 rounded-lg border text-xs flex items-center gap-1 cursor-pointer transition-colors ${
-                    showSubtitles ? "bg-[#C7F36B]/15 border-[#C7F36B]/40 text-[#C7F36B]" : "border-white/15 text-slate-400 hover:text-white"
-                  }`}
-                  title="Sous-titres"
-                  aria-label="Sous-titres"
-                >
-                  <Subtitles className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Sous-titres</span>
-                </button>
-
-                <button
-                  onClick={toggleFullscreen}
-                  className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer transition-colors"
-                  title="Plein écran (F)"
-                  aria-label="Plein écran"
-                >
-                  {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      );
+
+        {/* Boutons d'actions & Infos */}
+        <div className="flex items-center justify-between gap-3 text-xs text-white">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Play / Pause */}
+            <button
+              type="button"
+              onClick={togglePlay}
+              className="w-9 h-9 rounded-xl bg-[#C7F36B] text-[#071816] hover:bg-[#d4ff78] flex items-center justify-center font-bold cursor-pointer transition-transform active:scale-95 shadow-md"
+              aria-label={status === "playing" ? "Pause" : "Lecture"}
+              title={status === "playing" ? "Pause (Espace / K)" : "Lecture (Espace / K)"}
+            >
+              {status === "playing" ? (
+                <Pause className="w-4 h-4 fill-current" />
+              ) : (
+                <Play className="w-4 h-4 fill-current translate-x-0.5" />
+              )}
+            </button>
+
+            {/* Recommencer */}
+            <button
+              type="button"
+              onClick={() => seekTo(0)}
+              className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer transition-colors"
+              title="Recommencer depuis le début"
+              aria-label="Recommencer"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+
+            {/* Compteur temporel */}
+            <span className="font-mono text-xs text-slate-300 tabular-nums">
+              <span className="text-white font-bold">{fmt(currentTime)}</span>
+              <span className="text-slate-500 mx-1">/</span>
+              <span>{fmt(duration)}</span>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Son / Mute */}
+            <button
+              type="button"
+              onClick={toggleMute}
+              className={`px-2.5 py-1.5 rounded-lg border text-xs flex items-center gap-1.5 cursor-pointer transition-colors ${
+                !isMuted ? "bg-[#C7F36B]/15 border-[#C7F36B]/40 text-[#C7F36B]" : "border-white/15 text-slate-400 hover:text-white"
+              }`}
+              title={!isMuted ? "Couper le son (M)" : "Activer le son (M)"}
+              aria-label={!isMuted ? "Couper le son" : "Activer le son"}
+            >
+              {!isMuted ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{!isMuted ? "Son" : "Muet"}</span>
+            </button>
+
+            {/* Sous-titres */}
+            <button
+              type="button"
+              onClick={toggleSubtitles}
+              className={`px-2.5 py-1.5 rounded-lg border text-xs flex items-center gap-1.5 cursor-pointer transition-colors ${
+                showSubtitles ? "bg-[#C7F36B]/15 border-[#C7F36B]/40 text-[#C7F36B]" : "border-white/15 text-slate-400 hover:text-white"
+              }`}
+              title={showSubtitles ? "Masquer les sous-titres (C)" : "Afficher les sous-titres (C)"}
+              aria-label={showSubtitles ? "Masquer les sous-titres" : "Afficher les sous-titres"}
+              aria-pressed={showSubtitles}
+            >
+              <Subtitles className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Sous-titres</span>
+            </button>
+
+            {/* Plein écran */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 cursor-pointer transition-colors"
+              title="Plein écran (F)"
+              aria-label="Plein écran"
+            >
+              {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Sélecteur de Chapitres Rapide sous la barre ── */}
+      <div className="hidden sm:flex items-center justify-between gap-1 p-2 bg-[#040e0d] border-t border-white/5 overflow-x-auto text-[11px]">
+        {SCENES.map((sc) => {
+          const isActive = activeScene.id === sc.id;
+          return (
+            <button
+              key={sc.key}
+              type="button"
+              onClick={() => seekTo(sc.start)}
+              className={`flex-1 px-2 py-1 rounded-md text-left transition-colors whitespace-nowrap cursor-pointer ${
+                isActive ? "bg-[#C7F36B]/15 text-[#C7F36B] font-bold border border-[#C7F36B]/30" : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+              }`}
+            >
+              <span className="font-mono opacity-60 mr-1">0{sc.id}</span>
+              <span>{sc.title.split("·")[1]?.trim() ?? sc.title}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   const transcriptMarkup = (
     <>
-      {/* 4. TRANSCRIPTION ACCESSIBLE DÉPLIABLE */}
       <div className="max-w-4xl mx-auto mt-4 text-center">
         <button
+          type="button"
           onClick={() => setShowTranscript(!showTranscript)}
           className="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors cursor-pointer inline-flex items-center gap-1.5 py-1"
         >
@@ -986,27 +554,23 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
       </div>
 
       {showTranscript && (
-        <div className="max-w-4xl mx-auto mt-4 p-6 sm:p-8 rounded-3xl bg-card glass-card border border-border/80 space-y-5 text-left">
+        <div className="max-w-4xl mx-auto mt-4 p-6 sm:p-8 rounded-3xl bg-card glass-card border border-border/80 space-y-5 text-left animate-fade-in">
           <div className="flex items-center justify-between border-b border-border/60 pb-4">
             <div>
               <h3 className="text-lg font-bold text-foreground">Transcription intégrale ({fmt(TOTAL)})</h3>
-              <p className="text-xs text-muted-foreground">Le texte complet de la vidéo : Oumar Sidibé & Voix off.</p>
+              <p className="text-xs text-muted-foreground">Le texte complet du film publicitaire RAMSIN (Voix off : Remy HD).</p>
             </div>
-            <Badge variant="secondary" className="text-xs">Accessible</Badge>
+            <Badge variant="secondary" className="text-xs">Sous-titres &amp; Accessibilité</Badge>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {SCENES.map((sc) => (
-              <div
-                key={sc.id}
-                className="p-3.5 rounded-xl border border-border/70 bg-secondary/20 text-left space-y-1"
-              >
+              <div key={sc.key} className="p-3.5 rounded-xl border border-border/70 bg-secondary/20 text-left space-y-1">
                 <div className="flex items-center justify-between text-xs font-bold text-primary">
-                  <span>{sc.id}. {sc.shortTitle || sc.title}</span>
+                  <span>{sc.title}</span>
                   <span className="font-mono text-muted-foreground">{fmt(sc.start)}</span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong className="text-foreground">{sc.speaker === "oumar" ? "Oumar Sidibé" : "Voix off"} :</strong> {sc.cues.map((c) => c.text).join(" ")}
+                  {sc.cues.map((cu) => cu.text).join(" ")}
                 </p>
               </div>
             ))}
@@ -1016,77 +580,66 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
     </>
   );
 
+  // Vue imbriquée (HeroSection)
   if (embedded) {
     return (
       <div className="w-full max-w-4xl mx-auto space-y-3 pt-2 text-center">
-        <style>{MOTION_CSS}</style>
-
-        {/* Badge & Titre discret du film dans le Hero */}
         <div className="space-y-1.5 mb-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold tracking-wide">
             <Sparkles className="w-3.5 h-3.5 text-primary" />
-            Film de présentation ({fmt(TOTAL)}) · « Et si vos outils travaillaient enfin pour vous ? »
+            Film de présentation ({fmt(TOTAL)}) · « De l'idée au projet concret sans stress »
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
-            Découvrez en 1 min 22 comment RAMSIN transforme vos freins opérationnels en solutions web et mobiles concrètes.
+            Vous avez un projet web ou mobile mais ne savez pas par où commencer ? Découvrez en 80 secondes la méthode RAMSIN.
           </p>
         </div>
-
         {playerMarkup}
         {transcriptMarkup}
       </div>
     );
   }
 
+  // Vue pleine page / section autonome
   return (
     <section className="pt-6 pb-14 md:pt-10 md:pb-20 bg-gradient-to-b from-background via-secondary/25 to-background border-b border-border/60 relative overflow-hidden">
-      <style>{MOTION_CSS}</style>
-
-      {/* Halo d'ambiance vert forêt */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-[#123A35]/15 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       <div className="container mx-auto px-4">
-        {/* 1. EN-TÊTE D'ACCUEIL DU SITE (Premier impact) */}
         <div ref={ref} className={`text-center max-w-3xl mx-auto mb-8 space-y-4 scroll-fade-up ${isVisible ? "is-visible" : ""}`}>
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#123A35]/20 bg-[#C7F36B]/30 text-[#123A35] text-xs font-bold tracking-wide">
             <Sparkles className="w-3.5 h-3.5 text-[#123A35]" />
-            Transformation Numérique · Film de marque ({fmt(TOTAL)})
+            Création Web &amp; Applications Sur-Mesure · Film ({fmt(TOTAL)})
           </div>
-
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-foreground leading-[1.1]">
-            Et si vos outils
-            <span className="block gradient-text mt-1">travaillaient enfin pour vous ?</span>
+            Vous avez une idée de projet.
+            <span className="block gradient-text mt-1">Donnons-lui vie ensemble.</span>
           </h2>
-
           <p className="text-muted-foreground text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Votre activité avance. Vos outils doivent suivre. Découvrez en {fmt(TOTAL)} comment RAMSIN transforme vos freins opérationnels en solutions web et mobiles concrètes.
+            Pas de cahier des charges de 50 pages, devis forfaitaire fixe garanti et accompagnement direct avec votre architecte senior.
           </p>
         </div>
 
         {playerMarkup}
 
-        {/* 3. 4 PILIERS DE VALEUR CLÉS (Non cliquables pour ne pas couper le film) */}
+        {/* 4 Piliers de réassurance */}
         <div className="max-w-4xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {VALUE_PILLARS.map((p, i) => (
-            <div
-              key={p.title}
-              className="p-4 rounded-2xl border border-border/80 bg-card/60 backdrop-blur space-y-1.5"
-            >
+          {VALUE_PILLARS.map((pl, i) => (
+            <div key={pl.title} className="p-4 rounded-2xl border border-border/80 bg-card/60 backdrop-blur space-y-1.5 text-left">
               <div className="flex items-center justify-between">
                 <span className="w-8 h-8 rounded-xl bg-[#123A35] text-[#C7F36B] flex items-center justify-center">
-                  <p.icon className="w-4 h-4" />
+                  <pl.icon className="w-4 h-4" />
                 </span>
                 <span className="text-[10px] font-mono font-bold text-muted-foreground">0{i + 1}</span>
               </div>
-              <div className="text-xs sm:text-sm font-extrabold text-foreground">{p.title}</div>
-              <div className="text-[11px] text-muted-foreground leading-snug">{p.text}</div>
+              <div className="text-xs sm:text-sm font-extrabold text-foreground">{pl.title}</div>
+              <div className="text-[11px] text-muted-foreground leading-snug">{pl.text}</div>
             </div>
           ))}
         </div>
 
         {transcriptMarkup}
 
-        {/* 5. APPEL À L'ACTION SOUS LA VIDÉO */}
+        {/* Call to action de contact */}
         <div className="mt-8 text-center max-w-xl mx-auto space-y-3">
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="lg" variant="lime" className="gap-2 font-black px-7 shadow-lg hover:scale-105 transition-all">
@@ -1095,7 +648,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
                 state={{ scrollToBooking: true }}
                 onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_hero" })}
               >
-                <Calendar className="w-4 h-4" /> Parler de mon projet avec Oumar Sidibé (30 min)
+                <Calendar className="w-4 h-4" /> Parler de mon idée avec Oumar Sidibé (30 min)
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="font-semibold text-xs">
@@ -1104,15 +657,15 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
                 state={{ scrollToForm: true }}
                 onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "method_motion_hero" })}
               >
-                Décrire mon besoin par écrit →
+                Décrire mon projet par écrit →
               </Link>
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground font-medium">30 minutes offertes · Échange direct sans engagement · Réponse sous 24h ouvrées.</p>
-
-          {/* Indicateur de défilement vers le reste du site */}
+          <p className="text-xs text-muted-foreground font-medium">
+            30 minutes offertes · Échange direct sans engagement commercial · Réponse sous 24h ouvrées.
+          </p>
           <div className="pt-4 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Découvrir le détail de l'expertise</span>
+            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Découvrir les expertises &amp; réalisations</span>
             <ChevronDown className="w-4 h-4 animate-bounce text-muted-foreground" />
           </div>
         </div>

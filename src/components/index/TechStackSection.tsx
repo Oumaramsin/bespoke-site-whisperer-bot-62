@@ -37,9 +37,9 @@ export const TechStackSection = () => {
     ],
     devops: [
       { name: "Docker & Conteneurs", category: "Déploiement", benefit: "Déploiements isolés sans panne ni bug d'env.", level: "Maîtrisé", icon: "🐳" },
-      { name: "Cloud OVH & Vercel", category: "Hébergement", benefit: "Disponibilité garantie 99.9% et sauvegardes", level: "Pro", icon: "☁️" },
+      { name: "Cloud OVH & Vercel", category: "Hébergement", benefit: "Haute disponibilité et sauvegardes automatiques", level: "Pro", icon: "☁️" },
       { name: "Git & GitHub Actions", category: "CI/CD", benefit: "Mises à jour automatisées et sans interruption", level: "Expert", icon: "🔄" },
-      { name: "Sécurité & SSL/TLS", category: "Protection", benefit: "Protection des données et chiffrement SSL", level: "Garanti", icon: "🛡️" },
+      { name: "Sécurité & SSL/TLS", category: "Protection", benefit: "Protection des données et chiffrement SSL", level: "Standard", icon: "🛡️" },
     ],
   };
 
@@ -55,7 +55,7 @@ export const TechStackSection = () => {
             Les Technologies au Service de Votre Succès
           </h2>
           <p className="text-muted-foreground text-lg sm:text-xl leading-relaxed">
-            Une sélection rigoureuse d'outils modernes garantissant des performances d'exception, une sécurité maximale et une évolutivité sans limite.
+            Une sélection d'outils éprouvés pour assurer robustesse logicielle, sécurité des données et maintenabilité à long terme.
           </p>
         </div>
 

@@ -41,13 +41,13 @@ export const BookingWidget = () => {
       <div className="container mx-auto px-4">
         <div ref={widgetRef} className={`max-w-4xl mx-auto text-center mb-2 space-y-1 scroll-fade-up ${widgetVisible ? "is-visible" : ""}`}>
           <Badge variant="outline" className="px-2.5 py-0 text-[11px] border-primary/30 text-primary font-semibold">
-            <CalendarIcon className="w-3 h-3 mr-1 inline" /> Calendrier Synchro &amp; Instantané
+            <CalendarIcon className="w-3 h-3 mr-1 inline" /> Prise de Rendez-vous en Ligne
           </Badge>
           <h2 className="text-xl md:text-3xl font-extrabold tracking-tight">
-            Réservez Votre Échange Offert de 30 Min
+            Session de Cadrage Offerte (30 Min)
           </h2>
           <p className="text-muted-foreground text-xs sm:text-sm max-w-2xl mx-auto">
-            Choisissez la date et l'horaire de votre choix. C'est 100% gratuit, sans engagement et en langage clair.
+            Choisissez le créneau qui vous convient. Échange direct avec votre interlocuteur technique, sans engagement commercial et sans jargon.
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export const BookingWidget = () => {
 
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-[11px] font-semibold text-muted-foreground">
               <span className="flex items-center gap-1 text-emerald-700">
-                <ShieldCheck className="w-3 h-3" /> 100% Sans Engagement
+                <ShieldCheck className="w-3 h-3" /> Échange Sans Engagement
               </span>
               <span className="flex items-center gap-1 text-primary">
                 <Zap className="w-3 h-3" /> Invitation Google Meet / Teams Automatique

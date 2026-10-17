@@ -34,10 +34,10 @@ export const Services = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // Initialisation du pôle selon l'URL (?pole=si ou ?pole=web)
+  // Initialisation du pôle selon l'URL (?pole=si ou ?pole=web, défaut : web)
   const poleParam = searchParams.get("pole");
   const [activePole, setActivePole] = useState<ServicePole>(
-    poleParam === "web" ? "web" : "si"
+    poleParam === "si" ? "si" : "web"
   );
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const Services = () => {
     <>
       <SEO
         title="Services & Expertises | RAMSIN - Architecture SI & Développement Web Sur-Mesure"
-        description="Découvrez nos deux pôles d'excellence : Conseil & Architecture SI (MEGA HOPEX V5) pour DSI, et Conception d'applications web & mobiles sur-mesure pour PME et dirigeants."
+        description="Découvrez nos deux pôles d'excellence : Conception d'applications web & mobiles sur-mesure pour tout porteur de projet et entreprise, et Conseil & Architecture SI (MEGA HOPEX V5) pour DSI."
         canonical="https://www.ramsin.fr/services"
       />
 
@@ -87,9 +87,24 @@ export const Services = () => {
             Pour répondre précisément à vos enjeux, RAMSIN structure ses prestations autour de deux parcours indépendants. Choisissez le domaine correspondant à votre besoin :
           </p>
 
-          {/* SÉLECTEUR DE PÔLE COMMERCIAL (SWITCHER CLÉ) */}
+          {/* SÉLECTEUR DE PÔLE COMMERCIAL (SWITCHER CLÉ : Web à Gauche par Défaut) */}
           <div className="pt-4 flex justify-center">
             <div className="p-1.5 rounded-2xl glass-card border border-border/80 inline-flex flex-col sm:flex-row gap-2 max-w-full shadow-lg">
+              <button
+                onClick={() => switchPole("web")}
+                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
+                  activePole === "web"
+                    ? "bg-emerald-600 text-white shadow-md scale-[1.02]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+                }`}
+              >
+                <Smartphone className="w-5 h-5 shrink-0" />
+                <span>Web & Applications Sur-Mesure</span>
+                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
+                  Porteurs de Projet & Entreprises
+                </span>
+              </button>
+
               <button
                 onClick={() => switchPole("si")}
                 className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
@@ -104,28 +119,275 @@ export const Services = () => {
                   DSI & Transformation
                 </span>
               </button>
-
-              <button
-                onClick={() => switchPole("web")}
-                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
-                  activePole === "web"
-                    ? "bg-emerald-600 text-white shadow-md scale-[1.02]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                }`}
-              >
-                <Smartphone className="w-5 h-5 shrink-0" />
-                <span>Web & Applications Sur-Mesure</span>
-                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
-                  PME & Dirigeants
-                </span>
-              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════
-          SECTION 1 : PÔLE ARCHITECTURE SI & MEGA HOPEX
+          SECTION 1 : PÔLE WEB & APPLICATIONS SUR-MESURE
+      ═══════════════════════════════════════════ */}
+      {activePole === "web" && (
+        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
+          
+          {/* BANDEAU EN-TÊTE DU PÔLE WEB */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0c2420] via-[#15463f] to-[#0d2e29] text-white border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative z-10 max-w-3xl space-y-4">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
+                  <Code2 className="w-3.5 h-3.5" /> Développement Web & Applications Mobiles
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
+                  Des solutions numériques performantes, conçues sur-mesure et cédées en pleine propriété.
+                </h2>
+                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
+                  Porteurs de projet, créateurs, indépendants et entreprises : nous concevons des plateformes web, applications mobiles (iOS/Android) et outils métiers sur-mesure. Vous êtes propriétaire de votre code source, libre de tout abonnement captif et accompagné de A à Z.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Cession Complète du Code Source
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Garantie 30 Jours Post-Lancement Incluse
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Stack Moderne (Next.js, React Native, TypeScript)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 1. LES PROJETS QUE NOUS CONCEVONS */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Quels Types de Projets Réalisons-Nous ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Des solutions techniques modernes, fiables et adaptées à vos objectifs commerciaux.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Code2,
+                  badge: "Web & SaaS",
+                  title: "Applications Web & Outils Métiers",
+                  desc: "Portails clients, tableaux de bord de gestion, logiciels SaaS internes et espaces membres interactifs.",
+                  stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
+                  features: [
+                    "Authentification sécurisée (JWT, rôles)",
+                    "Automatisation de flux métiers & exports",
+                    "Paiements Stripe & abonnements récurrents",
+                  ],
+                },
+                {
+                  icon: Smartphone,
+                  badge: "iOS & Android",
+                  title: "Applications Mobiles Cross-Platform",
+                  desc: "Applications natives rapides et intuitives pour smartphones et tablettes, publiées sur l'App Store et Google Play.",
+                  stack: "React Native, Expo, Notifications Push, Caméra",
+                  features: [
+                    "Une seule base de code pour iOS & Android",
+                    "Expérience utilisateur fluide à 60 FPS",
+                    "Fonctionnement hors-ligne et synchronisation cloud",
+                  ],
+                },
+                {
+                  icon: Sparkles,
+                  badge: "Haute Conversion",
+                  title: "Sites Web & E-Commerce Premium",
+                  desc: "Sites vitrines d'autorité et boutiques e-commerce conçus pour convertir vos visiteurs en demandes qualifiées.",
+                  stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
+                  features: [
+                    "Temps de chargement instantanés (Core Web Vitals)",
+                    "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
+                    "Design responsive sur smartphone, tablette & desktop",
+                  ],
+                },
+              ].map((proj, idx) => {
+                const IconP = proj.icon;
+                return (
+                  <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
+                    <CardHeader className="space-y-3 pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
+                          <IconP className="w-6 h-6" />
+                        </div>
+                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
+                          {proj.badge}
+                        </Badge>
+                      </div>
+                      <CardTitle className="text-xl font-bold text-foreground">
+                        {proj.title}
+                      </CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground leading-relaxed">
+                        {proj.desc}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4 pt-2">
+                      <div className="space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                          Fonctionnalités clés :
+                        </span>
+                        <ul className="space-y-1.5 text-xs text-foreground font-medium">
+                          {proj.features.map((f, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
+                        <strong>Stack :</strong> {proj.stack}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 2. DÉMARCHE PROJET EN 5 ÉTAPES */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Notre Méthode de Projet en 5 Étapes Transparentes
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Vous savez exactement où en est votre projet, sans mauvaise surprise ni retard imprévu.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {[
+                {
+                  step: "01",
+                  title: "Cadrage & UX",
+                  desc: "Définition des fonctionnalités exactes, parcours utilisateurs et maquettage.",
+                },
+                {
+                  step: "02",
+                  title: "Architecture",
+                  desc: "Modélisation des données, choix des technologies et sécurisation des API.",
+                },
+                {
+                  step: "03",
+                  title: "Développement",
+                  desc: "Sprints agiles courts, démonstrations en direct et validation continue.",
+                },
+                {
+                  step: "04",
+                  title: "Recette & Tests",
+                  desc: "Vérification sur tous les appareils, audits de performance et sécurité.",
+                },
+                {
+                  step: "05",
+                  title: "Livraison & Code",
+                  desc: "Mise en ligne, remise du code source et formation vidéo à l'administration.",
+                },
+              ].map((step, i) => (
+                <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
+                  <span className="text-2xl font-black text-emerald-600 opacity-60 block">
+                    {step.step}
+                  </span>
+                  <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. NOS GARANTIES CONTRACTUELLES (RÉASSURANCE DIRIGEANT) */}
+          <div className="container mx-auto px-4 max-w-5xl space-y-8">
+            <div className="text-center max-w-3xl mx-auto space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Nos 4 Engagements Contractuels & Déontologiques
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
+                Les engagements concrets et vérifiables qui protègent votre investissement.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  icon: Lock,
+                  title: "Pleine Propriété du Code",
+                  desc: "Vous êtes propriétaire de votre projet, avec cession contractuelle 100% du code source et accès complets à vos comptes d'hébergement.",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "Garantie 30 Jours Incluse",
+                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la livraison est pris en charge et résolu en priorité sans frais.",
+                },
+                {
+                  icon: Compass,
+                  title: "Hébergement au Choix",
+                  desc: "Déploiement sur votre infrastructure ou nos serveurs haute disponibilité (Vercel, AWS, Cloudflare, VPS).",
+                },
+                {
+                  icon: Clock,
+                  title: "Délais & Tarifs Forfaitaires",
+                  desc: "Un devis clair, un budget ferme et un planning d'exécution validé ensemble dès le départ.",
+                },
+              ].map((g, i) => {
+                const IconG = g.icon;
+                return (
+                  <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2.5">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
+                      <IconG className="w-5 h-5" />
+                    </div>
+                    <h4 className="text-base font-bold text-foreground">{g.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{g.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE WEB */}
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-emerald-500/30 text-center space-y-6">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                Vous avez une idée d'application ou un site à concrétiser ?
+              </h3>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Présentez-nous votre besoin. Nous étudions la faisabilité technique et vous transmettons une proposition détaillée sous 24h ouvrées.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                >
+                  <Link to="/contact?service=web">
+                    Décrire mon projet web ou mobile <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button
+                  onClick={handleBookingRedirect}
+                  variant="outline"
+                  size="lg"
+                  className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
+                >
+                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  Réserver un cadrage de 30 min (Gratuit)
+                </Button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          SECTION 2 : PÔLE ARCHITECTURE SI & MEGA HOPEX
       ═══════════════════════════════════════════ */}
       {activePole === "si" && (
         <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
@@ -374,268 +636,6 @@ export const Services = () => {
                 >
                   <Calendar className="w-4 h-4 text-[#123A35]" />
                   Réserver un créneau de 30 min (Gratuit)
-                </Button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      )}
-
-      {/* ═══════════════════════════════════════════
-          SECTION 2 : PÔLE WEB & APPLICATIONS SUR-MESURE
-      ═══════════════════════════════════════════ */}
-      {activePole === "web" && (
-        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
-          
-          {/* BANDEAU EN-TÊTE DU PÔLE WEB */}
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0c2420] via-[#15463f] to-[#0d2e29] text-white border-2 border-emerald-500/30 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="relative z-10 max-w-3xl space-y-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
-                  <Code2 className="w-3.5 h-3.5" /> Développement Web & Applications Mobiles
-                </span>
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
-                  Des solutions numériques performantes, conçues sur-mesure et cédées en pleine propriété.
-                </h2>
-                <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
-                  PME, dirigeants et entrepreneurs : nous concevons des plateformes web, applications mobiles (iOS/Android) et outils métiers clés en main. Vous êtes propriétaire de votre code source, libre de tout abonnement captif et accompagné de A à Z.
-                </p>
-                <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Cession Complète du Code Source
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Garantie 30 Jours Post-Lancement Incluse
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Stack Moderne (Next.js, React Native, TypeScript)
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 1. LES PROJETS QUE NOUS CONCEVONS */}
-          <div className="container mx-auto px-4 max-w-5xl space-y-8">
-            <div className="text-center max-w-3xl mx-auto space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Quels Types de Projets Réalisons-Nous ?
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Des solutions techniques modernes, fiables et adaptées à vos objectifs commerciaux.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Code2,
-                  badge: "Web & SaaS",
-                  title: "Applications Web & Outils Métiers",
-                  desc: "Portails clients, tableaux de bord de gestion, logiciels SaaS internes et espaces membres interactifs.",
-                  stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
-                  features: [
-                    "Authentification sécurisée (JWT, rôles)",
-                    "Automatisation de flux métiers & exports",
-                    "Paiements Stripe & abonnements récurrents",
-                  ],
-                },
-                {
-                  icon: Smartphone,
-                  badge: "iOS & Android",
-                  title: "Applications Mobiles Cross-Platform",
-                  desc: "Applications natives rapides et intuitives pour smartphones et tablettes, publiées sur l'App Store et Google Play.",
-                  stack: "React Native, Expo, Notifications Push, Caméra",
-                  features: [
-                    "Une seule base de code pour iOS & Android",
-                    "Expérience utilisateur fluide à 60 FPS",
-                    "Fonctionnement hors-ligne et synchronisation cloud",
-                  ],
-                },
-                {
-                  icon: Sparkles,
-                  badge: "Haute Conversion",
-                  title: "Sites Web & E-Commerce Premium",
-                  desc: "Sites vitrines d'autorité et boutiques e-commerce conçus pour convertir vos visiteurs en demandes qualifiées.",
-                  stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
-                  features: [
-                    "Temps de chargement instantanés (Core Web Vitals)",
-                    "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
-                    "Design responsive sur smartphone, tablette & desktop",
-                  ],
-                },
-              ].map((proj, idx) => {
-                const IconP = proj.icon;
-                return (
-                  <Card key={idx} className="border border-border/80 glass-card hover-lift flex flex-col justify-between">
-                    <CardHeader className="space-y-3 pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
-                          <IconP className="w-6 h-6" />
-                        </div>
-                        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
-                          {proj.badge}
-                        </Badge>
-                      </div>
-                      <CardTitle className="text-xl font-bold text-foreground">
-                        {proj.title}
-                      </CardTitle>
-                      <CardDescription className="text-sm text-muted-foreground leading-relaxed">
-                        {proj.desc}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4 pt-2">
-                      <div className="space-y-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                          Fonctionnalités clés :
-                        </span>
-                        <ul className="space-y-1.5 text-xs text-foreground font-medium">
-                          {proj.features.map((f, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                              <span>{f}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
-                        <strong>Stack :</strong> {proj.stack}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* 2. DÉMARCHE PROJET EN 5 ÉTAPES */}
-          <div className="container mx-auto px-4 max-w-5xl space-y-8">
-            <div className="text-center max-w-3xl mx-auto space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Notre Méthode de Projet en 5 Étapes Transparentes
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Vous savez exactement où en est votre projet, sans mauvaise surprise ni retard imprévu.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {[
-                {
-                  step: "01",
-                  title: "Cadrage & UX",
-                  desc: "Définition des fonctionnalités exactes, parcours utilisateurs et maquettage.",
-                },
-                {
-                  step: "02",
-                  title: "Architecture",
-                  desc: "Modélisation des données, choix des technologies et sécurisation des API.",
-                },
-                {
-                  step: "03",
-                  title: "Développement",
-                  desc: "Sprints agiles courts, démonstrations en direct et validation continue.",
-                },
-                {
-                  step: "04",
-                  title: "Recette & Tests",
-                  desc: "Vérification sur tous les appareils, audits de performance et sécurité.",
-                },
-                {
-                  step: "05",
-                  title: "Livraison & Code",
-                  desc: "Mise en ligne, remise du code source et formation vidéo à l'administration.",
-                },
-              ].map((step, i) => (
-                <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
-                  <span className="text-2xl font-black text-emerald-600 opacity-60 block">
-                    {step.step}
-                  </span>
-                  <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 3. NOS GARANTIES CONTRACTUELLES (RÉASSURANCE DIRIGEANT) */}
-          <div className="container mx-auto px-4 max-w-5xl space-y-8">
-            <div className="text-center max-w-3xl mx-auto space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Nos 4 Garanties de Sérénité pour Votre Entreprise
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Les engagements concrets qui protègent votre investissement.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  icon: Lock,
-                  title: "Propriété de Votre Projet",
-                  desc: "Vous êtes propriétaire de votre projet, avec cession contractuelle du code source et accès complets à vos comptes d'hébergement.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Garantie 30 Jours Incluse",
-                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la livraison est pris en charge et résolu en priorité sans frais.",
-                },
-                {
-                  icon: Compass,
-                  title: "Hébergement au Choix",
-                  desc: "Déploiement sur votre infrastructure ou nos serveurs haute disponibilité (Vercel, AWS, Cloudflare, VPS).",
-                },
-                {
-                  icon: Clock,
-                  title: "Délais & Tarifs Forfaitaires",
-                  desc: "Un devis clair, un budget ferme et un planning d'exécution validé ensemble dès le départ.",
-                },
-              ].map((g, i) => {
-                const IconG = g.icon;
-                return (
-                  <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
-                      <IconG className="w-5 h-5" />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">{g.title}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{g.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE WEB */}
-          <div className="container mx-auto px-4 max-w-5xl">
-            <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-emerald-500/30 text-center space-y-6">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Vous avez une idée d'application ou un site à concrétiser ?
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Présentez-nous votre besoin. Nous étudions la faisabilité technique et vous transmettons une proposition détaillée sous 24h ouvrées.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
-                >
-                  <Link to="/contact?service=web">
-                    Décrire mon projet web ou mobile <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </Button>
-                <Button
-                  onClick={handleBookingRedirect}
-                  variant="outline"
-                  size="lg"
-                  className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
-                >
-                  <Calendar className="w-4 h-4 text-emerald-600" />
-                  Réserver un cadrage de 30 min (Gratuit)
                 </Button>
               </div>
             </div>
