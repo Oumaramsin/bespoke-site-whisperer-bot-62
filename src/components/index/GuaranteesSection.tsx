@@ -94,27 +94,39 @@ export const GuaranteesSection = () => {
         >
           {guarantees.map((item, idx) => {
             const IconComp = item.icon;
+            const topAccents = [
+              "from-[#123A35] via-[#1c554e] to-[#0a2320]",
+              "from-[#C7F36B] via-emerald-400 to-[#123A35]",
+              "from-emerald-600 via-teal-500 to-[#123A35]",
+            ];
+            const iconStyles = [
+              "bg-[#123A35] text-[#C7F36B] shadow-md shadow-[#123A35]/20",
+              "bg-[#C7F36B] text-[#071816] shadow-md shadow-[#C7F36B]/30",
+              "bg-emerald-700 text-white shadow-md shadow-emerald-700/20",
+            ];
+
             return (
               <Card
                 key={idx}
-                className="flex flex-col justify-between border-2 border-border/80 hover:border-primary/50 transition-all hover-lift bg-card rounded-2xl overflow-hidden shadow-xs"
+                className="flex flex-col justify-between border-2 border-border/80 hover:border-emerald-500/50 transition-all hover-lift bg-white rounded-3xl overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(18,58,53,0.15)] group"
               >
-                <CardHeader className="pb-3 space-y-3">
+                <div className={`h-1.5 bg-gradient-to-r ${topAccents[idx]}`} />
+                <CardHeader className="pb-3 space-y-3 p-6 sm:p-7">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold ${iconStyles[idx]}`}>
                       <IconComp className="w-6 h-6" />
                     </div>
-                    <Badge variant="outline" className={`text-[11px] font-bold px-2.5 py-0.5 border ${item.badgeColor}`}>
+                    <Badge variant="outline" className={`text-[11px] font-bold px-3 py-1 rounded-full border ${item.badgeColor}`}>
                       {item.badge}
                     </Badge>
                   </div>
 
-                  <CardTitle className="text-xl font-extrabold leading-snug text-foreground">
+                  <CardTitle className="text-xl font-extrabold leading-snug text-foreground pt-1">
                     {item.title}
                   </CardTitle>
                 </CardHeader>
 
-                <CardContent className="space-y-4 flex-1 flex flex-col justify-between pt-0">
+                <CardContent className="space-y-4 flex-1 flex flex-col justify-between pt-0 p-6 sm:p-7">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
@@ -134,12 +146,12 @@ export const GuaranteesSection = () => {
         </div>
 
         {/* Bandeau d'Appel à l'Action de transition */}
-        <div className="p-6 rounded-2xl glass-card border border-border/80 text-center max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div className="p-6 rounded-2xl glass-card border border-border/80 text-center max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
           <div className="text-center sm:text-left space-y-1">
-            <h4 className="font-extrabold text-foreground text-base">
-              Vous avez un projet en tête ou un besoin à préciser ?
+            <h4 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight">
+              Vous avez un projet en tête ou un besoin à préciser&nbsp;?
             </h4>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Échangeons simplement lors d'une session de cadrage offerte de 30 minutes.
             </p>
           </div>

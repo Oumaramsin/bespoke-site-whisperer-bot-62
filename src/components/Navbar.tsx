@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ArrowRight } from "lucide-react";
+import RamsinLogo from "@/components/RamsinLogo";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,32 +19,52 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="bg-background/95 sticky top-0 z-50 border-b border-border/50 shadow-xs">
+    <header className="bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/75 sticky top-0 z-50 border-b border-border/70 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] transition-all">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-black tracking-tight text-foreground hover:opacity-90 transition-opacity">
-              RAMSIN
+            <Link to="/" className="flex items-center gap-2.5 group hover:opacity-95 transition-opacity">
+              <RamsinLogo size={34} className="group-hover:scale-105 transition-transform drop-shadow-sm" />
+              <div className="flex flex-col leading-none">
+                <span className="text-xl font-black tracking-tight text-foreground flex items-center gap-1.5">
+                  RAMSIN
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C7F36B] shadow-[0_0_8px_#C7F36B]" />
+                </span>
+                <span className="text-[9.5px] font-bold tracking-widest text-muted-foreground uppercase hidden sm:block">
+                  Architecture & Tech
+                </span>
+              </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`relative px-3.5 py-2 text-sm font-medium transition-colors rounded-lg hover:bg-secondary/80 ${
-                  location.pathname === item.path
-                    ? "text-primary nav-link-active"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`relative px-3.5 py-2 text-sm font-semibold transition-all rounded-xl ${
+                    isActive
+                      ? "text-primary bg-primary/10 shadow-2xs font-bold"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/70"
+                  }`}
+                >
+                  {item.name}
+                  {isActive && (
+                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-[#C7F36B] rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
 
-            <Button asChild size="sm" variant="lime" className="ml-2 gap-1.5 rounded-lg font-extrabold shadow-sm hover:shadow-md transition-all">
+            <Button
+              asChild
+              size="sm"
+              variant="lime"
+              className="ml-3 gap-1.5 rounded-xl font-extrabold shadow-[0_2px_14px_rgba(199,243,107,0.35)] hover:shadow-[0_4px_22px_rgba(199,243,107,0.55)] hover:-translate-y-0.5 transition-all cursor-pointer"
+            >
               <Link to="/contact">
                 Échanger sur votre projet <ArrowRight className="w-3.5 h-3.5" />
               </Link>

@@ -78,9 +78,9 @@ export const Services = () => {
             <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux Pôles d'Excellence Dédiés
           </Badge>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
             Des Expertises Spécialisées.
-            <span className="block gradient-text mt-1">Des Livrables Clairs & Tangibles.</span>
+            <span className="block gradient-text mt-2 pb-2">Des Livrables Clairs & Tangibles.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed">

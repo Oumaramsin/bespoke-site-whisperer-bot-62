@@ -59,10 +59,10 @@ const ClientsSection = () => {
           {corporateClients.map((client, index) => (
             <div
               key={index}
-              className={`p-5 rounded-2xl bg-card border border-border/80 hover:border-primary/50 transition-all text-center space-y-4 flex flex-col justify-between shadow-2xs group hover-lift h-full stagger-${index + 1}`}
+              className={`p-5 rounded-2xl bg-white/90 backdrop-blur-md border border-border/80 hover:border-emerald-500/50 transition-all text-center space-y-4 flex flex-col justify-between shadow-[0_4px_20px_-8px_rgba(0,0,0,0.05)] hover:shadow-xl hover:shadow-emerald-950/5 group hover-lift h-full stagger-${index + 1}`}
             >
-              {/* Logo de l'entreprise avec dimensionnement personnalisé */}
-              <div className="h-16 flex items-center justify-center p-1 overflow-hidden">
+              {/* Logo de l'entreprise sur piédestal soigné */}
+              <div className="h-16 flex items-center justify-center p-2 rounded-xl bg-gradient-to-b from-slate-50 to-white border border-border/40 overflow-hidden group-hover:border-emerald-500/30 transition-colors">
                 <img
                   src={client.logo}
                   alt={`Logo officiel de l'entreprise ${client.name}`}
@@ -70,15 +70,15 @@ const ClientsSection = () => {
                   height="60"
                   loading="lazy"
                   decoding="async"
-                  className={`object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 ${client.imgClassName || "max-h-14 max-w-[140px]"}`}
+                  className={`object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 group-hover:scale-105 ${client.imgClassName || "max-h-14 max-w-[140px]"}`}
                 />
               </div>
 
               <div>
-                <span className="text-[10px] font-bold text-primary uppercase tracking-wider block">
+                <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block bg-emerald-500/10 rounded-full py-0.5 px-2 w-fit mx-auto border border-emerald-500/20">
                   {client.category}
                 </span>
-                <p className="text-[11px] text-muted-foreground font-medium pt-1.5 border-t border-border/40 line-clamp-2">
+                <p className="text-[11px] text-muted-foreground font-medium pt-2 border-t border-border/40 line-clamp-2">
                   {client.description}
                 </p>
               </div>

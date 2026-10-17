@@ -330,25 +330,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
           </div>
         )}
 
-        {/* ── Overlay Scène & Intervenant (En haut pendant la lecture) ── */}
-        {status !== "idle" && (
-          <div
-            className={`absolute top-0 left-0 right-0 p-3 sm:p-5 flex items-center justify-between z-20 pointer-events-none transition-opacity duration-300 ${
-              showControls ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-black/60 border border-white/15 backdrop-blur-md text-[10px] sm:text-xs text-white font-semibold">
-              <span className="w-2 h-2 rounded-full bg-[#C7F36B] animate-pulse" />
-              <span>{activeScene.title}</span>
-            </div>
-
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-black/60 border border-white/15 backdrop-blur-md text-[10px] sm:text-xs text-slate-300 font-mono">
-              <Mic className="w-3 h-3 text-[#C7F36B]" />
-              <span>Voix off · Remy HD</span>
-            </div>
-          </div>
-        )}
-
         {/* ── Overlay Écran de Fin (Ended) ── */}
         {status === "ended" && (
           <div className="absolute inset-0 z-30 bg-[#051412]/95 backdrop-blur-md flex flex-col items-center justify-center gap-4 sm:gap-6 p-6 sm:p-8 text-center animate-fade-in">
@@ -517,26 +498,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             </button>
           </div>
         </div>
-      </div>
-
-      {/* ── Sélecteur de Chapitres Rapide sous la barre ── */}
-      <div className="hidden sm:flex items-center justify-between gap-1 p-2 bg-[#040e0d] border-t border-white/5 overflow-x-auto text-[11px]">
-        {SCENES.map((sc) => {
-          const isActive = activeScene.id === sc.id;
-          return (
-            <button
-              key={sc.key}
-              type="button"
-              onClick={() => seekTo(sc.start)}
-              className={`flex-1 px-2 py-1 rounded-md text-left transition-colors whitespace-nowrap cursor-pointer ${
-                isActive ? "bg-[#C7F36B]/15 text-[#C7F36B] font-bold border border-[#C7F36B]/30" : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
-              }`}
-            >
-              <span className="font-mono opacity-60 mr-1">0{sc.id}</span>
-              <span>{sc.title.split("·")[1]?.trim() ?? sc.title}</span>
-            </button>
-          );
-        })}
       </div>
     </div>
   );

@@ -35,14 +35,14 @@ export const ServicesSection = () => {
           className={`grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 scroll-fade-up ${cardsVisible ? "is-visible" : ""}`}
         >
           {/* PÔLE A : ARCHITECTURE SI & MEGA HOPEX */}
-          <Card className="flex flex-col border-2 border-[#123A35]/30 hover:border-[#123A35] transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
-            <div className="h-2 bg-gradient-to-r from-[#123A35] via-[#1e544c] to-[#123A35]" />
-            <CardHeader className="pb-4 space-y-3">
+          <Card className="flex flex-col border-2 border-[#123A35]/25 hover:border-[#123A35] transition-all hover:shadow-[0_25px_60px_-15px_rgba(18,58,53,0.18)] bg-white rounded-3xl overflow-hidden hover-lift">
+            <div className="h-1.5 bg-gradient-to-r from-[#123A35] via-[#1c554e] to-[#0a2320]" />
+            <CardHeader className="pb-4 space-y-3 p-6 sm:p-8">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-[#123A35]/10 text-[#123A35] flex items-center justify-center font-bold">
-                  <Building2 className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#123A35] to-[#081a17] text-[#C7F36B] flex items-center justify-center shrink-0 shadow-md shadow-[#123A35]/20">
+                  <Building2 className="w-5 h-5 shrink-0" />
                 </div>
-                <Badge variant="secondary" className="bg-[#123A35]/10 text-[#123A35] text-xs font-bold border border-[#123A35]/20">
+                <Badge variant="secondary" className="bg-[#123A35]/10 text-[#123A35] text-xs font-bold border border-[#123A35]/20 px-3 py-1">
                   Pour DSI & Dir. Transformation
                 </Badge>
               </div>
@@ -61,19 +61,19 @@ export const ServicesSection = () => {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="flex-1 flex flex-col justify-between space-y-5 pt-0">
+            <CardContent className="flex-1 flex flex-col justify-between space-y-6 pt-0 p-6 sm:p-8">
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
                   Missions & Livrables Concrets :
                 </span>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {[
                     "Cartographie applicative interactive & matrice des flux d'échanges",
                     "Configuration métamodèle & scripts d'automatisation MEGA HOPEX V5",
                     "Dossiers d'Architecture Technique (DAT) pour comités d'architecture",
                     "Trajectoires cibles, urbanisation et accompagnement Product Owner SI",
                   ].map((sub, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/50 p-2.5 rounded-xl border border-border/40">
+                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/40 hover:bg-secondary/70 transition-colors p-3 rounded-xl border border-border/50">
                       <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
                       <span>{sub}</span>
                     </div>
@@ -81,8 +81,8 @@ export const ServicesSection = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <Button asChild size="sm" className="w-full sm:w-auto bg-[#123A35] hover:bg-[#0d2a26] text-white font-semibold rounded-xl gap-2 shadow-sm">
+              <div className="pt-5 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <Button asChild size="sm" className="w-full sm:w-auto bg-[#123A35] hover:bg-[#0a221f] text-white font-bold rounded-xl gap-2 shadow-sm px-5 py-2.5">
                   <Link to="/services?pole=si">
                     Découvrir l'offre Architecture SI <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -98,14 +98,14 @@ export const ServicesSection = () => {
           </Card>
 
           {/* PÔLE B : DÉVELOPPEMENT WEB & APPLICATIONS SUR-MESURE */}
-          <Card className="flex flex-col border-2 border-emerald-500/30 hover:border-emerald-600 transition-all hover:shadow-xl bg-card rounded-2xl overflow-hidden hover-lift">
-            <div className="h-2 bg-gradient-to-r from-emerald-600 to-[#123A35]" />
-            <CardHeader className="pb-4 space-y-3">
+          <Card className="flex flex-col border-2 border-emerald-500/25 hover:border-emerald-600 transition-all hover:shadow-[0_25px_60px_-15px_rgba(16,185,129,0.18)] bg-white rounded-3xl overflow-hidden hover-lift">
+            <div className="h-1.5 bg-gradient-to-r from-emerald-600 via-[#C7F36B] to-teal-500" />
+            <CardHeader className="pb-4 space-y-3 p-6 sm:p-8">
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
-                  <Smartphone className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#C7F36B] to-[#9ee83a] text-[#071816] flex items-center justify-center shrink-0 shadow-md shadow-[#C7F36B]/30">
+                  <Smartphone className="w-5 h-5 shrink-0" />
                 </div>
-                <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-800 text-xs font-bold border border-emerald-500/20">
+                <Badge variant="secondary" className="bg-emerald-500/15 text-emerald-800 text-xs font-bold border border-emerald-500/25 px-3 py-1">
                   Pour Porteurs de Projet & Entreprises
                 </Badge>
               </div>
@@ -120,23 +120,23 @@ export const ServicesSection = () => {
               </div>
 
               <CardDescription className="text-sm text-muted-foreground leading-relaxed">
-                Conception d'applications web scalables (Next.js/React), d'applications mobiles iOS & Android et de sites web haute conversion.
+                Conception d'applications web scalables (Next.js/React), d'applications mobiles iOS & Android et de plateformes métier haute conversion.
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="flex-1 flex flex-col justify-between space-y-5 pt-0">
+            <CardContent className="flex-1 flex flex-col justify-between space-y-6 pt-0 p-6 sm:p-8">
               <div className="space-y-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
                   Types de Réalisations & Engagements :
                 </span>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {[
                     "Applications Web & SaaS Métier (tableaux de bord, espaces clients)",
                     "Applications Mobiles Cross-Platform (iOS & Android avec React Native)",
                     "Propriété intégrale de votre projet (code source et livrables cédés)",
                     "Garantie 30 jours incluse, hébergement souverain et support réactif",
                   ].map((sub, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/50 p-2.5 rounded-xl border border-border/40">
+                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm font-medium text-foreground bg-secondary/40 hover:bg-secondary/70 transition-colors p-3 rounded-xl border border-border/50">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <span>{sub}</span>
                     </div>
@@ -144,8 +144,8 @@ export const ServicesSection = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <Button asChild size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl gap-2 shadow-sm">
+              <div className="pt-5 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <Button asChild size="sm" variant="lime" className="w-full sm:w-auto font-extrabold rounded-xl gap-2 shadow-sm px-5 py-2.5">
                   <Link to="/services?pole=web">
                     Découvrir l'offre Web & Mobile <ArrowRight className="w-3.5 h-3.5" />
                   </Link>

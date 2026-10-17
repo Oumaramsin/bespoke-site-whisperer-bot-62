@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Lock, ShieldCheck, HeartHandshake, FileText, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "./CopyEmailButton";
+import RamsinLogo from "./RamsinLogo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -42,7 +43,10 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-3">
-            <h3 className="text-xl font-bold">RAMSIN Conseil</h3>
+            <div className="flex items-center gap-2.5">
+              <RamsinLogo size={28} />
+              <h3 className="text-xl font-bold">RAMSIN Conseil</h3>
+            </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Cabinet d'expertise en Architecture des Systèmes d'Information
               (MEGA HOPEX V5) et développement d'applications web & mobiles

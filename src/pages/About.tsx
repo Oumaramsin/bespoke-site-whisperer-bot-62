@@ -194,9 +194,9 @@ export const About = () => {
             </Badge>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
             L'Expertise d'un Spécialiste Senior.
-            <span className="block gradient-text mt-1">La Proximité d'un Partenaire Dédié.</span>
+            <span className="block gradient-text mt-2 pb-2">La Proximité d'un Partenaire Dédié.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">

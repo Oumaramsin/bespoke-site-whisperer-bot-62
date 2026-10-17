@@ -11,7 +11,7 @@ import ScrollToTop from "./components/ScrollToTop";
 // Code Splitting / Lazy Loading par Route pour diviser le payload JS initial par 3
 const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
-const Projects = lazy(() => import("./pages/Projects"));
+const Projets = lazy(() => import("./pages/Projets"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -45,7 +45,7 @@ const App = () => (
                 <Route path="/services" element={<Services />} />
 
                 {/* Routes Projets en Français */}
-                <Route path="/projets" element={<Projects />} />
+                <Route path="/projets" element={<Projets />} />
                 <Route path="/projets/:projectId" element={<ProjectDetail />} />
 
                 {/* Redirections de compatibilité pour /projects */}

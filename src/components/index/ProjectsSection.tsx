@@ -137,21 +137,22 @@ export const ProjectsSection = () => {
           {displayedProjects.map((project, index) => (
             <Card
               key={project.id}
-              className={`flex flex-col h-full bg-card border-2 border-border/80 hover:border-primary/50 transition-all hover-lift shadow-xs group rounded-2xl overflow-hidden stagger-${
+              className={`flex flex-col h-full bg-white border-2 border-border/80 hover:border-emerald-500/50 transition-all hover-lift shadow-[0_4px_20px_-8px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(18,58,53,0.18)] group rounded-3xl overflow-hidden stagger-${
                 index + 1
               }`}
             >
               {/* 1. MOCKUP DE FENÊTRE D'INTERFACE (Browser Window Frame) */}
-              <div className="relative border-b border-border/80 bg-muted/40 overflow-hidden">
+              <div className="relative border-b border-border/80 bg-slate-50/90 overflow-hidden">
                 {/* Header de la fenêtre d'interface */}
-                <div className="px-4 py-2.5 bg-muted/70 border-b border-border/60 flex items-center justify-between gap-3">
+                <div className="px-4 py-2.5 bg-slate-100/90 border-b border-border/60 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-rose-400/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/80 inline-block" />
                   </div>
-                  <div className="flex-1 max-w-[210px] mx-auto bg-background/90 text-[11px] font-mono text-muted-foreground py-0.5 px-2.5 rounded-md border border-border/60 truncate text-center">
-                    {getFauxUrl(project.id)}
+                  <div className="flex-1 max-w-[220px] mx-auto bg-white text-[11px] font-mono text-muted-foreground py-0.5 px-2.5 rounded-md border border-border/60 truncate text-center shadow-2xs flex items-center justify-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                    <span className="truncate">{getFauxUrl(project.id)}</span>
                   </div>
                   <div className="w-8" />
                 </div>
@@ -186,11 +187,11 @@ export const ProjectsSection = () => {
                 </div>
               </div>
 
-              {/* 2. CONTENU DE LA CARTE : PROBLÈME -> SOLUTION -> RÉSULTAT */}
-              <CardContent className="flex-1 flex flex-col justify-between p-6 space-y-5">
-                <div>
+              {/* 2. CONTENU DE LA CARTE ÉPURÉ & MODERNE */}
+              <CardContent className="flex-1 flex flex-col justify-between p-5 sm:p-6 space-y-4">
+                <div className="space-y-3">
                   {/* Badges client & catégorie */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-bold text-primary flex items-center gap-1.5">
                       <Building2 className="w-3.5 h-3.5" />
                       {project.clientCompany}
@@ -204,62 +205,33 @@ export const ProjectsSection = () => {
                   </div>
 
                   {/* Titre du projet */}
-                  <h3 className="text-lg font-extrabold leading-snug text-foreground group-hover:text-primary transition-colors mb-4">
+                  <h3 className="text-base sm:text-lg font-extrabold leading-snug text-foreground group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
 
-                  {/* Bloc Problème / Solution / Impact très concis */}
-                  <div className="space-y-2.5 text-xs">
-                    {/* Défi initial */}
-                    <div className="p-2.5 rounded-xl bg-rose-500/5 border border-rose-500/15 space-y-0.5">
-                      <div className="text-[10px] font-extrabold text-rose-700 uppercase tracking-wider flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> Problème initial
-                      </div>
-                      <p className="text-muted-foreground leading-relaxed">
-                        {project.shortProblem || project.problem}
-                      </p>
-                    </div>
+                  {/* Résumé clair du projet et de la valeur apportée */}
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {project.summary}
+                  </p>
 
-                    {/* Solution déployée */}
-                    <div className="p-2.5 rounded-xl bg-[#123A35]/5 border border-[#123A35]/15 space-y-0.5">
-                      <div className="text-[10px] font-extrabold text-[#123A35] uppercase tracking-wider flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-amber-500" /> Solution livrée
-                      </div>
-                      <p className="text-foreground/90 font-medium leading-relaxed">
-                        {project.shortSolution || project.solution}
-                      </p>
+                  {/* Impact & Résultat Clé vérifié (encadré sobre et valorisant) */}
+                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-start gap-2.5">
+                    <div className="p-1 rounded-md bg-emerald-600/15 text-emerald-800 shrink-0 mt-0.5">
+                      <TrendingUp className="w-3.5 h-3.5" />
                     </div>
-
-                    {/* Résultat concret */}
-                    <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-0.5">
-                      <div className="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
-                        <TrendingUp className="w-3 h-3 text-emerald-600" /> Résultat obtenu
-                      </div>
-                      <p className="text-emerald-950 font-bold leading-relaxed">
+                    <div className="space-y-0.5">
+                      <span className="text-[10px] font-extrabold text-emerald-900 uppercase tracking-wider block">
+                        Résultat clé mesuré
+                      </span>
+                      <p className="text-xs font-semibold text-emerald-950 leading-snug">
                         {project.shortImpact || project.impact}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Footer de la carte : Stack & Lien */}
-                <div className="pt-3 border-t border-border/60 space-y-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.stack?.slice(0, 3).map((tech, i) => (
-                      <span
-                        key={i}
-                        className="text-[10px] font-bold bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md border border-border/40"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.stack?.length > 3 && (
-                      <span className="text-[10px] font-semibold text-muted-foreground px-1 py-0.5">
-                        +{project.stack.length - 3}
-                      </span>
-                    )}
-                  </div>
-
+                {/* Footer de la carte : Lien direct vers l'étude */}
+                <div className="pt-2 border-t border-border/60">
                   <Link
                     to={`/projets/${project.id}`}
                     onClick={() =>
