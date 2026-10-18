@@ -1,0 +1,152 @@
+{
+  "title": "RAMSIN V3 — Du premier échange au produit en production",
+  "version": "v3",
+  "engine": "edge-tts-remy-mastered-v2-style",
+  "total": 84.572,
+  "total_duration": 84.572,
+  "scenes": [
+    {
+      "id": 1,
+      "key": "hook_idea",
+      "speaker": "remy",
+      "title": "01 · Le Déclic du Projet",
+      "start": 0.35,
+      "end": 14.542,
+      "duration": 14.192,
+      "cues": [
+        {
+          "id": 1,
+          "start": 0.35,
+          "end": 5.438,
+          "duration": 5.088,
+          "text": "Vous avez une idée d'application ou de site web en tête depuis des mois... mais par où commencer ?"
+        },
+        {
+          "id": 2,
+          "start": 5.788,
+          "end": 14.092,
+          "duration": 8.304,
+          "text": "Entre les demandes gérées à la main par message, la peur du jargon technique et la crainte d'avancer dans le flou... la plupart des beaux projets restent bloqués au fond d'un tiroir."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "key": "project_awakening",
+      "speaker": "remy",
+      "title": "02 · Votre Projet Prend Vie",
+      "start": 14.542,
+      "end": 25.048,
+      "duration": 10.506,
+      "cues": [
+        {
+          "id": 3,
+          "start": 14.542,
+          "end": 24.598,
+          "duration": 10.056,
+          "text": "Pourtant, votre idée mérite d'exister. Que vous souhaitiez lancer une application mobile sur App Store et Google Play, une boutique en ligne performante ou une plateforme web sur-mesure pour vos clients."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "key": "human_partner",
+      "speaker": "remy",
+      "title": "03 · Contact Direct & Groupe WhatsApp",
+      "start": 25.048,
+      "end": 43.656,
+      "duration": 18.608,
+      "cues": [
+        {
+          "id": 4,
+          "start": 25.048,
+          "end": 35.224,
+          "duration": 10.176,
+          "text": "C'est pour donner vie à ces projets simplement que RAMSIN a été créé. Ici, vous avancez en direct avec Oumar Sidibé, votre interlocuteur unique du premier jour jusqu'à la mise en ligne."
+        },
+        {
+          "id": 5,
+          "start": 35.574,
+          "end": 43.206,
+          "duration": 7.632,
+          "text": "Dès le départ, nous créons un groupe WhatsApp dédié ensemble pour échanger facilement, partager vos idées et suivre chaque avancée sans aucun jargon."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "key": "showreel_live",
+      "speaker": "remy",
+      "title": "04 · Tests en Direct & Retours",
+      "start": 43.656,
+      "end": 56.094,
+      "duration": 12.438,
+      "cues": [
+        {
+          "id": 6,
+          "start": 43.656,
+          "end": 48.768,
+          "duration": 5.112,
+          "text": "Chaque semaine, vous testez directement vos écrans sur votre téléphone et votre ordinateur."
+        },
+        {
+          "id": 7,
+          "start": 49.068,
+          "end": 55.644,
+          "duration": 6.576,
+          "text": "Vous nous envoyez vos retours et les avis de vos testeurs directement dans le groupe WhatsApp, et nous ajustons votre application en temps réel."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "key": "serenity_ownership",
+      "speaker": "remy",
+      "title": "05 · Propriété 100 % & Hébergement",
+      "start": 56.094,
+      "end": 70.646,
+      "duration": 14.552,
+      "cues": [
+        {
+          "id": 8,
+          "start": 56.094,
+          "end": 63.582,
+          "duration": 7.488,
+          "text": "Pas besoin d'écrire un cahier des charges de cinquante pages. À la livraison, votre site ou votre application vous appartient à 100 %."
+        },
+        {
+          "id": 9,
+          "start": 63.932,
+          "end": 70.196,
+          "duration": 6.264,
+          "text": "Et pour votre tranquillité d'esprit, RAMSIN s'occupe aussi d'héberger et de maintenir votre projet en ligne, jour et nuit."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "key": "cta_action",
+      "speaker": "remy",
+      "title": "06 · 30 Minutes Offertes",
+      "start": 70.646,
+      "end": 84.372,
+      "duration": 13.726,
+      "cues": [
+        {
+          "id": 10,
+          "start": 70.646,
+          "end": 79.766,
+          "duration": 9.12,
+          "text": "Vous avez une idée ? Donnez-lui vie dès aujourd'hui. Parlons-en simplement lors d'un premier échange offert de trente minutes avec Oumar Sidibé sur ramsin.fr."
+        },
+        {
+          "id": 11,
+          "start": 80.116,
+          "end": 83.572,
+          "duration": 3.456,
+          "text": "RAMSIN. Du premier échange au produit en production."
+        }
+      ]
+    }
+  ]
+}

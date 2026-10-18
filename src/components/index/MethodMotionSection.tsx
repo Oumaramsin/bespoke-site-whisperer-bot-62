@@ -25,11 +25,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
-import voiceover from "@/data/motionVoiceover.json";
+import voiceoverV2 from "@/data/motionVoiceover.json";
+import voiceoverV3 from "@/data/motionVoiceoverV3.json";
 
 /* ──────────────────────────────────────────────────────────
-   TIMELINE : Synchronisée avec le film Master 1080p V2 (83 s)
-   Voix off : Remy HD — Mixage broadcast -16 LUFS
+   TIMELINE : Synchronisée avec le film Master 1080p V3 (77.0 s)
+   & conservation intégrale de l'Édition V2 (81.3 s)
+   Voix off unique : Remy HD (+9% dynamique) — Mixage broadcast -16 LUFS
    ────────────────────────────────────────────────────────── */
 interface Cue {
   start: number;
@@ -47,11 +49,45 @@ interface Scene {
   cues: Cue[];
 }
 
-const SCENES = voiceover.scenes as Scene[];
-const TOTAL = (voiceover.total as number) || 83.1;
-const VIDEO_SRC = "/videos/ramsin-motion-1080p.mp4";
-const POSTER_SRC = "/videos/cover_1080p.png";
-const VTT_SRC = "/videos/subtitles.vtt";
+type EditionKey = "v3" | "v2";
+
+const FILM_EDITIONS: Record<
+  EditionKey,
+  {
+    key: EditionKey;
+    badge: string;
+    label: string;
+    subtitle: string;
+    videoSrc: string;
+    posterSrc: string;
+    vttSrc: string;
+    scenes: Scene[];
+    total: number;
+  }
+> = {
+  v3: {
+    key: "v3",
+    badge: "Nouvelle Édition Studio 3D",
+    label: "Édition Projet Web & Mobile (V3)",
+    subtitle: "De votre idée à votre site ou application en ligne, en direct avec Oumar Sidibé",
+    videoSrc: "/videos/ramsin-motion-v3-1080p.mp4",
+    posterSrc: "/videos/cover_v3_1080p.png",
+    vttSrc: "/videos/subtitles-v3.vtt",
+    scenes: voiceoverV3.scenes as Scene[],
+    total: (voiceoverV3.total as number) || 85.2,
+  },
+  v2: {
+    key: "v2",
+    badge: "Édition Originale Conservée",
+    label: "Édition Classique (V2)",
+    subtitle: "Présentation synthétique de l'accompagnement RAMSIN Conseil",
+    videoSrc: "/videos/ramsin-motion-1080p.mp4",
+    posterSrc: "/videos/cover_1080p.png",
+    vttSrc: "/videos/subtitles.vtt",
+    scenes: voiceoverV2.scenes as Scene[],
+    total: (voiceoverV2.total as number) || 81.3,
+  },
+};
 
 const fmt = (sec: number) => {
   const s = Math.max(0, Math.floor(sec));
@@ -62,22 +98,22 @@ const VALUE_PILLARS = [
   {
     icon: HelpCircle,
     title: "1. Pas de cahier des charges requis",
-    text: "Venez simplement avec votre idée ou votre besoin métier, même griffonné sur un carnet.",
+    text: "Venez simplement avec votre idée : site vitrine, boutique en ligne ou application mobile.",
   },
   {
-    icon: Wallet,
-    title: "2. Devis forfaitaire garanti",
-    text: "Un montant fixe et un calendrier clair validés avant d'écrire la moindre ligne de code.",
+    icon: Mic,
+    title: "2. Groupe WhatsApp dédié avec Oumar",
+    text: "Échangez en direct dès le premier jour avec Oumar Sidibé, sans intermédiaire ni jargon.",
   },
   {
     icon: Eye,
-    title: "3. Démos hebdomadaires en direct",
-    text: "Vous testez les écrans chaque semaine avec votre architecte senior : zéro effet tunnel.",
+    title: "3. Lien de test & retours en direct",
+    text: "Testez votre projet sur votre téléphone chaque semaine et partagez les retours de vos testeurs.",
   },
   {
     icon: Code2,
-    title: "4. Code 100 % à votre nom",
-    text: "Propriété intégrale cédée dès la livraison finale : code source, hébergements et aucun abonnement captif.",
+    title: "4. 100 % propriétaire & Hébergement inclus",
+    text: "Tout vous appartient à 100 % et RAMSIN assure l'hébergement ainsi que la maintenance technique.",
   },
 ];
 
@@ -89,6 +125,14 @@ export interface MethodMotionSectionProps {
 
 export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionProps) => {
   const { ref, isVisible } = useScrollAnimation();
+  const [editionKey, setEditionKey] = useState<EditionKey>("v3");
+  const activeEdition = FILM_EDITIONS[editionKey];
+  const SCENES = activeEdition.scenes;
+  const TOTAL = activeEdition.total;
+  const VIDEO_SRC = activeEdition.videoSrc;
+  const POSTER_SRC = activeEdition.posterSrc;
+  const VTT_SRC = activeEdition.vttSrc;
+
   const [status, setStatus] = useState<Status>("idle");
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(TOTAL);
@@ -102,6 +146,19 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const hideControlsTimeout = useRef<number | null>(null);
+
+  const handleSelectEdition = (nextKey: EditionKey) => {
+    if (nextKey === editionKey) return;
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+    setEditionKey(nextKey);
+    setStatus("idle");
+    setCurrentTime(0);
+    setDuration(FILM_EDITIONS[nextKey].total);
+    trackConversionEvent("watch_method_motion", { action: `switch_edition_${nextKey}` });
+  };
 
   // Synchronisation du temps de lecture
   const onTimeUpdate = () => {
@@ -281,6 +338,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
       {/* ── Élément Vidéo HTML5 1080p ── */}
       <div className="relative w-full aspect-video bg-black overflow-hidden flex items-center justify-center">
         <video
+          key={editionKey}
           ref={videoRef}
           src={VIDEO_SRC}
           poster={POSTER_SRC}
@@ -290,7 +348,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
           onLoadedMetadata={onLoadedMetadata}
           onEnded={() => {
             setStatus("ended");
-            trackConversionEvent("watch_method_motion", { action: "complete", duration: Math.round(duration) });
+            trackConversionEvent("watch_method_motion", { action: "complete", duration: Math.round(duration), edition: editionKey });
           }}
           onClick={togglePlay}
           className="w-full h-full object-cover cursor-pointer"
@@ -317,14 +375,14 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
 
             <div className="space-y-1 sm:space-y-2 max-w-xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider mb-1">
-                <Sparkles className="w-3 h-3 text-[#C7F36B]" /> Film d'accompagnement ({fmt(TOTAL)})
+                <Sparkles className="w-3 h-3 text-[#C7F36B]" /> {activeEdition.badge} ({fmt(TOTAL)})
               </div>
               <h3 className="text-lg sm:text-3xl font-black text-white tracking-tight leading-snug">
                 Vous avez un projet web ou mobile ?
                 <span className="block text-[#C7F36B]">Découvrez la méthode RAMSIN en images.</span>
               </h3>
               <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto hidden sm:block">
-                Pas de jargon intimidant, devis forfaitaire ferme garanti, et vous testez vos écrans chaque semaine en direct.
+                Zéro jargon technique, un groupe WhatsApp dédié avec Oumar Sidibé, et vous testez votre projet en direct chaque semaine.
               </p>
             </div>
           </div>
@@ -342,7 +400,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             </h3>
 
             <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed">
-              30 minutes offertes avec <strong>Oumar Sidibé</strong> pour clarifier votre besoin, définir vos priorités et estimer votre budget, sans aucun engagement.
+              30 minutes offertes avec <strong>Oumar Sidibé</strong> pour clarifier votre besoin, définir vos priorités et structurer votre projet, sans aucun engagement.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full max-w-md justify-center">
@@ -448,12 +506,19 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
               <RotateCcw className="w-4 h-4" />
             </button>
 
-            {/* Compteur temporel */}
+            {/* Compteur temporel + chapitre actif */}
             <span className="font-mono text-xs text-slate-300 tabular-nums">
               <span className="text-white font-bold">{fmt(currentTime)}</span>
               <span className="text-slate-500 mx-1">/</span>
               <span>{fmt(duration)}</span>
             </span>
+
+            {activeScene && (
+              <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[11px] font-medium text-slate-300 truncate max-w-[230px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C7F36B]" />
+                {activeScene.title}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -502,9 +567,58 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
     </div>
   );
 
+  const editionAndChaptersMarkup = (
+    <div className="max-w-4xl mx-auto mt-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 px-1">
+      {/* Chapitres rapides cliquables */}
+      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+        {SCENES.map((sc) => {
+          const isCurrent = activeScene?.key === sc.key && status !== "idle";
+          return (
+            <button
+              key={sc.key}
+              type="button"
+              onClick={() => seekTo(sc.start)}
+              className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer border ${
+                isCurrent
+                  ? "bg-[#123A35] text-[#C7F36B] border-[#123A35] shadow-sm"
+                  : "bg-secondary/60 hover:bg-secondary text-muted-foreground hover:text-foreground border-border/70"
+              }`}
+              title={`Aller au chapitre ${sc.title} (${fmt(sc.start)})`}
+            >
+              {sc.title}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Sélecteur d'édition V3 / V2 (garde V2 accessible à tout moment) */}
+      <div className="inline-flex items-center gap-1 p-1 rounded-full border border-border/80 bg-secondary/50 text-[11px] shrink-0">
+        {(["v3", "v2"] as EditionKey[]).map((k) => {
+          const ed = FILM_EDITIONS[k];
+          const selected = editionKey === k;
+          return (
+            <button
+              key={k}
+              type="button"
+              onClick={() => handleSelectEdition(k)}
+              className={`px-2.5 py-1 rounded-full font-bold transition-all cursor-pointer ${
+                selected
+                  ? "bg-[#123A35] text-[#C7F36B] shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title={ed.subtitle}
+            >
+              {k === "v3" ? "Film V3 · Studio 3D" : "Film V2 · Classique"}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   const transcriptMarkup = (
     <>
-      <div className="max-w-4xl mx-auto mt-4 text-center">
+      <div className="max-w-4xl mx-auto mt-3 text-center">
         <button
           type="button"
           onClick={() => setShowTranscript(!showTranscript)}
@@ -518,7 +632,9 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         <div className="max-w-4xl mx-auto mt-4 p-6 sm:p-8 rounded-3xl bg-card glass-card border border-border/80 space-y-5 text-left animate-fade-in">
           <div className="flex items-center justify-between border-b border-border/60 pb-4">
             <div>
-              <h3 className="text-lg font-bold text-foreground">Transcription intégrale ({fmt(TOTAL)})</h3>
+              <h3 className="text-lg font-bold text-foreground">
+                Transcription intégrale — {activeEdition.label} ({fmt(TOTAL)})
+              </h3>
               <p className="text-xs text-muted-foreground">Le texte complet du film publicitaire RAMSIN (Voix off : Remy HD).</p>
             </div>
             <Badge variant="secondary" className="text-xs">Sous-titres &amp; Accessibilité</Badge>
@@ -551,10 +667,11 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             Film de présentation ({fmt(TOTAL)}) · « De l'idée au projet concret sans stress »
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
-            Vous avez un projet web ou mobile mais ne savez pas par où commencer ? Découvrez en 80 secondes la méthode RAMSIN.
+            Vous avez un projet web ou mobile mais ne savez pas par où commencer ? Découvrez étape par étape la méthode RAMSIN.
           </p>
         </div>
         {playerMarkup}
+        {editionAndChaptersMarkup}
         {transcriptMarkup}
       </div>
     );
@@ -576,11 +693,12 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             <span className="block gradient-text mt-1">Donnons-lui vie ensemble.</span>
           </h2>
           <p className="text-muted-foreground text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Pas de cahier des charges de 50 pages, devis forfaitaire fixe garanti et accompagnement direct avec votre architecte senior.
+            Pas de cahier des charges de 50 pages, un groupe WhatsApp dédié avec Oumar Sidibé et votre hébergement clé en main.
           </p>
         </div>
 
         {playerMarkup}
+        {editionAndChaptersMarkup}
 
         {/* 4 Piliers de réassurance */}
         <div className="max-w-4xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
