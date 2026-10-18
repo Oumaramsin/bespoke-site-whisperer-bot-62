@@ -16,7 +16,7 @@ const InteractiveGuide = () => {
       subtitle: "Pour entrepreneurs & créateurs de services",
       description: "Vous voulez lancer une plateforme web moderne, rapide et sécurisée avec gestion d'utilisateurs, espaces connectés ou services collaboratifs.",
       exampleTitle: "Exemple de Réalisation : Dabari",
-      exampleDesc: "Plateforme communautaire traiteur & transport collaboratif GP Colis (Next.js 16, React, Node.js, PostgreSQL, Docker).",
+      exampleDesc: "Plateforme communautaire traiteur & transport collaboratif GP (Next.js 16, React, Node.js, PostgreSQL, Docker).",
       features: ["Authentification sécurisée (JWT)", "Tableaux de bord interactifs", "Administration complète"],
       targetLink: "/projets/dabari",
       buttonText: "Découvrir le projet Dabari"

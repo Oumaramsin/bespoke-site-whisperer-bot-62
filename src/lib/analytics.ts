@@ -21,6 +21,7 @@ export type ConversionEventName =
   | "submit_contact_form"
   | "click_switch_to_written_form"
   | "switch_process_tab"
+  | "switch_projects_tab"
   | "watch_method_motion"
   | "click_case_study"
   | "click_phone"

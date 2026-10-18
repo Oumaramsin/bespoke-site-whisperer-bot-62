@@ -32,13 +32,13 @@ export interface Project {
 export const PROJECTS_DATA: Project[] = [
   {
     id: "dabari",
-    title: "Dabari - Plateforme Web & Mobile Traiteur & Fret GP",
+    title: "Dabari - Plateforme Web & Mobile Traiteur & GP",
     clientCompany: "Dabari Marketplace",
     period: "2024 - 2026",
     category: "fullstack",
     categoryLabel: "Plateforme Web & Mobile",
     pole: "web",
-    summary: "Conception intégrale d'une marketplace web & mobile connectant la diaspora africaine aux traiteurs de proximité et au fret express de colis (GP).",
+    summary: "Conception intégrale d'une marketplace web & mobile connectant la diaspora africaine aux traiteurs de proximité et au transport collaboratif GP.",
     context: "Digitaliser et sécuriser les commandes de restauration africaine authentique et les envois de bagages internationaux vers l'Afrique de l'Ouest.",
     problem: "Prise de commande informelle par réseaux sociaux entraînant des erreurs récurrentes, des retards d'expédition et une absence totale de traçabilité.",
     ramsinRole: "Lead Développeur Full-Stack & Architecte Solution (Cadrage, UI/UX, Backend Express, Frontend Next.js 15 et Mobile React Native Expo).",
@@ -67,7 +67,7 @@ export const PROJECTS_DATA: Project[] = [
     tags: ["Next.js 15", "React Native", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
     stack: ["Next.js 15", "React Native / Expo", "Node.js", "PostgreSQL Prisma", "Docker"],
     featured: true,
-    image: "/images/projects/dabari-preview.jpg"
+    image: "/images/projects/dabari.webp"
   },
   {
     id: "maison-hamdiwashukri",
@@ -105,7 +105,7 @@ export const PROJECTS_DATA: Project[] = [
     tags: ["Next.js 15", "React 19", "TypeScript", "Stripe Checkout", "PayPal API", "PostgreSQL"],
     stack: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL"],
     featured: true,
-    image: "/images/projects/hamdiwashukri-preview.jpg"
+    image: "/images/projects/hamdiwashukri.webp"
   },
   {
     id: "leclat-du-chef",
@@ -144,7 +144,7 @@ export const PROJECTS_DATA: Project[] = [
     stack: ["HTML5 / Modern JS", "Tailwind CSS", "API Devis Express", "SEO Local", "Hébergement Cloud"],
     featured: true,
     logo: "/logos/eclat-du-chef.png",
-    image: "/images/projects/eclatduchef-preview.jpg"
+    image: "/images/projects/eclat-du-chef.webp"
   },
   {
     id: "covea-hopex-v5",
@@ -182,7 +182,7 @@ export const PROJECTS_DATA: Project[] = [
     stack: ["MEGA HOPEX V5", "Métamodélisation", "Cartographie SI", "Gouvernance d'Entreprise"],
     featured: true,
     logo: "/logos/covea.png",
-    image: "/images/projects/covea-preview.jpg"
+    image: "/images/projects/covea-preview.webp"
   },
   {
     id: "lbp-architecture-solution",
@@ -220,6 +220,6 @@ export const PROJECTS_DATA: Project[] = [
     stack: ["Dossier d'Architecture DAT", "Architecture Solution", "MEGA HOPEX", "Design Authority"],
     featured: true,
     logo: "/logos/banque-postale.png",
-    image: "/images/projects/lbp-preview.jpg"
+    image: "/images/projects/lbp-preview.webp"
   }
 ];

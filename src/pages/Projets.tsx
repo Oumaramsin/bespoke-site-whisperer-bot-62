@@ -181,13 +181,19 @@ export const Projets = () => {
                           </div>
                         )}
                       </div>
-                      <div className="max-h-[420px] overflow-hidden bg-slate-900/5">
+                      <div className={`overflow-hidden flex items-center justify-center ${
+                        project.id === "leclat-du-chef"
+                          ? "bg-[#09090b]"
+                          : project.id === "dabari"
+                          ? "bg-[#f8fafd]"
+                          : "bg-slate-900/5"
+                      }`}>
                         <img
                           src={project.image}
                           alt={`Aperçu écran de l'interface ${project.title}`}
                           loading="lazy"
                           decoding="async"
-                          className="w-full h-auto object-cover object-top hover:scale-[1.01] transition-transform duration-500"
+                          className="w-full h-auto object-contain block hover:scale-[1.01] transition-transform duration-500"
                         />
                       </div>
                     </div>

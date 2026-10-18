@@ -56,15 +56,15 @@ export const ProjectDetail = () => {
   const getFauxUrl = (id: string) => {
     switch (id) {
       case "dabari":
-        return "app.dabari.fr/dashboard";
+        return "dabari.fr/traiteur";
       case "maison-hamdiwashukri":
-        return "maisonhamdiwashukri.com/configurateur";
+        return "hamdiwashukri.com";
       case "leclat-du-chef":
-        return "leclatduchef.fr/devis-evenementiel";
+        return "leclatduchef.fr";
       case "covea-hopex-v5":
-        return "hopex.covea.intra/cartographie-si";
+        return "hopex.covea.intra";
       case "lbp-architecture-solution":
-        return "architecture.labanquepostale.fr/dat";
+        return "labanquepostale.fr/si";
       default:
         return "ramsin.fr/etude-de-cas";
     }
@@ -176,11 +176,13 @@ export const ProjectDetail = () => {
               </div>
 
               {/* Screen view */}
-              <div className="overflow-hidden bg-slate-900/5">
+              <div className={`overflow-hidden flex items-center justify-center ${
+                project.id === "leclat-du-chef" ? "bg-[#09090b]" : project.id === "dabari" ? "bg-[#f8fafd]" : "bg-slate-900/5"
+              }`}>
                 <img
                   src={project.image}
                   alt={`Capture grand format de l'interface ${project.title}`}
-                  className="w-full h-auto object-cover object-top"
+                  className="w-full h-auto object-contain block mx-auto"
                   loading="eager"
                 />
               </div>
