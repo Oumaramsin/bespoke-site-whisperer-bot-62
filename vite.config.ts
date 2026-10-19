@@ -36,7 +36,7 @@ const localApiPlugin = (): Plugin => ({
 });
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, isSsrBuild }) => {
   const localKey = loadEnv(mode, process.cwd(), "").RESEND_API_KEY;
   if (localKey && !process.env.RESEND_API_KEY) process.env.RESEND_API_KEY = localKey;
 
@@ -61,7 +61,9 @@ export default defineConfig(({ mode }) => {
       target: "esnext",
       minify: "esbuild",
       cssCodeSplit: true,
-      rollupOptions: {
+      // Build SSR du pré-rendu (src/entry-server.tsx) : ni public/ ni découpage vendor, les dépendances restent externes
+      copyPublicDir: !isSsrBuild,
+      rollupOptions: isSsrBuild ? {} : {
         output: {
           manualChunks: {
             vendor: ["react", "react-dom", "react-router-dom"],

@@ -1,23 +1,14 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { resolveSeo, SeoCollectorContext, type SeoProps } from "@/lib/seo";
 
-interface SEOProps {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  canonical?: string;
-  noIndex?: boolean;
-  /** Données structurées schema.org propres à la page (une ou plusieurs entités) */
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
-}
+export const SEO = (props: SeoProps) => {
+  const seo = resolveSeo(props);
+  const { title, description, keywords, robots, canonical, image, jsonLd } = seo;
 
-export const SEO = ({
-  title = "RAMSIN | Architecture SI (MEGA HOPEX) & Solutions Numériques Sur-Mesure",
-  description = "Cabinet d'expertise en Architecture des Systèmes d'Information (MEGA HOPEX V5) et conception de solutions web & mobiles sur-mesure. Des décisions SI plus claires et des outils adaptés à vos enjeux.",
-  keywords = "Architecture SI, MEGA HOPEX V5, Urbanisation SI, Cartographie applicative, Développement Web, Applications Mobiles, Next.js, React Native, Fresnes, Paris, DSI",
-  canonical,
-  noIndex = false,
-  jsonLd,
-}: SEOProps) => {
+  // Pré-rendu : les effets ne s'exécutent pas côté serveur, on transmet donc les balises au script de build
+  const collector = useContext(SeoCollectorContext);
+  if (collector) collector.seo = seo;
+
   useEffect(() => {
     // Modifier le titre de la page
     document.title = title;
@@ -36,11 +27,13 @@ export const SEO = ({
 
     updateMetaTag("description", description);
     updateMetaTag("keywords", keywords);
-    updateMetaTag("robots", noIndex ? "noindex, nofollow" : "index, follow");
+    updateMetaTag("robots", robots);
     updateMetaTag("og:title", title, true);
     updateMetaTag("og:description", description, true);
+    updateMetaTag("og:image", image, true);
     updateMetaTag("twitter:title", title);
     updateMetaTag("twitter:description", description);
+    updateMetaTag("twitter:image", image);
 
     // Mettre à jour l'URL canonique et og:url si fournie
     if (canonical) {
@@ -66,7 +59,7 @@ export const SEO = ({
     } else if (existing) {
       existing.remove();
     }
-  }, [title, description, keywords, canonical, noIndex, jsonLd]);
+  }, [title, description, keywords, canonical, robots, image, jsonLd]);
 
   return null;
 };
