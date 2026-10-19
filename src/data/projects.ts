@@ -27,11 +27,31 @@ export interface Project {
   shortProblem?: string;
   shortSolution?: string;
   shortImpact?: string;
+  /** Nom court affiché sur les cartes (ex. « Dabari ») */
+  client: string;
+  /** Promesse orientée résultat, lisible en une ligne */
+  headline: string;
+  /** Trois résultats clés, du plus parlant au plus technique */
+  results: string[];
+  /** Visuel d'illustration (livrables clients confidentiels) plutôt qu'une capture réelle */
+  imageIllustrative?: boolean;
+  /** Couleur de fond derrière la capture */
+  imageBg?: string;
+  /** Point d'ancrage de la capture recadrée (object-position CSS), « top » par défaut */
+  imagePosition?: string;
 }
 
 export const PROJECTS_DATA: Project[] = [
   {
     id: "dabari",
+    client: "Dabari",
+    headline: "Une marketplace web & mobile qui sécurise les commandes de la diaspora",
+    results: [
+      "-80 % de litiges de commande",
+      "Devis calculés automatiquement en temps réel",
+      "Suivi des envois GP en 5 étapes",
+    ],
+    imageBg: "#f8fafd",
     title: "Dabari - Plateforme Web & Mobile Traiteur & GP",
     clientCompany: "Dabari Marketplace",
     period: "2024 - 2026",
@@ -46,7 +66,7 @@ export const PROJECTS_DATA: Project[] = [
     impact: "Sécurisation des paiements, génération instantanée de devis et gain de temps substantiel sur la gestion manuelle des commandes.",
     shortProblem: "Commandes et devis gérés par messagerie informelle sans traçabilité ni paiement sécurisé.",
     shortSolution: "Marketplace Next.js 15 & application mobile Expo avec calcul de devis temps réel et Stripe.",
-    shortImpact: "Zéro litige de commande, suivi GP en 5 étapes et gain de 6h de gestion manuelle par semaine.",
+    shortImpact: "-80 % de litiges de commande, suivi GP en 5 étapes et environ 6 h de gestion manuelle gagnées par semaine.",
     metric: {
       value: "-80%",
       label: "de litiges de commande"
@@ -71,6 +91,14 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "maison-hamdiwashukri",
+    client: "Maison HamdiWaShukri",
+    headline: "Une boutique de luxe qui calcule les mesures sur-mesure à la place de l'atelier",
+    results: [
+      "100 % des mensurations calculées automatiquement",
+      "Paiement par carte (Stripe) et PayPal",
+      "Suivi de confection en direct pour chaque client",
+    ],
+    imageBg: "#f9f9f9",
     title: "Maison HamdiWaShukri - E-Commerce Luxe & Sur-Mesure",
     clientCompany: "Maison HamdiWaShukri",
     period: "2024 - 2025",
@@ -109,6 +137,15 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "leclat-du-chef",
+    client: "L'Éclat du Chef",
+    headline: "Un site vitrine qui transforme les visiteurs en demandes qualifiées",
+    results: [
+      "x3 demandes de devis pré-qualifiées",
+      "Demandes complètes (date, convives, menu) reçues par email",
+      "Référencement local en Île-de-France",
+    ],
+    imageBg: "#09090b",
+    imagePosition: "left top",
     title: "L'Éclat du Chef - Vitrine Traiteur & Devis Express",
     clientCompany: "L'Éclat du Chef (Île-de-France)",
     period: "2024",
@@ -148,11 +185,20 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "covea-hopex-v5",
+    client: "Covéa",
+    headline: "Une cartographie SI fiable pour arbitrer la transformation d'un grand groupe d'assurance",
+    results: [
+      "Référentiel fiabilisé et validé en comités d'architecture",
+      "Doublons et flux obsolètes assainis",
+      "Contrôle qualité hebdomadaire du référentiel",
+    ],
+    imageIllustrative: true,
+    imageBg: "#f1f5f9",
     title: "Gouvernance & Cartographie SI MEGA HOPEX",
     clientCompany: "COVEA (MAAF, MMA, GMF)",
     period: "Juin 2023 - Présent",
     category: "mega-hopex",
-    categoryLabel: "Architecture SI & MEGA HOPEX",
+    categoryLabel: "Cartographie & Gouvernance SI",
     pole: "si",
     summary: "Pilotage et fiabilisation de la cartographie du Système d'Information transverse sur la plateforme MEGA HOPEX V5 au sein d'un grand groupe d'assurance.",
     context: "La DSI du groupe Covéa gère un patrimoine de plusieurs centaines d'applications métiers critiques pour les marques MAAF, MMA et GMF.",
@@ -186,6 +232,15 @@ export const PROJECTS_DATA: Project[] = [
   },
   {
     id: "lbp-architecture-solution",
+    client: "La Banque Postale",
+    headline: "Des dossiers d'architecture validés pour moderniser le crédit immobilier",
+    results: [
+      "DAT validés en Design Authority",
+      "Flux avec le SI historique sécurisés",
+      "Calendrier projet respecté",
+    ],
+    imageIllustrative: true,
+    imageBg: "#ffffff",
     title: "Cadrage d'Architecture Solution & Crédit Immobilier",
     clientCompany: "La Banque Postale (via Marte)",
     period: "Septembre 2022 - Mai 2023",

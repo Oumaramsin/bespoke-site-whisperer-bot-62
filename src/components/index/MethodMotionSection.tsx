@@ -5,7 +5,6 @@ import {
   RotateCcw,
   Volume2,
   VolumeX,
-  Subtitles,
   Sparkles,
   Calendar,
   Eye,
@@ -24,12 +23,12 @@ import { trackConversionEvent } from "@/lib/analytics";
 
 /* ──────────────────────────────────────────────────────────
    LECTEUR VIDÉO DE PRÉSENTATION RAMSIN (Master 1080p)
-   Voix off : Remy HD — Mixage broadcast -16 LUFS
+   Motion design V4.2 « L'idée qui dort » — voix Remy, -16 LUFS
+   Les sous-titres sont incrustés dans la vidéo : pas de piste VTT ni de bouton dédié.
    ────────────────────────────────────────────────────────── */
-const VIDEO_SRC = "/videos/ramsin-motion-v3-1080p.mp4";
-const POSTER_SRC = "/videos/cover_v3_1080p.png";
-const VTT_SRC = "/videos/subtitles-v3.vtt";
-const DEFAULT_DURATION = 84.6;
+const VIDEO_SRC = "/videos/ramsin-motion-v4-1080p.mp4";
+const POSTER_SRC = "/videos/cover_v4_1080p.png";
+const DEFAULT_DURATION = 87.2;
 
 const fmt = (sec: number) => {
   const s = Math.max(0, Math.floor(sec));
@@ -72,7 +71,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(DEFAULT_DURATION);
   const [isMuted, setIsMuted] = useState(false);
-  const [showSubtitles, setShowSubtitles] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
   const [showControls, setShowControls] = useState(true);
@@ -221,20 +219,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
     trackConversionEvent("watch_method_motion", { action: !isMuted ? "mute" : "unmute" });
   };
 
-  const toggleSubtitles = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    const next = !showSubtitles;
-    setShowSubtitles(next);
-
-    // Contrôle du track WebVTT natif
-    if (v.textTracks && v.textTracks[0]) {
-      v.textTracks[0].mode = next ? "showing" : "hidden";
-    }
-
-    trackConversionEvent("watch_method_motion", { action: next ? "subtitles_on" : "subtitles_off" });
-  };
-
   const toggleFullscreen = async () => {
     const el = containerRef.current as (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> }) | null;
     const v = videoRef.current as (HTMLVideoElement & { webkitEnterFullscreen?: () => void }) | null;
@@ -277,8 +261,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
       seekTo(currentTime - 5);
     } else if (e.key === "m") {
       toggleMute();
-    } else if (e.key === "c") {
-      toggleSubtitles();
     } else if (e.key === "f") {
       toggleFullscreen();
     }
@@ -294,7 +276,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
       onKeyDown={onKeyDown}
       tabIndex={0}
       role="region"
-      aria-label="Présentation vidéo RAMSIN : De l'idée au projet concret sans stress. Espace : lecture/pause, flèches : avancer/reculer de 5 s, M : son, C : sous-titres, F : plein écran."
+      aria-label="Présentation vidéo RAMSIN : L'idée qui dort. Espace : lecture/pause, flèches : avancer/reculer de 5 s, M : son, F : plein écran."
       className={`relative mx-auto overflow-hidden bg-black outline-none focus-visible:ring-2 focus-visible:ring-[#C7F36B]/60 group select-none flex items-center justify-center ${
         isFullscreen
           ? "w-screen h-screen max-w-none rounded-none border-0"
@@ -306,7 +288,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         ref={videoRef}
         src={VIDEO_SRC}
         poster={POSTER_SRC}
-        preload={isVisible ? "auto" : "metadata"}
+        preload="metadata"
         playsInline
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
@@ -317,9 +299,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         onClick={togglePlay}
         onDoubleClick={toggleFullscreen}
         className={`w-full h-full cursor-pointer ${isFullscreen ? "object-contain" : "object-cover"}`}
-      >
-        <track kind="subtitles" src={VTT_SRC} srcLang="fr" label="Français" default={false} />
-      </video>
+      />
 
       {/* ── Overlay Écran d'accueil (Idle) ── */}
       {status === "idle" && (
@@ -486,21 +466,6 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
               >
                 {!isMuted ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline">{!isMuted ? "Son" : "Muet"}</span>
-              </button>
-
-              {/* Sous-titres */}
-              <button
-                type="button"
-                onClick={toggleSubtitles}
-                className={`px-2.5 py-1.5 rounded-lg border text-xs flex items-center gap-1.5 cursor-pointer transition-colors ${
-                  showSubtitles ? "bg-[#C7F36B]/15 border-[#C7F36B]/40 text-[#C7F36B]" : "border-white/15 text-slate-400 hover:text-white"
-                }`}
-                title={showSubtitles ? "Masquer les sous-titres (C)" : "Afficher les sous-titres (C)"}
-                aria-label={showSubtitles ? "Masquer les sous-titres" : "Afficher les sous-titres"}
-                aria-pressed={showSubtitles}
-              >
-                <Subtitles className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Sous-titres</span>
               </button>
 
               {/* Plein écran / Quitter le plein écran */}

@@ -131,8 +131,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border/60 mt-10 pt-6 text-center text-xs text-muted-foreground">
+        <div className="border-t border-border/60 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {currentYear} RAMSIN Conseil. Tous droits réservés.</p>
+          <nav className="flex items-center gap-4" aria-label="Informations légales">
+            <Link to="/mentions-legales" className="hover:text-primary transition-colors">Mentions légales</Link>
+            <Link to="/confidentialite" className="hover:text-primary transition-colors">Politique de confidentialité</Link>
+          </nav>
         </div>
       </div>
     </footer>

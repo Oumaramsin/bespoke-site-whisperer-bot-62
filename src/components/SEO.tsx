@@ -6,6 +6,8 @@ interface SEOProps {
   keywords?: string;
   canonical?: string;
   noIndex?: boolean;
+  /** Données structurées schema.org propres à la page (une ou plusieurs entités) */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 export const SEO = ({
@@ -14,6 +16,7 @@ export const SEO = ({
   keywords = "Architecture SI, MEGA HOPEX V5, Urbanisation SI, Cartographie applicative, Développement Web, Applications Mobiles, Next.js, React Native, Fresnes, Paris, DSI",
   canonical,
   noIndex = false,
+  jsonLd,
 }: SEOProps) => {
   useEffect(() => {
     // Modifier le titre de la page
@@ -51,7 +54,19 @@ export const SEO = ({
       }
       link.setAttribute("href", canonical);
     }
-  }, [title, description, keywords, canonical, noIndex]);
+
+    // Données structurées de la page (remplacées à chaque changement de page)
+    const existing = document.getElementById("page-jsonld");
+    if (jsonLd) {
+      const script = existing ?? document.createElement("script");
+      script.id = "page-jsonld";
+      script.setAttribute("type", "application/ld+json");
+      script.textContent = JSON.stringify(jsonLd);
+      if (!existing) document.head.appendChild(script);
+    } else if (existing) {
+      existing.remove();
+    }
+  }, [title, description, keywords, canonical, noIndex, jsonLd]);
 
   return null;
 };

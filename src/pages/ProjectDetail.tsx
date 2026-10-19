@@ -1,402 +1,315 @@
+import { useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { PROJECTS_DATA } from "@/data/projects";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ArrowLeft,
   ArrowRight,
-  Building2,
   Calendar,
   CheckCircle2,
-  Clock,
-  Layers,
-  Sparkles,
-  TrendingUp,
-  AlertTriangle,
-  Zap,
-  Laptop,
-  Lock,
-  ArrowUpRight,
-  ShieldCheck,
   FileText,
+  Layers,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  TrendingUp,
+  UserCheck,
+  Users,
+  Zap,
+  AlertTriangle,
+  Phone,
 } from "lucide-react";
+import { PROJECTS_DATA } from "@/data/projects";
+import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
+import BrowserFrame from "@/components/projects/BrowserFrame";
+import ProjectCard from "@/components/projects/ProjectCard";
+import MethodSteps from "@/components/projects/MethodSteps";
 import { trackConversionEvent } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 
 export const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
+  const project = PROJECTS_DATA.find((p) => p.id === projectId);
 
-  const projectIndex = PROJECTS_DATA.findIndex((p) => p.id === projectId);
-  const project = PROJECTS_DATA[projectIndex];
+  const jsonLd = useMemo(() => {
+    if (!project) return undefined;
+    const url = `https://www.ramsin.fr/projets/${project.id}`;
+    return [
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.ramsin.fr/" },
+          { "@type": "ListItem", position: 2, name: "Réalisations", item: "https://www.ramsin.fr/projets" },
+          { "@type": "ListItem", position: 3, name: project.client, item: url },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: `${project.client} — ${project.headline}`,
+        description: project.summary,
+        url,
+        ...(project.image ? { image: `https://www.ramsin.fr${project.image}` } : {}),
+        creator: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
+        keywords: project.tags.join(", "),
+      },
+    ];
+  }, [project]);
 
   if (!project) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center container mx-auto px-4 text-center py-20 space-y-4">
         <h1 className="text-3xl font-extrabold text-foreground">Étude de cas introuvable</h1>
-        <p className="text-muted-foreground text-sm max-w-md">
-          L'étude de cas demandée n'existe pas ou a été déplacée.
-        </p>
+        <p className="text-muted-foreground text-sm max-w-md">L'étude de cas demandée n'existe pas ou a été déplacée.</p>
         <Button asChild variant="lime" className="mt-4">
           <Link to="/projets">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Retour aux réalisations
+            <ArrowLeft className="w-4 h-4 mr-2" /> Voir toutes les réalisations
           </Link>
         </Button>
       </div>
     );
   }
 
-  const prevProject = projectIndex > 0 ? PROJECTS_DATA[projectIndex - 1] : null;
-  const nextProject =
-    projectIndex < PROJECTS_DATA.length - 1 ? PROJECTS_DATA[projectIndex + 1] : null;
-
   const isSI = project.pole === "si";
+  // Autres projets : même pôle d'abord, puis le reste
+  const related = [
+    ...PROJECTS_DATA.filter((p) => p.id !== project.id && p.pole === project.pole),
+    ...PROJECTS_DATA.filter((p) => p.id !== project.id && p.pole !== project.pole),
+  ].slice(0, 2);
 
-  const getFauxUrl = (id: string) => {
-    switch (id) {
-      case "dabari":
-        return "dabari.fr/traiteur";
-      case "maison-hamdiwashukri":
-        return "hamdiwashukri.com";
-      case "leclat-du-chef":
-        return "leclatduchef.fr";
-      case "covea-hopex-v5":
-        return "hopex.covea.intra";
-      case "lbp-architecture-solution":
-        return "labanquepostale.fr/si";
-      default:
-        return "ramsin.fr/etude-de-cas";
-    }
+  const openBooking = (source: string) => {
+    trackConversionEvent("click_case_study_cta", { projectId: project.id, pole: project.pole, source });
+    navigate("/contact", { state: { scrollToBooking: true } });
   };
+  const formLink = `/contact?tunnel=form&service=${isSI ? "si" : "web"}`;
+
+  const story = [
+    { icon: Target, step: "01", title: "Le contexte", text: project.context, tone: "bg-secondary text-foreground" },
+    { icon: AlertTriangle, step: "02", title: "Le défi", text: project.problem, tone: "bg-rose-500/10 text-rose-700" },
+    { icon: Zap, step: "03", title: "La solution", text: project.solution, tone: "bg-[#123A35]/10 text-[#123A35]" },
+    { icon: TrendingUp, step: "04", title: "Le résultat", text: project.impact, tone: "bg-[#C7F36B]/40 text-[#123A35]" },
+  ];
 
   return (
     <>
       <SEO
-        title={`${project.title} | Étude de Cas Réelle RAMSIN`}
-        description={`${project.summary} Découvrez le contexte, les livrables remis et l'impact mesurable obtenu pour ${project.clientCompany}.`}
+        title={`${project.client} — ${project.headline} | Étude de cas RAMSIN`}
+        description={`${project.summary} Le défi, la solution construite et le résultat obtenu pour ${project.clientCompany}.`}
         canonical={`https://www.ramsin.fr/projets/${project.id}`}
+        jsonLd={jsonLd}
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-background via-secondary/15 to-background py-10 md:py-16">
-        <div className="container mx-auto px-4 max-w-6xl space-y-12">
-          
-          {/* 1. BREADCRUMBS & NAVIGATION RETOUR */}
-          <div className="flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Link to="/" className="hover:text-primary transition-colors">
-                Accueil
-              </Link>
-              <span>/</span>
-              <Link to="/projets" className="hover:text-primary transition-colors">
-                Études de Cas
-              </Link>
-              <span>/</span>
-              <span className="text-foreground font-semibold truncate max-w-[200px] sm:max-w-xs">
-                {project.clientCompany}
-              </span>
+      {/* EN-TÊTE */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#071816] via-[#123A35] to-[#0c2621] text-white">
+        <div className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full bg-[#C7F36B]/10 blur-3xl pointer-events-none" />
+        <div className="container mx-auto px-4 max-w-6xl pt-8 pb-14 md:pb-20 relative">
+          <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-300 mb-8" aria-label="Fil d'Ariane">
+            <Link to="/" className="hover:text-white transition-colors">Accueil</Link>
+            <span>/</span>
+            <Link to="/projets" className="hover:text-white transition-colors">Réalisations</Link>
+            <span>/</span>
+            <span className="text-white font-semibold truncate">{project.client}</span>
+          </nav>
+
+          <div className="grid lg:grid-cols-[1fr_1.05fr] gap-10 lg:gap-14 items-center">
+            <div className="space-y-6">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
+                <span className="uppercase tracking-wider bg-[#C7F36B] text-[#123A35] px-3 py-1 rounded-full">
+                  {isSI ? "Architecture SI & MEGA HOPEX" : "Web & Mobile"}
+                </span>
+                <span className="text-slate-300">{project.categoryLabel}</span>
+                <span className="text-slate-400">·</span>
+                <span className="text-slate-300 inline-flex items-center gap-1"><Calendar className="w-3.5 h-3.5" />{project.period}</span>
+              </div>
+              <div className="space-y-3">
+                <p className="text-lg font-extrabold text-[#C7F36B]">{project.client}</p>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12]">{project.headline}</h1>
+                <p className="text-base sm:text-lg text-slate-300 leading-relaxed">{project.summary}</p>
+              </div>
+
+              <ul className="grid sm:grid-cols-3 gap-3">
+                {project.results.map((result, i) => (
+                  <li
+                    key={result}
+                    className={cn(
+                      "rounded-2xl p-4 text-sm font-bold leading-snug",
+                      i === 0 ? "bg-[#C7F36B] text-[#123A35]" : "bg-white/10 border border-white/10 text-white"
+                    )}
+                  >
+                    {result}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex flex-wrap gap-3 pt-1">
+                <Button variant="lime" size="lg" className="rounded-xl gap-2 cursor-pointer" onClick={() => openBooking("case_hero")}>
+                  <Calendar className="w-4 h-4" /> Un projet similaire ? 30 min offertes
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
+                  <Link to="/projets"><ArrowLeft className="w-4 h-4" /> Toutes les réalisations</Link>
+                </Button>
+              </div>
             </div>
 
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="gap-2 text-xs font-semibold hover:bg-secondary/80"
-            >
-              <Link to="/projets">
-                <ArrowLeft className="w-4 h-4" /> Toutes les études de cas
-              </Link>
-            </Button>
-          </div>
-
-          {/* 2. EN-TÊTE DE L'ÉTUDE DE CAS (HERO DETAIL) */}
-          <div className="space-y-6 max-w-4xl">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Badge
-                variant="outline"
-                className={`text-xs font-bold px-3 py-1 ${
-                  isSI
-                    ? "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/30"
-                    : "bg-emerald-500/10 text-emerald-800 border-emerald-500/30"
-                }`}
-              >
-                <Building2 className="w-3.5 h-3.5 mr-1.5 inline" />
-                {project.clientCompany}
-              </Badge>
-
-              <Badge
-                variant="outline"
-                className="text-xs font-semibold text-muted-foreground border-border/80"
-              >
-                {project.categoryLabel}
-              </Badge>
-
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5" /> {project.period}
-              </span>
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
-              {project.title}
-            </h1>
-
-            <p className="text-base sm:text-xl text-muted-foreground leading-relaxed font-normal">
-              {project.summary}
-            </p>
-
-            {/* Metric Clé en Vedette */}
-            {project.metric && (
-              <div className="inline-flex items-center gap-3 p-3 px-4 rounded-2xl bg-card border border-border/80 shadow-xs">
-                <span className="text-lg sm:text-xl font-black text-[#123A35] bg-[#C7F36B] px-2.5 py-1 rounded-xl">
-                  {project.metric.value}
-                </span>
-                <span className="text-xs sm:text-sm font-bold text-foreground">
-                  {project.metric.label}
-                </span>
+            {project.image && (
+              <div className="space-y-3">
+                <BrowserFrame
+                  src={project.image}
+                  alt={`Aperçu de ${project.client}`}
+                  label={`${project.client} · ${project.categoryLabel}`}
+                  illustrative={project.imageIllustrative}
+                  bg={project.imageBg}
+                  ratio="auto"
+                  eager
+                />
+                {project.imageIllustrative && (
+                  <p className="text-xs text-slate-400">Les livrables de cette mission sont confidentiels : ce visuel est une illustration.</p>
+                )}
               </div>
             )}
           </div>
+        </div>
+      </section>
 
-          {/* 3. VISUEL GRAND FORMAT DE L'INTERFACE DÉPLOYÉE */}
-          {project.image && (
-            <div className="rounded-3xl border-2 border-border/80 overflow-hidden bg-muted/40 shadow-xl">
-              {/* Browser window top bar */}
-              <div className="px-5 py-3 bg-muted/70 border-b border-border/60 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-rose-400/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-amber-400/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-emerald-400/80 inline-block" />
-                </div>
-                <div className="flex-1 max-w-sm mx-auto bg-background/90 text-xs font-mono text-muted-foreground py-1 px-4 rounded-lg border border-border/60 truncate text-center shadow-2xs">
-                  https://{getFauxUrl(project.id)}
-                </div>
-                <div className="text-[11px] font-bold text-muted-foreground hidden sm:block">
-                  Production Validée
-                </div>
-              </div>
+      <div className="container mx-auto px-4 max-w-6xl py-12 md:py-16">
+        <div className="grid lg:grid-cols-[1fr_320px] gap-10 lg:gap-12 items-start">
+          {/* RÉCIT */}
+          <div className="space-y-12">
+            <section aria-labelledby="story" className="space-y-6">
+              <h2 id="story" className="text-2xl sm:text-3xl font-extrabold tracking-tight">L'histoire du projet</h2>
+              <ol className="relative space-y-6 before:absolute before:left-5 before:top-2 before:bottom-2 before:w-px before:bg-border">
+                {story.map(({ icon: Icon, step, title, text, tone }) => (
+                  <li key={step} className="relative flex gap-5">
+                    <span className={cn("relative z-10 w-10 h-10 shrink-0 rounded-xl flex items-center justify-center ring-4 ring-background", tone)}>
+                      <Icon className="w-5 h-5" />
+                    </span>
+                    <div className={cn("flex-1 rounded-2xl border p-5", step === "04" ? "border-[#C7F36B] bg-[#C7F36B]/10" : "border-border/80 bg-card")}>
+                      <span className="text-xs font-black text-muted-foreground">{step}</span>
+                      <h3 className="text-lg font-extrabold">{title}</h3>
+                      <p className={cn("mt-1.5 leading-relaxed", step === "04" ? "font-semibold text-foreground" : "text-foreground/85")}>{text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
 
-              {/* Screen view */}
-              <div className={`overflow-hidden flex items-center justify-center ${
-                project.id === "leclat-du-chef" ? "bg-[#09090b]" : project.id === "dabari" ? "bg-[#f8fafd]" : "bg-slate-900/5"
-              }`}>
-                <img
-                  src={project.image}
-                  alt={`Capture grand format de l'interface ${project.title}`}
-                  className="w-full h-auto object-contain block mx-auto"
-                  loading="eager"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 4. DÉMARCHE COMPLÈTE EN 4 PILIERS DE SUCCÈS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Pilier 1 : Contexte & Défi Initial */}
-            <Card className="border border-border/80 bg-card rounded-2xl p-6 sm:p-7 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2.5 text-xs font-extrabold uppercase tracking-wider text-rose-700">
-                <div className="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center">
-                  <AlertTriangle className="w-4 h-4 text-rose-600" />
-                </div>
-                1. Contexte & Défi Initial
-              </div>
-              <div className="space-y-3">
-                <p className="text-sm text-foreground/90 leading-relaxed font-medium">
-                  {project.context}
-                </p>
-                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200/80 text-xs text-rose-950 font-semibold leading-relaxed">
-                  <strong>Point de friction résolu :</strong> {project.problem}
-                </div>
-              </div>
-            </Card>
-
-            {/* Pilier 2 : Le Rôle de RAMSIN */}
-            <Card className="border border-border/80 bg-card rounded-2xl p-6 sm:p-7 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2.5 text-xs font-extrabold uppercase tracking-wider text-[#123A35]">
-                <div className="w-8 h-8 rounded-lg bg-[#123A35]/10 flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
-                </div>
-                2. Intervention & Rôle Précis
-              </div>
-              <div className="space-y-3">
-                <p className="text-sm text-foreground/90 leading-relaxed font-medium">
-                  {project.ramsinRole}
-                </p>
-                <ul className="space-y-2 text-xs text-muted-foreground pt-1">
-                  {project.tasks.map((task, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
-                      <span>{task}</span>
+            <section aria-labelledby="deliverables" className="space-y-5">
+              <h2 id="deliverables" className="text-2xl sm:text-3xl font-extrabold tracking-tight">Ce qui a été livré</h2>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {project.deliverables.map((item) => (
+                  <li key={item} className="flex items-start gap-3 rounded-2xl border border-border/80 bg-card p-4 text-sm font-semibold">
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-600" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="rounded-2xl bg-secondary/60 p-5 space-y-3">
+                <h3 className="text-sm font-extrabold uppercase tracking-wider text-muted-foreground">Comment nous avons travaillé</h3>
+                <ul className="space-y-2">
+                  {project.tasks.map((task) => (
+                    <li key={task} className="flex items-start gap-2.5 text-sm text-foreground/85">
+                      <Sparkles className="w-4 h-4 mt-0.5 shrink-0 text-[#123A35]" />
+                      {task}
                     </li>
                   ))}
                 </ul>
               </div>
-            </Card>
+            </section>
 
-            {/* Pilier 3 : La Solution Technique Déployée */}
-            <Card className="border border-border/80 bg-card rounded-2xl p-6 sm:p-7 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2.5 text-xs font-extrabold uppercase tracking-wider text-primary">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-primary" />
-                </div>
-                3. Solution Technique Déployée
-              </div>
-              <div className="space-y-3">
-                <p className="text-sm text-foreground/90 leading-relaxed font-medium">
-                  {project.solution}
-                </p>
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {project.stack.map((tech, idx) => (
-                    <span
-                      key={idx}
-                      className="text-xs font-bold bg-secondary text-secondary-foreground px-2.5 py-1 rounded-lg border border-border/40"
-                    >
-                      {tech}
-                    </span>
+            {!isSI && (
+              <section aria-labelledby="method" className="space-y-5">
+                <h2 id="method" className="text-2xl sm:text-3xl font-extrabold tracking-tight">La méthode, appliquée à votre projet</h2>
+                <MethodSteps compact />
+              </section>
+            )}
+          </div>
+
+          {/* EN BREF (colonne collante) */}
+          <aside className="lg:sticky lg:top-24 space-y-4">
+            <div className="rounded-3xl border border-border/80 bg-card p-6 space-y-4 shadow-sm">
+              <h2 className="text-sm font-extrabold uppercase tracking-wider text-muted-foreground">En bref</h2>
+              <dl className="space-y-3 text-sm">
+                {[
+                  { icon: Users, label: "Client", value: project.clientCompany },
+                  { icon: Calendar, label: "Période", value: project.period },
+                  { icon: UserCheck, label: "Rôle de RAMSIN", value: project.ramsinRole },
+                  ...(project.targetAudience ? [{ icon: Target, label: "Utilisateurs", value: project.targetAudience }] : []),
+                ].map(({ icon: Icon, label, value }) => (
+                  <div key={label} className="flex gap-3">
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0 text-[#123A35]" />
+                    <div>
+                      <dt className="text-xs font-bold text-muted-foreground">{label}</dt>
+                      <dd className="font-semibold leading-snug">{value}</dd>
+                    </div>
+                  </div>
+                ))}
+              </dl>
+              <div className="pt-3 border-t border-border/60">
+                <span className="text-xs font-bold text-muted-foreground inline-flex items-center gap-1.5"><Layers className="w-3.5 h-3.5" /> Technologies</span>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {project.stack.map((tech) => (
+                    <span key={tech} className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg border border-border/50">{tech}</span>
                   ))}
                 </div>
               </div>
-            </Card>
-
-            {/* Pilier 4 : Résultats & Impact Mesurable */}
-            <Card className="border-2 border-emerald-500/30 bg-emerald-500/5 rounded-2xl p-6 sm:p-7 space-y-4 shadow-xs">
-              <div className="flex items-center gap-2.5 text-xs font-extrabold uppercase tracking-wider text-emerald-800">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-emerald-700" />
-                </div>
-                4. Résultat & Impact Concret
-              </div>
-              <div className="space-y-3">
-                <p className="text-sm sm:text-base text-emerald-950 font-bold leading-relaxed">
-                  {project.impact}
-                </p>
-                <div className="p-3.5 rounded-xl bg-card border border-emerald-500/20 text-xs text-muted-foreground leading-relaxed">
-                  {isSI
-                    ? "Dossier validé auprès des instances de gouvernance et cartographie pérennisée dans le référentiel d'entreprise."
-                    : "Solution mise en production avec cession complète du code source, accompagnement à la prise en main et garantie de 30 jours."}
-                </div>
-              </div>
-            </Card>
-
-          </div>
-
-          {/* 5. CE QUI A ÉTÉ CONCRÈTEMENT LIVRÉ AU CLIENT */}
-          <Card className="border border-border/80 bg-card rounded-3xl p-6 sm:p-8 shadow-xs space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                <Layers className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-foreground">
-                  Livrables Tangibles Remis au Client
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  L'ensemble des documents, codes et accès cédés contractuellement sans abonnement captif :
-                </p>
-              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              {project.deliverables.map((deliv, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-secondary/40 border border-border/60 text-xs sm:text-sm font-semibold text-foreground/90"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <span>{deliv}</span>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* 6. BANDEAU DE CONVERSION : ÉCHANGER SUR UN PROJET SIMILAIRE */}
-          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-[#123A35]/10 via-background to-[#C7F36B]/15 border-2 border-primary/30 text-center space-y-6 shadow-md">
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <Badge variant="outline" className="text-xs font-bold border-primary/30 text-primary">
-                Un besoin similaire pour votre organisation ?
-              </Badge>
-              <h3 className="text-2xl sm:text-4xl font-extrabold text-foreground">
-                {isSI
-                  ? "Structurons Votre Système d'Information"
-                  : "Concevons Votre Application Sur-Mesure"}
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                {isSI
-                  ? "Bénéficiez d'une expertise reconnue sur MEGA HOPEX V5 et d'un accompagnement méthodique pour vos cartographies et comités d'architecture."
-                  : "Discutons de votre cahier des charges et validons la faisabilité technique lors d'un premier échange de cadrage offert."}
+            <div className="rounded-3xl bg-[#123A35] text-white p-6 space-y-4 shadow-lg">
+              <p className="text-lg font-extrabold leading-snug">
+                {isSI ? "Un enjeu d'architecture similaire ?" : `Un projet comme ${project.client} ?`}
               </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button
-                asChild
-                size="lg"
-                variant="lime"
-                className="gap-2 px-7 py-6 text-sm sm:text-base font-extrabold rounded-2xl shadow-md hover:scale-[1.02] transition-all"
-              >
-                <Link
-                  to={isSI ? "/contact?service=si" : "/contact?service=web"}
-                  onClick={() =>
-                    trackConversionEvent("click_case_study_cta", {
-                      projectId: project.id,
-                      pole: project.pole,
-                    })
-                  }
-                >
-                  Échanger sur un projet similaire <ArrowRight className="w-4 h-4" />
-                </Link>
+              <p className="text-sm text-slate-300">30 minutes offertes avec Oumar Sidibé pour en parler, sans engagement.</p>
+              <Button variant="lime" className="w-full rounded-xl gap-2 cursor-pointer" onClick={() => openBooking("case_aside")}>
+                <Calendar className="w-4 h-4" /> Réserver mon créneau
               </Button>
-
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="gap-2 px-6 py-6 text-sm sm:text-base font-bold rounded-2xl border-border/80 glass-card"
-              >
-                <Link to="/contact">
-                  <FileText className="w-4 h-4" /> Poser une question écrite
-                </Link>
-              </Button>
+              <a href="tel:+33761518890" className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-200 hover:text-white">
+                <Phone className="w-4 h-4" /> +33 (0)7 61 51 88 90
+              </a>
             </div>
-          </div>
-
-          {/* 7. NAVIGATION ENTRE ÉTUDES DE CAS (SUIVANT / PRÉCÉDENT) */}
-          <div className="border-t border-border/60 pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {prevProject ? (
-              <Link
-                to={`/projets/${prevProject.id}`}
-                className="p-4 rounded-2xl border border-border/80 hover:border-primary/50 transition-all bg-card/60 hover-lift flex flex-col justify-between group"
-              >
-                <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1 group-hover:text-primary">
-                  <ArrowLeft className="w-3.5 h-3.5" /> Étude de cas précédente
-                </span>
-                <span className="text-sm font-extrabold text-foreground mt-1 group-hover:text-primary transition-colors truncate">
-                  {prevProject.title}
-                </span>
-              </Link>
-            ) : (
-              <div />
-            )}
-
-            {nextProject ? (
-              <Link
-                to={`/projets/${nextProject.id}`}
-                className="p-4 rounded-2xl border border-border/80 hover:border-primary/50 transition-all bg-card/60 hover-lift flex flex-col justify-between items-end text-right group sm:col-start-2"
-              >
-                <span className="text-[11px] font-bold text-muted-foreground flex items-center gap-1 group-hover:text-primary">
-                  Étude de cas suivante <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-                <span className="text-sm font-extrabold text-foreground mt-1 group-hover:text-primary transition-colors truncate">
-                  {nextProject.title}
-                </span>
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
-
+          </aside>
         </div>
       </div>
+
+      {/* CONVERSION */}
+      <section className="container mx-auto px-4 max-w-6xl pb-12">
+        <div className="rounded-[28px] bg-gradient-to-br from-[#C7F36B] to-[#D9FF7D] p-8 sm:p-12 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="max-w-2xl space-y-2 text-[#123A35]">
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              {isSI ? "Structurons ensemble votre système d'information" : "Votre idée mérite le même résultat"}
+            </h2>
+            <p className="text-base sm:text-lg font-medium text-[#123A35]/80">
+              {isSI
+                ? "Cartographie, DAT, gouvernance MEGA HOPEX : parlons de votre contexte en 30 minutes."
+                : "Racontez-nous votre projet : vous repartez avec un plan clair, et le code sera à votre nom."}
+            </p>
+            <p className="text-sm font-semibold inline-flex items-center gap-2 pt-1"><ShieldCheck className="w-4 h-4" /> Sans engagement · Réponse sous 24 h ouvrées</p>
+          </div>
+          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+            <Button size="lg" className="rounded-xl gap-2 bg-[#123A35] hover:bg-[#0c2621] text-white cursor-pointer" onClick={() => openBooking("case_footer")}>
+              <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+            </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-xl gap-2 bg-white/60 border-[#123A35]/30 text-[#123A35]">
+              <Link to={formLink}><FileText className="w-4 h-4" /> Décrire mon projet par écrit</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* AUTRES RÉALISATIONS */}
+      <section className="container mx-auto px-4 max-w-6xl pb-16 md:pb-24 space-y-6">
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">D'autres réalisations</h2>
+          <Link to="/projets" className="text-sm font-extrabold text-primary inline-flex items-center gap-1.5 hover:gap-2.5 transition-all">
+            Toutes les réalisations <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {related.map((p) => (
+            <ProjectCard key={p.id} project={p} source="case_related" />
+          ))}
+        </div>
+      </section>
     </>
   );
 };

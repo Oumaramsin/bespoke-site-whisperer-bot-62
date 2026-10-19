@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -60,31 +60,35 @@ import BookingWidget from "@/components/index/BookingWidget";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "@/components/CopyEmailButton";
 import {
-  sendContactViaResend,
+  sendContactRequest,
   formatServiceType,
   formatTimeline,
-} from "@/services/resendService";
+} from "@/services/contactService";
 import { trackConversionEvent } from "@/lib/analytics";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Veuillez renseigner votre nom et prénom (au moins 2 caractères)" }),
+    .min(2, { message: "Veuillez renseigner votre nom et prénom (au moins 2 caractères)" })
+    .max(100, { message: "Le nom ne doit pas dépasser 100 caractères" }),
   email: z
     .string()
+    .max(254, { message: "L'adresse e-mail est trop longue" })
     .email({ message: "Veuillez entrer une adresse e-mail valide (ex: vous@entreprise.fr)" }),
-  company: z.string().optional(),
-  phone: z.string().optional(),
+  company: z.string().max(150, { message: "Le nom d'entreprise ne doit pas dépasser 150 caractères" }).optional(),
+  phone: z.string().max(40, { message: "Le numéro ne doit pas dépasser 40 caractères" }).optional(),
   serviceType: z
     .string()
     .min(1, { message: "Veuillez sélectionner le domaine concerné par votre besoin" }),
   timeline: z.string().optional(),
   subject: z
     .string()
-    .min(4, { message: "Veuillez préciser le sujet de votre demande (au moins 4 caractères)" }),
+    .min(4, { message: "Veuillez préciser le sujet de votre demande (au moins 4 caractères)" })
+    .max(150, { message: "Le sujet ne doit pas dépasser 150 caractères" }),
   message: z
     .string()
-    .min(10, { message: "Veuillez décrire brièvement votre besoin (au moins 10 caractères)" }),
+    .min(10, { message: "Veuillez décrire brièvement votre besoin (au moins 10 caractères)" })
+    .max(5000, { message: "Le message ne doit pas dépasser 5000 caractères" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -185,7 +189,7 @@ export const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      await sendContactViaResend({
+      await sendContactRequest({
         name: data.name,
         email: data.email,
         company: data.company,
@@ -194,6 +198,7 @@ export const Contact = () => {
         timeline: data.timeline,
         subject: data.subject,
         message: data.message,
+        website: honeypot,
       });
 
       // Suivi de conversion éthique
@@ -209,23 +214,16 @@ export const Contact = () => {
 
       toast({
         title: "Demande transmise avec succès !",
-        description: "Merci pour votre message. Oumar Ramsin vous recontactera sous 24h ouvrées.",
+        description: "Merci pour votre message. Oumar Sidibé vous recontactera sous 24h ouvrées.",
       });
     } catch (error) {
-      // En cas de secours, afficher quand même la confirmation pour ne pas frustrer le prospect
-      trackConversionEvent("submit_contact_form", {
-        serviceType: data.serviceType,
-        timeline: data.timeline,
-        fallback: true,
-      });
-
-      setSubmittedData(data);
-      setSubmitted(true);
-      form.reset();
-
+      // Échec réel de l'envoi : on conserve la saisie et on propose les coordonnées directes
+      console.error("Contact form submission failed:", error);
       toast({
-        title: "Demande enregistrée !",
-        description: "Nous avons bien pris note de votre besoin et reviendrons vers vous rapidement.",
+        variant: "destructive",
+        title: "Votre message n'a pas pu être envoyé",
+        description:
+          "Veuillez réessayer dans un instant, ou écrire directement à contact@ramsin.fr / appeler le +33 (0)7 61 51 88 90.",
       });
     } finally {
       setIsSubmitting(false);
@@ -386,7 +384,7 @@ export const Contact = () => {
                   <div className="p-3 mb-2 rounded-xl bg-primary/10 border border-primary/30 flex items-center gap-2.5 text-xs text-primary font-bold animate-pulse-gentle">
                     <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
                     <span>
-                      Tunnel Express 2 min : Décrivez votre besoin sans délai ci-dessous. Oumar Ramsin étudie votre demande et vous répond sous 24h ouvrées.
+                      Tunnel Express 2 min : Décrivez votre besoin sans délai ci-dessous. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées.
                     </span>
                   </div>
                 ) : (
@@ -401,7 +399,7 @@ export const Contact = () => {
                   Décrivez Votre Projet ou Votre Besoin
                 </CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Remplissez ce formulaire synthétique. Oumar Ramsin étudie votre demande et vous répond sous 24h ouvrées.
+                  Remplissez ce formulaire synthétique. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées.
                 </CardDescription>
               </CardHeader>
 
@@ -418,7 +416,7 @@ export const Contact = () => {
                         Demande Reçue avec Succès !
                       </h3>
                       <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                        Merci pour votre confiance. Votre message a bien été transmis directement à <strong>Oumar Ramsin</strong>.
+                        Merci pour votre confiance. Votre message a bien été transmis directement à <strong>Oumar Sidibé</strong>.
                       </p>
                     </div>
 
@@ -748,7 +746,8 @@ export const Contact = () => {
                         <p className="text-[11px] text-center text-muted-foreground flex items-center justify-center gap-1.5">
                           <Lock className="w-3 h-3 text-emerald-600 shrink-0" />
                           <span>
-                            Informations strictement confidentielles utilisées pour traiter votre demande. Zéro spam, zéro démarchage abusif.
+                            Vos informations servent uniquement à répondre à votre demande. Zéro spam.{" "}
+                            <Link to="/confidentialite" className="underline hover:text-primary">Politique de confidentialité</Link>
                           </span>
                         </p>
                       </div>
@@ -769,7 +768,7 @@ export const Contact = () => {
                 </CardHeader>
                 <CardContent className="space-y-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    Chaque demande est analysée personnellement par Oumar Ramsin pour vous apporter une réponse constructive, des premières pistes techniques et une estimation réaliste.
+                    Chaque demande est analysée personnellement par Oumar Sidibé pour vous apporter une réponse constructive, des premières pistes techniques et une estimation réaliste.
                   </p>
                 </CardContent>
               </Card>

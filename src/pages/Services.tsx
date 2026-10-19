@@ -23,9 +23,45 @@ import {
   HelpCircle,
   Database,
   Phone,
+  Server,
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
+import PoleProjects from "@/components/projects/PoleProjects";
+import ServicesFaq from "@/components/services/ServicesFaq";
+import { WEB_FAQ } from "@/data/services";
+
+const SERVICES_JSONLD = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Création d'applications web & mobiles sur-mesure",
+    serviceType: "Développement d'applications web, mobiles iOS & Android et sites e-commerce",
+    provider: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
+    areaServed: ["Paris", "Île-de-France", "France"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Hébergement, maintenance & évolutions d'applications",
+    serviceType: "Hébergement, maintenance, sécurité et évolutions de sites et d'applications web & mobiles",
+    provider: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
+    areaServed: ["Paris", "Île-de-France", "France"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Architecture des Systèmes d'Information & MEGA HOPEX V5",
+    serviceType: "Cartographie applicative, urbanisation du SI et Dossiers d'Architecture Technique",
+    provider: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
+    areaServed: ["Paris", "Île-de-France", "France"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: WEB_FAQ.map(({ q, a }) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+  },
+];
 import { trackConversionEvent } from "@/lib/analytics";
 
 type ServicePole = "si" | "web";
@@ -61,8 +97,9 @@ export const Services = () => {
   return (
     <>
       <SEO
-        title="Services & Expertises | RAMSIN - Architecture SI & Développement Web Sur-Mesure"
-        description="Découvrez nos deux pôles d'excellence : Conception d'applications web & mobiles sur-mesure pour tout porteur de projet et entreprise, et Conseil & Architecture SI (MEGA HOPEX V5) pour DSI."
+        title="Applications web & mobiles, hébergement, Architecture SI & MEGA HOPEX | RAMSIN"
+        description="Applications web, mobiles iOS & Android et e-commerce sur-mesure, puis hébergement, maintenance et évolutions. Et pour les DSI : architecture SI et MEGA HOPEX V5. Paris, Île-de-France et à distance."
+        jsonLd={SERVICES_JSONLD}
         canonical="https://www.ramsin.fr/services"
       />
 
@@ -155,6 +192,14 @@ export const Services = () => {
                     <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Stack Moderne (Next.js, React Native, TypeScript)
                   </span>
                 </div>
+                <div className="pt-3 flex flex-wrap gap-3">
+                  <Button variant="lime" className="rounded-xl gap-2 cursor-pointer" onClick={handleBookingRedirect}>
+                    <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
+                    <Link to="/contact?tunnel=form&service=web">Décrire mon besoin par écrit</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -170,7 +215,7 @@ export const Services = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 {
                   icon: Code2,
@@ -206,6 +251,18 @@ export const Services = () => {
                     "Temps de chargement instantanés (Core Web Vitals)",
                     "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
                     "Design responsive sur smartphone, tablette & desktop",
+                  ],
+                },
+                {
+                  icon: Server,
+                  badge: "Après lancement",
+                  title: "Hébergement, Maintenance & Évolutions",
+                  desc: "Après la mise en ligne, nous gardons votre site ou votre application en ligne, sécurisé et à jour, pour que vous restiez concentré sur votre activité.",
+                  stack: "Vercel, AWS, Cloudflare, VPS",
+                  features: [
+                    "Hébergement, nom de domaine & certificat SSL",
+                    "Mises à jour, correctifs de sécurité & sauvegardes",
+                    "Évolutions & publication sur l'App Store et Google Play",
                   ],
                 },
               ].map((proj, idx) => {
@@ -252,6 +309,9 @@ export const Services = () => {
               })}
             </div>
           </div>
+
+          {/* PREUVES : RÉALISATIONS WEB & MOBILE */}
+          <PoleProjects pole="web" />
 
           {/* 2. DÉMARCHE PROJET EN 5 ÉTAPES */}
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
@@ -351,6 +411,9 @@ export const Services = () => {
             </div>
           </div>
 
+          {/* FAQ : LEVER LES FREINS AVANT DE SE LANCER */}
+          <ServicesFaq />
+
           {/* 4. BANDEAU DE CONVERSION SPÉCIFIQUE WEB */}
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-emerald-500/30 text-center space-y-6">
@@ -417,6 +480,14 @@ export const Services = () => {
                     <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Régie spécialisée ou Forfait ciblé
                   </span>
                 </div>
+                <div className="pt-3 flex flex-wrap gap-3">
+                  <Button variant="lime" className="rounded-xl gap-2 cursor-pointer" onClick={handleBookingRedirect}>
+                    <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
+                    <Link to="/contact?tunnel=form&service=si">Décrire mon besoin par écrit</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -474,6 +545,9 @@ export const Services = () => {
               ))}
             </div>
           </div>
+
+          {/* PREUVES : MISSIONS SI */}
+          <PoleProjects pole="si" />
 
           {/* 2. LES 4 MISSIONS CONCRÈTES & LIVRABLES */}
           <div className="container mx-auto px-4 max-w-5xl space-y-8">

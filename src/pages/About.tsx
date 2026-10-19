@@ -24,6 +24,18 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
+import PoleProjects from "@/components/projects/PoleProjects";
+
+const ABOUT_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Oumar Sidibé",
+  jobTitle: "Fondateur de RAMSIN Conseil, Architecte SI & Développeur Full-Stack",
+  worksFor: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
+  url: "https://www.ramsin.fr/a-propos",
+  sameAs: ["https://www.linkedin.com/in/oumar-ramsin/"],
+  knowsAbout: ["Architecture des Systèmes d'Information", "MEGA HOPEX", "Next.js", "React Native", "Développement web et mobile"],
+};
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const About = () => {
@@ -168,6 +180,7 @@ export const About = () => {
         title="À Propos de RAMSIN Conseil | Consultant Fondateur & Architecte SI Senior"
         description="Découvrez le profil de RAMSIN Conseil : 7 ans d'expérience professionnelle en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
         canonical="https://www.ramsin.fr/a-propos"
+        jsonLd={ABOUT_JSONLD}
       />
 
       {/* ═══════════════════════════════════════════
@@ -200,7 +213,7 @@ export const About = () => {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Porté par son fondateur <strong>Oumar Ramsin</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne grands comptes et dirigeants avec une exigence absolue de résultat.
+            Porté par son fondateur <strong>Oumar Sidibé</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne grands comptes et dirigeants avec une exigence absolue de résultat.
           </p>
 
           {/* Liens de contact rapide & profil LinkedIn vérifié */}
@@ -315,6 +328,9 @@ export const About = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Réalisations web : la preuve pour les porteurs de projet */}
+        <PoleProjects pole="web" />
 
         {/* ═══════════════════════════════════════════
             3. EXPÉRIENCES & RÉFÉRENCES PROFESSIONNELLES
@@ -465,7 +481,7 @@ export const About = () => {
             Vous souhaitez valider la faisabilité de votre mission ou projet ?
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
-            Échangez directement avec Oumar Ramsin lors d'une session de cadrage technique offerte de 30 minutes sans aucun engagement.
+            Échangez directement avec Oumar Sidibé lors d'une session de cadrage technique offerte de 30 minutes sans aucun engagement.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button

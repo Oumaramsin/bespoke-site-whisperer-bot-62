@@ -16,6 +16,8 @@ const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const MentionsLegales = lazy(() => import("./pages/Legal").then((m) => ({ default: m.MentionsLegales })));
+const Confidentialite = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Confidentialite })));
 
 const RedirectProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -57,6 +59,8 @@ const App = () => (
                 <Route path="/about" element={<Navigate to="/a-propos" replace />} />
 
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/mentions-legales" element={<MentionsLegales />} />
+                <Route path="/confidentialite" element={<Confidentialite />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>

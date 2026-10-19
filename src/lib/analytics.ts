@@ -24,6 +24,7 @@ export type ConversionEventName =
   | "switch_projects_tab"
   | "watch_method_motion"
   | "click_case_study"
+  | "click_case_study_cta"
   | "click_phone"
   | "copy_email"
   | "select_pole";

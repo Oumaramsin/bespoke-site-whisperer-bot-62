@@ -1,7 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/resend", "destination": "https://api.resend.com/emails" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
