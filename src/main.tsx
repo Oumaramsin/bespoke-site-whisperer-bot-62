@@ -17,8 +17,8 @@ const app = (
   </BrowserRouter>
 );
 
-// Routes pré-rendues au build (scripts/prerender.mjs) : le HTML est déjà là, on l'hydrate.
-// Autres URL (404, anciennes adresses redirigées) : coquille vide, rendu classique côté client.
+// En production toutes les pages servies sont pré-rendues (scripts/prerender.mjs), y compris dist/404.html : on hydrate.
+// Serveur de développement Vite : coquille vide, rendu classique côté client.
 if (container.hasChildNodes()) {
   hydrateRoot(container, app);
 } else {

@@ -1,6 +1,8 @@
 {
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/spa-fallback.html" }
+  "redirects": [
+    { "source": "/projects", "destination": "/projets", "permanent": true },
+    { "source": "/projects/:projectId", "destination": "/projets/:projectId", "permanent": true },
+    { "source": "/about", "destination": "/a-propos", "permanent": true }
   ],
   "headers": [
     {

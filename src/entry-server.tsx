@@ -7,7 +7,7 @@ import App from "./App";
 import { PROJECTS_DATA } from "./data/projects";
 import { renderSeoHead, SeoCollectorContext, SITE_URL, type ResolvedSeo, type SeoCollector } from "./lib/seo";
 
-/** Routes servies en HTML statique ; les autres URL reçoivent la coquille SPA (voir vercel.json). */
+/** Routes servies en HTML statique ; les autres URL reçoivent dist/404.html (statut 404), sauf redirections de vercel.json. */
 export const PRERENDER_ROUTES = [
   "/",
   "/services",
@@ -18,6 +18,9 @@ export const PRERENDER_ROUTES = [
   "/mentions-legales",
   "/confidentialite",
 ];
+
+/** URL inexistante utilisée pour rendre la page NotFound dans dist/404.html */
+export const NOT_FOUND_ROUTE = "/404";
 
 export { SITE_URL };
 

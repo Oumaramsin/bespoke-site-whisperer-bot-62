@@ -20,6 +20,7 @@ import {
 import { PROJECTS_DATA } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
+import NotFound from "@/pages/NotFound";
 import BrowserFrame from "@/components/projects/BrowserFrame";
 import ProjectCard from "@/components/projects/ProjectCard";
 import MethodSteps from "@/components/projects/MethodSteps";
@@ -57,19 +58,8 @@ export const ProjectDetail = () => {
     ];
   }, [project]);
 
-  if (!project) {
-    return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center container mx-auto px-4 text-center py-20 space-y-4">
-        <h1 className="text-3xl font-extrabold text-foreground">Étude de cas introuvable</h1>
-        <p className="text-muted-foreground text-sm max-w-md">L'étude de cas demandée n'existe pas ou a été déplacée.</p>
-        <Button asChild variant="lime" className="mt-4">
-          <Link to="/projets">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Voir toutes les réalisations
-          </Link>
-        </Button>
-      </div>
-    );
-  }
+  // Identifiant inconnu : Vercel répond avec dist/404.html (page NotFound pré-rendue), le client doit afficher la même chose
+  if (!project) return <NotFound />;
 
   const isSI = project.pole === "si";
   // Autres projets : même pôle d'abord, puis le reste

@@ -53,11 +53,11 @@ const App = () => (
             <Route path="/projets" element={<Projets />} />
             <Route path="/projets/:projectId" element={<ProjectDetail />} />
 
-            {/* Redirections de compatibilité pour /projects */}
+            {/* Redirections de compatibilité pour /projects (côté serveur : 308 dans vercel.json ; ici pour la navigation interne) */}
             <Route path="/projects" element={<Navigate to="/projets" replace />} />
             <Route path="/projects/:projectId" element={<RedirectProjectDetail />} />
 
-            {/* Route À Propos en Français avec redirection */}
+            {/* Route À Propos en Français avec redirection (/about : 308 dans vercel.json) */}
             <Route path="/a-propos" element={<About />} />
             <Route path="/about" element={<Navigate to="/a-propos" replace />} />
 
