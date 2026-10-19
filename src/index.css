@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    /* Thème clair uniquement : les navigateurs ne doivent pas assombrir le site */
+    color-scheme: only light;
+
     /* Fond Blanc Cassé Architectural (#F8FAFC) & Texte Ardoise Sombre (#0F172A) */
     --background: 210 20% 98.5%;
     --foreground: 215 25% 12%;
