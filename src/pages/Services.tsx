@@ -131,7 +131,7 @@ export const Services = () => {
                 onClick={() => switchPole("web")}
                 className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
                   activePole === "web"
-                    ? "bg-emerald-600 text-white shadow-md scale-[1.02]"
+                    ? "bg-emerald-700 text-white shadow-md scale-[1.02]"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                 }`}
               >
@@ -353,7 +353,7 @@ export const Services = () => {
                 },
               ].map((step, i) => (
                 <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
-                  <span className="text-2xl font-black text-emerald-600 opacity-60 block">
+                  <span className="text-2xl font-black text-emerald-700 block">
                     {step.step}
                   </span>
                   <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
@@ -427,7 +427,7 @@ export const Services = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
                 >
                   <Link to="/contact?service=web">
                     Décrire mon projet web ou mobile <ArrowRight className="w-4 h-4" />

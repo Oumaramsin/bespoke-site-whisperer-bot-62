@@ -22,7 +22,7 @@ const ClientsSection = () => {
     },
     {
       name: "La Banque Postale",
-      logo: "/logos/banque-postale.png",
+      logo: "/logos/banque-postale.webp",
       category: "Secteur Bancaire",
       description: "Dossiers d'Architecture Solution (DAT) & Crédit",
       imgClassName: "max-h-14 max-w-[140px]"
@@ -36,7 +36,7 @@ const ClientsSection = () => {
     },
     {
       name: "France Travail",
-      logo: "/logos/france-travail.png",
+      logo: "/logos/france-travail.webp",
       category: "Service Public",
       description: "Systèmes d'Information & Projets Métiers",
       imgClassName: "max-h-16 max-w-[170px] scale-125 sm:scale-135"

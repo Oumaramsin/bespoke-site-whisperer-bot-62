@@ -226,12 +226,12 @@ export const ProjectDetail = () => {
                   { icon: UserCheck, label: "Rôle de RAMSIN", value: project.ramsinRole },
                   ...(project.targetAudience ? [{ icon: Target, label: "Utilisateurs", value: project.targetAudience }] : []),
                 ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex gap-3">
-                    <Icon className="w-4 h-4 mt-0.5 shrink-0 text-[#123A35]" />
-                    <div>
-                      <dt className="text-xs font-bold text-muted-foreground">{label}</dt>
-                      <dd className="font-semibold leading-snug">{value}</dd>
-                    </div>
+                  <div key={label}>
+                    <dt className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
+                      <Icon className="w-4 h-4 shrink-0 text-[#123A35]" aria-hidden="true" />
+                      {label}
+                    </dt>
+                    <dd className="pl-6 font-semibold leading-snug">{value}</dd>
                   </div>
                 ))}
               </dl>

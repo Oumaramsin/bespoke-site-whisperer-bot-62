@@ -14,7 +14,9 @@ const Layout = () => {
       <main className="flex-1">
         <Outlet />
       </main>
-      <Footer />
+      <div className="cv-auto">
+        <Footer />
+      </div>
       <MobileStickyCTA />
     </div>
   );

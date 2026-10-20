@@ -26,7 +26,7 @@ const LegalLayout = ({ title, children }: { title: string; children: React.React
 
 export const MentionsLegales = () => (
   <>
-    <SEO title="Mentions légales | RAMSIN Conseil" description="Mentions légales du site ramsin.fr : éditeur, hébergeur et propriété intellectuelle." canonical="https://www.ramsin.fr/mentions-legales" noIndex />
+    <SEO title="Mentions légales | RAMSIN Conseil" description="Mentions légales du site ramsin.fr : éditeur, hébergeur et propriété intellectuelle." canonical="https://www.ramsin.fr/mentions-legales" />
     <LegalLayout title="Mentions légales">
       <Section title="Éditeur du site">
         <p>
@@ -69,7 +69,7 @@ export const MentionsLegales = () => (
 
 export const Confidentialite = () => (
   <>
-    <SEO title="Politique de confidentialité | RAMSIN Conseil" description="Comment RAMSIN Conseil collecte, utilise et protège les données transmises via ramsin.fr." canonical="https://www.ramsin.fr/confidentialite" noIndex />
+    <SEO title="Politique de confidentialité | RAMSIN Conseil" description="Comment RAMSIN Conseil collecte, utilise et protège les données transmises via ramsin.fr." canonical="https://www.ramsin.fr/confidentialite" />
     <LegalLayout title="Politique de confidentialité">
       <Section title="Responsable du traitement">
         <p>RAMSIN Conseil SAS, Fresnes (94260) — contact : <a href="mailto:contact@ramsin.fr" className="text-primary font-semibold">contact@ramsin.fr</a>.</p>

@@ -180,7 +180,7 @@ export const PROJECTS_DATA: Project[] = [
     tags: ["Développement Web", "SEO Local", "Lead Generation", "Haute Performance", "Responsive"],
     stack: ["HTML5 / Modern JS", "Tailwind CSS", "API Devis Express", "SEO Local", "Hébergement Cloud"],
     featured: true,
-    logo: "/logos/eclat-du-chef.png",
+    logo: "/logos/eclat-du-chef.webp",
     image: "/images/projects/eclat-du-chef.webp"
   },
   {
@@ -274,7 +274,7 @@ export const PROJECTS_DATA: Project[] = [
     tags: ["Architecture Solution", "Banque & Finance", "DAT", "Design Authority", "Agile"],
     stack: ["Dossier d'Architecture DAT", "Architecture Solution", "MEGA HOPEX", "Design Authority"],
     featured: true,
-    logo: "/logos/banque-postale.png",
+    logo: "/logos/banque-postale.webp",
     image: "/images/projects/lbp-preview.webp"
   }
 ];

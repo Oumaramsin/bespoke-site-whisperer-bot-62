@@ -19,8 +19,9 @@ const app = (
 
 // En production toutes les pages servies sont pré-rendues (scripts/prerender.mjs), y compris dist/404.html : on hydrate.
 // Serveur de développement Vite : coquille vide, rendu classique côté client.
+// L'hydratation attend la première image affichée : le texte pré-rendu apparaît sans attendre React.
 if (container.hasChildNodes()) {
-  hydrateRoot(container, app);
+  requestAnimationFrame(() => setTimeout(() => hydrateRoot(container, app), 0));
 } else {
   createRoot(container).render(app);
 }

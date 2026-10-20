@@ -4,8 +4,24 @@
     {
       "name": "ramsin-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 8080
+    },
+    {
+      "name": "ramsin-build",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "serve@14",
+        "dist",
+        "-l",
+        "4174",
+        "--no-clipboard"
+      ],
+      "port": 4174
     }
   ]
 }

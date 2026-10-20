@@ -43,7 +43,7 @@ export const MethodSteps = ({ dark = false, compact = false }: { dark?: boolean;
             Étape {i + 1}
           </span>
         </div>
-        <h4 className="font-extrabold leading-snug">{title}</h4>
+        <h3 className="font-extrabold leading-snug">{title}</h3>
         <p className={cn("mt-1.5 text-sm leading-relaxed", dark ? "text-slate-300" : "text-muted-foreground")}>{text}</p>
       </li>
     ))}

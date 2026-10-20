@@ -114,6 +114,7 @@ export const Projets = () => {
         </div>
 
         {/* PROJET VEDETTE + GRILLE (regroupée par pôle quand tout est affiché) */}
+        <h2 className="sr-only">Nos réalisations</h2>
         {featured && <ProjectCard project={featured} featured source="projects_featured" />}
         {filter === "all" ? (
           <>

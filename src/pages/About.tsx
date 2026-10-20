@@ -62,7 +62,7 @@ export const About = () => {
     {
       title: "Consultant Architecte Solution & Cadrage",
       company: "La Banque Postale (via Marte)",
-      logo: "/logos/banque-postale.png",
+      logo: "/logos/banque-postale.webp",
       period: "Septembre 2022 - Mai 2023",
       category: "Architecture Solution & Secteur Bancaire",
       accent: "border-l-emerald-600",
@@ -76,7 +76,7 @@ export const About = () => {
     {
       title: "Consultant Solution AE MEGA HOPEX",
       company: "Marte Conseil",
-      logo: "/logos/marte.png",
+      logo: "/logos/marte.webp",
       period: "Janvier 2020 - Septembre 2022",
       category: "Expertise MEGA HOPEX & Automatisation API",
       accent: "border-l-[#123A35]",

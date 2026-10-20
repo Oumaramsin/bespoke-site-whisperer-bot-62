@@ -19,19 +19,19 @@ const Index = () => {
         <HeroSection />
 
         {/* 2. PREUVE SOCIALE & EXPÉRIENCE GRANDS COMPTES (Covéa, La Banque Postale, Société Générale) */}
-        <ClientsSection />
+        <div className="cv-auto"><ClientsSection /></div>
 
         {/* 3. ÉTUDES DE CAS EN VEDETTE (Dabari, Maison HamdiWaShukri, L'Éclat du Chef) */}
-        <ProjectsSection />
+        <div className="cv-auto"><ProjectsSection /></div>
 
         {/* 4. NOS 2 PÔLES D'EXCELLENCE DÉDIÉS (Architecture SI & Web/Mobile) */}
-        <ServicesSection />
+        <div className="cv-auto"><ServicesSection /></div>
 
         {/* 5. NOS 3 GARANTIES CONCRÈTES (Budget forfaitaire, Zéro boîte noire, Code cédé & Garantie 30j) */}
-        <GuaranteesSection />
+        <div className="cv-auto"><GuaranteesSection /></div>
 
         {/* 6. CONVERSION FINALE : RÉSERVATION DE CADRAGE OFFERT (30 MIN) */}
-        <BookingWidget />
+        <div className="cv-auto"><BookingWidget /></div>
       </div>
     </>
   );

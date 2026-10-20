@@ -294,6 +294,7 @@ export const Contact = () => {
           </div>
 
           {/* 3 CARTES DE CONTACT DIRECT RAPIDE */}
+          <h2 className="sr-only">Nos coordonnées</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <Card className="hover:border-primary/40 transition-colors hover-lift glass-card">
               <CardHeader className="pb-3">
@@ -360,7 +361,9 @@ export const Contact = () => {
 
           {/* 1. OPTION 1 : CALENDRIER INTERACTIF CALENDLY */}
           <div className="mb-16">
-            <BookingWidget />
+            <BookingWidget
+              autoLoad={Boolean(location.state?.scrollToBooking) || searchParams.get("tunnel") === "booking" || location.hash === "#reservation-calendrier"}
+            />
           </div>
 
           {/* 2. OPTION 2 : FORMULAIRE DE CONTACT QUALIFIANT & GARANTIES */}

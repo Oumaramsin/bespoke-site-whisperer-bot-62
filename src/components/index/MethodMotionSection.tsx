@@ -24,10 +24,12 @@ import { trackConversionEvent } from "@/lib/analytics";
 /* ──────────────────────────────────────────────────────────
    LECTEUR VIDÉO DE PRÉSENTATION RAMSIN (Master 1080p)
    Motion design V4.2 « L'idée qui dort » — voix Remy, -16 LUFS
-   Les sous-titres sont incrustés dans la vidéo : pas de piste VTT ni de bouton dédié.
+   Les sous-titres sont incrustés dans la vidéo : pas de bouton dédié, piste VTT masquée.
    ────────────────────────────────────────────────────────── */
 const VIDEO_SRC = "/videos/ramsin-motion-v4-1080p.mp4";
-const POSTER_SRC = "/videos/cover_v4_1080p.png";
+const POSTER_SRC = "/videos/cover_v4.webp";
+// Piste masquée par défaut (sous-titres déjà incrustés) : utile aux lecteurs d'écran et aux outils d'accessibilité
+const CAPTIONS_SRC = "/videos/subtitles-v4.vtt";
 const DEFAULT_DURATION = 87.2;
 
 const fmt = (sec: number) => {
@@ -288,7 +290,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         ref={videoRef}
         src={VIDEO_SRC}
         poster={POSTER_SRC}
-        preload="metadata"
+        preload="none"
         playsInline
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedMetadata}
@@ -299,7 +301,9 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         onClick={togglePlay}
         onDoubleClick={toggleFullscreen}
         className={`w-full h-full cursor-pointer ${isFullscreen ? "object-contain" : "object-cover"}`}
-      />
+      >
+        <track kind="captions" src={CAPTIONS_SRC} srcLang="fr" label="Français" />
+      </video>
 
       {/* ── Overlay Écran d'accueil (Idle) ── */}
       {status === "idle" && (

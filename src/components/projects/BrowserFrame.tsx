@@ -31,7 +31,7 @@ export const BrowserFrame = ({
       <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
       <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
       <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-      <span className="ml-2 text-[11px] font-semibold text-slate-500 truncate">{label}</span>
+      <span className="ml-2 text-[11px] font-semibold text-slate-600 truncate">{label}</span>
       {illustrative && (
         <span className="ml-auto shrink-0 text-[10px] font-bold uppercase tracking-wide text-slate-500 bg-white border border-slate-200 rounded-full px-2 py-0.5">
           Visuel d'illustration
@@ -41,8 +41,12 @@ export const BrowserFrame = ({
     <div className={cn("overflow-hidden", ratio === "16/10" && "aspect-[16/10]")} style={{ background: bg }}>
       <img
         src={src}
+        // Version 800 px (scripts : public/images/projects/*-800.webp) pour les écrans de téléphone et les cartes
+        srcSet={src.endsWith(".webp") ? `${src.replace(/\.webp$/, "-800.webp")} 800w, ${src} 1600w` : undefined}
+        sizes={ratio === "16/10" ? "(max-width: 640px) 92vw, 560px" : "(max-width: 1024px) 92vw, 600px"}
         alt={alt}
         loading={eager ? "eager" : "lazy"}
+        {...(eager ? { fetchpriority: "high" } : {})}
         decoding="async"
         style={ratio === "16/10" ? { objectPosition: position } : undefined}
         className={cn(

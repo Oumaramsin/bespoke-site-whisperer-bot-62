@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sections hors écran : le navigateur ne calcule leur mise en page qu'à l'approche (premier affichage plus rapide) */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 @layer base {
   :root {
     /* Thème clair uniquement : les navigateurs ne doivent pas assombrir le site */

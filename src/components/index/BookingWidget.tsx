@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,38 +6,92 @@ import { Calendar as CalendarIcon, Clock, ShieldCheck, Zap } from "lucide-react"
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
 
-export const BookingWidget = () => {
+const CALENDLY_URL =
+  "https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=123a35&locale=fr";
+const CALENDLY_SCRIPT = "https://assets.calendly.com/assets/external/widget.js";
+
+declare global {
+  interface Window {
+    Calendly?: { initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void };
+  }
+}
+
+/**
+ * Agenda Calendly chargé à la demande : il pèse ~3 Mo (scripts, Stripe, cookies tiers).
+ * Il se charge quand le visiteur, après avoir interagi avec la page, arrive près de l'agenda
+ * (ou clique sur « Afficher les créneaux »), jamais au simple chargement de la page.
+ */
+export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
   const { ref: widgetRef, isVisible: widgetVisible } = useScrollAnimation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(autoLoad);
 
   useEffect(() => {
-    // Écoute des événements Calendly (prise de rendez-vous confirmée)
+    if (autoLoad) setOpen(true);
+  }, [autoLoad]);
+
+  // Ouverture automatique : interaction réelle + agenda proche de l'écran
+  useEffect(() => {
+    if (open) return;
+    let interacted = false;
+    let near = false;
+    const tryOpen = () => {
+      if (interacted && near) setOpen(true);
+    };
+    const onInteract = () => {
+      interacted = true;
+      tryOpen();
+    };
+    const events = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
+    events.forEach((e) => window.addEventListener(e, onInteract, { passive: true, once: true }));
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        near = entry.isIntersecting;
+        tryOpen();
+      },
+      { rootMargin: "400px 0px" }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, onInteract));
+      observer.disconnect();
+    };
+  }, [open]);
+
+  // Chargement du script officiel puis initialisation de l'agenda
+  useEffect(() => {
+    if (!open || !calendarRef.current) return;
+    const parentElement = calendarRef.current;
+    const init = () => window.Calendly?.initInlineWidget({ url: CALENDLY_URL, parentElement });
+    if (window.Calendly) {
+      init();
+      return;
+    }
+    let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT}"]`);
+    if (!script) {
+      script = document.createElement("script");
+      script.src = CALENDLY_SCRIPT;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", init, { once: true });
+    return () => script?.removeEventListener("load", init);
+  }, [open]);
+
+  // Suivi des rendez-vous confirmés
+  useEffect(() => {
     const handleCalendlyMessage = (e: MessageEvent) => {
-      if (e.data && e.data.event) {
-        if (e.data.event === "calendly.event_scheduled") {
-          trackConversionEvent("schedule_meeting_calendly", {
-            serviceType: "calendly_30min",
-          });
-        }
+      if (e.data?.event === "calendly.event_scheduled") {
+        trackConversionEvent("schedule_meeting_calendly", { serviceType: "calendly_30min" });
       }
     };
     window.addEventListener("message", handleCalendlyMessage);
-
-    // Chargement du script officiel Calendly
-    const head = document.querySelector("head");
-    const script = document.createElement("script");
-    script.setAttribute("src", "https://assets.calendly.com/assets/external/widget.js");
-    script.setAttribute("async", "true");
-    head?.appendChild(script);
-
-    return () => {
-      // Nettoyage au démontage
-      window.removeEventListener("message", handleCalendlyMessage);
-      head?.removeChild(script);
-    };
+    return () => window.removeEventListener("message", handleCalendlyMessage);
   }, []);
 
   return (
-    <section id="reservation-calendrier" className="pt-0 pb-2 bg-gradient-to-b from-background via-primary/5 to-background border-t border-border/60">
+    <section ref={sectionRef} id="reservation-calendrier" className="pt-0 pb-2 bg-gradient-to-b from-background via-primary/5 to-background border-t border-border/60">
       <div className="container mx-auto px-4">
         <div ref={widgetRef} className={`max-w-4xl mx-auto text-center mb-2 space-y-1 scroll-fade-up ${widgetVisible ? "is-visible" : ""}`}>
           <Badge variant="outline" className="px-2.5 py-0 text-[11px] border-primary/30 text-primary font-semibold">
@@ -73,11 +127,28 @@ export const BookingWidget = () => {
           <CardContent className="p-0 sm:p-2">
             {/* Widget Officiel Calendly Encastré avec Script Dynamique */}
             <div className="w-full overflow-hidden rounded-b-xl">
-              <div
-                className="calendly-inline-widget w-full rounded-b-xl"
-                data-url="https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=123a35&locale=fr"
-                style={{ minWidth: "320px", height: "700px" }}
-              />
+              {open ? (
+                <div ref={calendarRef} className="w-full rounded-b-xl" style={{ minWidth: "320px", height: "700px" }} />
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-4 text-center px-6 py-14" style={{ minHeight: "320px" }}>
+                  <span className="w-14 h-14 rounded-2xl bg-[#C7F36B] text-[#123A35] flex items-center justify-center">
+                    <CalendarIcon className="w-7 h-7" />
+                  </span>
+                  <p className="text-sm sm:text-base font-semibold text-foreground max-w-sm">
+                    Choisissez directement votre créneau de 30 minutes dans l'agenda d'Oumar.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(true);
+                      trackConversionEvent("click_booking_calendly", { source: "booking_widget_open" });
+                    }}
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#123A35] hover:bg-[#0c2621] text-white font-bold px-6 py-3 cursor-pointer transition-colors"
+                  >
+                    <CalendarIcon className="w-4 h-4" /> Afficher les créneaux disponibles
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Lien direct de secours si bloqueur de cookies / script tiers */}

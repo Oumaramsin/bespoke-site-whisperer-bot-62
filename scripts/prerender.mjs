@@ -15,7 +15,28 @@ const { render, PRERENDER_ROUTES, NOT_FOUND_ROUTE, SITE_URL } = await import(
   pathToFileURL(path.join(ssrDir, "entry-server.js")).href
 );
 
-const template = await fs.readFile(path.join(distDir, "index.html"), "utf8");
+const builtIndex = await fs.readFile(path.join(distDir, "index.html"), "utf8");
+
+// Feuille de style principale intégrée dans le HTML : plus de requête bloquante avant le premier affichage
+const CSS_LINK = /<link\s+rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/;
+const cssMatch = builtIndex.match(CSS_LINK);
+if (!cssMatch) throw new Error("dist/index.html : feuille de style principale introuvable");
+const css = await fs.readFile(path.join(distDir, cssMatch[1]), "utf8");
+// JavaScript chargé juste après le premier affichage : le HTML pré-rendu est complet et lisible sans lui,
+// il ne sert qu'à l'interactivité. Les balises sont retirées pour que le navigateur ne le télécharge pas
+// avant d'avoir affiché la page, puis réinjectées au premier affichage (signal first-contentful-paint),
+// immédiatement si l'onglet est masqué, et au plus tard après 1,5 s.
+const MAIN_SCRIPT = /\s*<script type="module"[^>]*src="([^"]+)"[^>]*><\/script>/;
+const MODULE_PRELOADS = /\s*<link rel="modulepreload"[^>]*href="([^"]+)"[^>]*>/g;
+const mainScript = builtIndex.match(MAIN_SCRIPT)?.[1];
+if (!mainScript) throw new Error("dist/index.html : script principal introuvable");
+const preloads = [...builtIndex.matchAll(MODULE_PRELOADS)].map((m) => m[1]);
+const loader = `<script>(function(){var done=false;var go=function(){if(done)return;done=true;${JSON.stringify(preloads)}.forEach(function(h){var l=document.createElement("link");l.rel="modulepreload";l.href=h;l.crossOrigin="";document.head.appendChild(l)});var s=document.createElement("script");s.type="module";s.crossOrigin="";s.src=${JSON.stringify(mainScript)};document.body.appendChild(s)};if(document.visibilityState==="hidden"){go();return}try{new PerformanceObserver(function(list){if(list.getEntriesByName("first-contentful-paint").length)setTimeout(go,0)}).observe({type:"paint",buffered:true})}catch(e){}setTimeout(go,1500)})();</script>`;
+const template = builtIndex
+  .replace(CSS_LINK, () => `<style>${css}</style>`)
+  .replace(MAIN_SCRIPT, "")
+  .replace(MODULE_PRELOADS, "")
+  .replace("</body>", () => `${loader}\n</body>`);
 
 // Balises gérées par le composant SEO : retirées du gabarit puis réécrites pour chaque page
 const SEO_SLOT = "<!--seo-head-->";
