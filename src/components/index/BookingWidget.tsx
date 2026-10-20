@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Calendar as CalendarIcon, Clock, ShieldCheck, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
+import { calendlyUtmParams } from "@/lib/attribution";
 
 const CALENDLY_URL =
   "https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=123a35&locale=fr";
@@ -63,7 +64,9 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
   useEffect(() => {
     if (!open || !calendarRef.current) return;
     const parentElement = calendarRef.current;
-    const init = () => window.Calendly?.initInlineWidget({ url: CALENDLY_URL, parentElement });
+    // La provenance (Google Ads, autre site, direct…) est enregistrée par Calendly avec le rendez-vous
+    const url = `${CALENDLY_URL}&${calendlyUtmParams()}`;
+    const init = () => window.Calendly?.initInlineWidget({ url, parentElement });
     if (window.Calendly) {
       init();
       return;
@@ -168,7 +171,6 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
                 ou contactez-nous au{" "}
                 <a
                   href="tel:+33761518890"
-                  onClick={() => trackConversionEvent("click_phone")}
                   className="font-bold text-foreground hover:underline"
                 >
                   +33 (0)7 61 51 88 90

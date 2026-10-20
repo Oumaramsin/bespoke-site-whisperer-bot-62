@@ -86,8 +86,26 @@ export const Confidentialite = () => (
           propre politique de confidentialité.
         </p>
         <p>
-          <strong>Mesure d'audience</strong> : aucun cookie publicitaire n'est déposé. Des statistiques de visite anonymes peuvent être
-          mesurées pour améliorer le site.
+          <strong>Statistiques de fréquentation</strong> : le nombre de visites et les pages consultées sont mesurés par Vercel Web
+          Analytics, sans cookie et de façon agrégée, sans identifier les visiteurs.
+        </p>
+        <p>
+          <strong>Provenance des demandes</strong> : la source de votre visite (par exemple une annonce Google, un autre site ou un accès
+          direct), la campagne et la page d'arrivée sont jointes à votre message ou à votre réservation Calendly, afin de savoir quels
+          canaux nous amènent des demandes. Base légale : notre intérêt légitime à évaluer nos actions de communication.
+        </p>
+      </Section>
+
+      <Section title="Cookies Google (Analytics et Ads)">
+        <p>
+          Uniquement si vous cliquez sur « Accepter » dans le bandeau cookies, des cookies Google Analytics et Google Ads sont déposés
+          pour mesurer l'audience du site et l'efficacité de nos annonces (par exemple : une visite issue d'une annonce a-t-elle abouti à
+          une prise de rendez-vous ?). Si vous refusez, aucun de ces cookies n'est déposé et le site fonctionne de la même façon.
+        </p>
+        <p>
+          Ces cookies ont une durée de vie de 13 mois au maximum ; votre choix est conservé 6 mois. Vous pouvez le modifier à tout moment
+          via le lien « Gestion des cookies » en bas de chaque page. Les données concernées sont traitées par Google, y compris aux
+          États-Unis, dans le cadre du Data Privacy Framework UE–États-Unis.
         </p>
       </Section>
 

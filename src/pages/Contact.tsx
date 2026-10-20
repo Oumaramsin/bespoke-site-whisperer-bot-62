@@ -329,7 +329,6 @@ export const Contact = () => {
               <CardContent>
                 <a
                   href="tel:+33761518890"
-                  onClick={() => trackConversionEvent("click_phone")}
                   className="font-bold text-primary hover:underline text-base inline-block py-1"
                 >
                   +33 (0)7 61 51 88 90

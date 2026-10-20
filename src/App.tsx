@@ -5,6 +5,7 @@ import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
+import CookieConsent from "./components/CookieConsent";
 
 // Code Splitting / Lazy Loading par Route pour diviser le payload JS initial par 3
 const Index = lazy(() => import("./pages/Index"));
@@ -32,6 +33,7 @@ const PageLoader = () => (
 const App = () => (
   <>
     <Toaster />
+    <CookieConsent />
     {/* Seul le toaster Sonner lit le thème : le ThemeProvider ne doit pas englober les pages, car sa mise à jour
         au montage (thème système) empêcherait React d'hydrater le HTML pré-rendu (erreur #421). */}
     <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} enableColorScheme={false}>

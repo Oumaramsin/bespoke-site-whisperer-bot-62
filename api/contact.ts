@@ -53,6 +53,19 @@ const contactSchema = z.object({
   message: z.string().trim().min(10).max(5000),
   // Champ piège invisible : rempli uniquement par les robots
   website: z.string().max(200).optional().default(""),
+  // Provenance de la visite (src/lib/attribution.ts) : informative, ignorée si invalide
+  attribution: z
+    .object({
+      channel: singleLine(200),
+      campaign: singleLine(200),
+      term: singleLine(200),
+      content: singleLine(200),
+      gclid: singleLine(200),
+      landingPage: singleLine(200),
+    })
+    .partial()
+    .optional()
+    .catch(undefined),
 });
 
 // Limitation simple du débit par IP (mémoire de l'instance, best effort)
@@ -100,6 +113,23 @@ const row = (label: string, value: string, extraStyle = "") => `
             <td style="padding: 12px; border-bottom: 1px solid #f1f5f9; color: #0f172a; ${extraStyle}">${value}</td>
           </tr>`;
 
+// Bloc « Provenance » : canal (google / cpc, direct…), campagne et mot-clé Google Ads, page d'arrivée
+const buildAttributionHtml = (attribution: z.infer<typeof contactSchema>["attribution"]) => {
+  if (!attribution?.channel) return "";
+  const rows = [
+    ["Canal", attribution.channel],
+    ["Campagne", attribution.campaign],
+    ["Mot-clé / annonce", [attribution.term, attribution.content].filter(Boolean).join(" · ")],
+    ["Page d'arrivée", attribution.landingPage],
+    ["Clic Google Ads (gclid)", attribution.gclid ? "oui" : ""],
+  ].filter(([, value]) => value);
+  return `
+        <h3 style="color: #0f172a; font-size: 14px; margin: 24px 0 0 0;">Provenance de la demande</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+          ${rows.map(([label, value]) => row(label as string, escapeHtml(value as string))).join("")}
+        </table>`;
+};
+
 const buildContactHtml = (data: z.infer<typeof contactSchema>) => {
   const safe = {
     name: escapeHtml(data.name),
@@ -129,6 +159,7 @@ const buildContactHtml = (data: z.infer<typeof contactSchema>) => {
           ${row("Délai Souhaité", safe.timeline, "color: #059669; font-weight: 700;")}
           ${row("Message", safe.message, "color: #334155; white-space: pre-wrap; line-height: 1.5;")}
         </table>
+        ${buildAttributionHtml(data.attribution)}
       </div>
       <div style="background-color: #f8fafc; padding: 18px; text-align: center; color: #64748b; font-size: 12px; border-top: 1px solid #e2e8f0;">
         RAMSIN Conseil • Formulaire de Devis

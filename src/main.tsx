@@ -1,6 +1,9 @@
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { inject } from '@vercel/analytics'
 import App from './App.tsx'
+import { captureAttribution } from './lib/attribution'
+import { trackPhoneClicks } from './lib/analytics'
 import './index.css'
 
 // /services/ reçoit le même HTML pré-rendu que /services : on retire le « / » final (comme dans les canonicals)
@@ -9,6 +12,14 @@ const { pathname, search, hash } = window.location;
 if (pathname.length > 1 && pathname.endsWith("/")) {
   window.history.replaceState(window.history.state, "", pathname.replace(/\/+$/, "") + search + hash);
 }
+
+// Vercel Web Analytics : visiteurs et pages vues (changements de route suivis automatiquement).
+// Le script /_vercel/insights/script.js n'existe qu'une fois déployé sur Vercel avec Analytics activé.
+inject({ mode: import.meta.env.PROD ? "production" : "development" });
+
+// Provenance de la visite (UTM, gclid) jointe aux demandes de contact et aux RDV Calendly ; clics sur les numéros de téléphone
+captureAttribution();
+trackPhoneClicks();
 
 const container = document.getElementById("root")!;
 const app = (

@@ -3,6 +3,8 @@ import { Lock, ShieldCheck, HeartHandshake, FileText, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "./CopyEmailButton";
 import RamsinLogo from "./RamsinLogo";
+import { openConsentBanner } from "@/lib/consent";
+import { isGoogleTagConfigured } from "@/lib/googleTag";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -136,6 +138,11 @@ const Footer = () => {
           <nav className="flex items-center gap-4" aria-label="Informations légales">
             <Link to="/mentions-legales" className="hover:text-primary transition-colors">Mentions légales</Link>
             <Link to="/confidentialite" className="hover:text-primary transition-colors">Politique de confidentialité</Link>
+            {isGoogleTagConfigured && (
+              <button type="button" onClick={openConsentBanner} className="hover:text-primary transition-colors">
+                Gestion des cookies
+              </button>
+            )}
           </nav>
         </div>
       </div>

@@ -345,7 +345,6 @@ const HeroSection = () => {
 
                 <a
                   href="tel:+33761518890"
-                  onClick={() => trackConversionEvent("click_phone")}
                   className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white font-mono font-bold transition-all text-[11px]"
                 >
                   <Phone className="w-3 h-3 text-[#C7F36B]" />

@@ -1,18 +1,18 @@
 /**
- * Module de suivi de conversion éthique & respectueux (Zero-Cookie / 100% Conforme RGPD)
- * RAMSIN Conseil
- * 
+ * Suivi des conversions — RAMSIN Conseil
+ *
  * Permet de mesurer l'efficacité commerciale des deux tunnels de conversion :
  * - Prise de RDV Calendly (Visio 30 min)
  * - Soumission du formulaire express (Message écrit 2 min)
  * - Navigation entre les parcours (Architecture SI vs Web & Apps)
  * - Consultation de la démo interactive de méthode
  * - Clics sur les coordonnées directes (téléphone, email)
- * 
- * Ce module ne dépose AUCUN cookie tiers intrusif, n'enregistre aucune donnée
- * personnelle identifiante et s'intègre nativement avec Google Analytics (si configuré)
- * ou Plausible Analytics, avec fallback via CustomEvents et log en développement.
+ *
+ * Les événements partent vers Google Analytics / Google Ads uniquement si le visiteur a accepté les cookies
+ * (gtag n'est chargé qu'après son accord, voir googleTag.ts) ; les trois conversions principales
+ * (RDV Calendly, formulaire, téléphone) sont en plus remontées comme conversions Google Ads.
  */
+import { sendAdsConversion } from "./googleTag";
 
 export type ConversionEventName =
   | "click_booking_calendly"
@@ -42,7 +42,8 @@ export interface ConversionEventParams {
 
 declare global {
   interface Window {
-    gtag?: (command: string, action: string, params?: Record<string, unknown>) => void;
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
     plausible?: (eventName: string, options?: { props?: Record<string, unknown> }) => void;
   }
 }
@@ -62,6 +63,7 @@ export const trackConversionEvent = (
     // 1. Google Analytics (gtag) si configuré
     if (typeof window !== "undefined" && typeof window.gtag === "function") {
       window.gtag("event", eventName, payload);
+      sendAdsConversion(eventName);
     }
 
     // 2. Plausible Analytics si configuré
@@ -84,4 +86,16 @@ export const trackConversionEvent = (
   } catch {
     // Silencieux en production
   }
+};
+
+/** Tous les liens tel: du site (en-tête, pied de page, pages) comptent comme une conversion « appel ». */
+export const trackPhoneClicks = () => {
+  document.addEventListener(
+    "click",
+    (event) => {
+      const link = (event.target as Element | null)?.closest?.('a[href^="tel:"]');
+      if (link) trackConversionEvent("click_phone", { destination: link.getAttribute("href") ?? "" });
+    },
+    { capture: true }
+  );
 };

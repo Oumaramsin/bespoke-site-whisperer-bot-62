@@ -1,7 +1,9 @@
 /**
  * Envoi du formulaire de contact vers la fonction serveur /api/contact.
  * Aucune clé API n'est manipulée côté navigateur : l'appel à Resend se fait côté serveur.
+
  */
+import { describeChannel, getAttribution } from "@/lib/attribution";
 
 interface SendContactParams {
   name: string;
@@ -49,7 +51,8 @@ export const sendContactRequest = async (params: SendContactParams) => {
   const res = await fetch("/api/contact", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
+    // Provenance de la visite (canal, campagne, mot-clé…) affichée dans l'email reçu
+    body: JSON.stringify({ ...params, attribution: { channel: describeChannel(), ...getAttribution() } }),
   });
 
   if (!res.ok) {
