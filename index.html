@@ -45,6 +45,13 @@
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       }
+      /* Samsung Internet force le mode sombre sauf si le site déclare lui-même une règle prefers-color-scheme: dark.
+         Cette règle existe donc, mais garde volontairement le thème clair. */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          color-scheme: only light;
+        }
+      }
     </style>
 
     <!-- Schema.org JSON-LD -->
