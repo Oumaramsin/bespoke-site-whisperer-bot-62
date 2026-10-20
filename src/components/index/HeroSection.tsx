@@ -210,8 +210,8 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              {/* PARCOURS B : DÉVELOPPEMENT WEB & APPLICATIONS SUR-MESURE */}
-              <div className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-emerald-500/25 hover:border-emerald-600 transition-all hover-lift flex flex-col justify-between relative group hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.2)] overflow-hidden">
+              {/* PARCOURS B : DÉVELOPPEMENT WEB & APPLICATIONS SUR-MESURE (affiché en premier sur mobile) */}
+              <div className="order-first md:order-none p-6 sm:p-8 rounded-3xl bg-white border-2 border-emerald-500/25 hover:border-emerald-600 transition-all hover-lift flex flex-col justify-between relative group hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.2)] overflow-hidden">
                 {/* Ligne d'accent lumineuse supérieure */}
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-600 via-[#C7F36B] to-teal-500" />
 

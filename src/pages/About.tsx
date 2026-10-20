@@ -17,7 +17,6 @@ import {
   Award,
   ShieldCheck,
   Calendar,
-  ExternalLink,
   Zap,
   Users2,
   HeartHandshake,
@@ -33,7 +32,6 @@ const ABOUT_JSONLD = {
   jobTitle: "Fondateur de RAMSIN Conseil, Architecte SI & Développeur Full-Stack",
   worksFor: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: "https://www.ramsin.fr" },
   url: "https://www.ramsin.fr/a-propos",
-  sameAs: ["https://www.linkedin.com/in/oumar-ramsin/"],
   knowsAbout: ["Architecture des Systèmes d'Information", "MEGA HOPEX", "Next.js", "React Native", "Développement web et mobile"],
 };
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -167,7 +165,6 @@ export const About = () => {
     email: "contact@ramsin.fr",
     phone: "+33 (0)7 61 51 88 90",
     location: "Basés à Fresnes (94) · Interventions Paris & Remote",
-    linkedin: "https://www.linkedin.com/in/oumar-ramsin/",
   };
 
   const handleBookingRedirect = () => {
@@ -216,7 +213,7 @@ export const About = () => {
             Porté par son fondateur <strong>Oumar Sidibé</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne grands comptes et dirigeants avec une exigence absolue de résultat.
           </p>
 
-          {/* Liens de contact rapide & profil LinkedIn vérifié */}
+          {/* Liens de contact rapide */}
           <div className="flex flex-wrap gap-3 justify-center text-xs sm:text-sm pt-2">
             <a
               href={`mailto:${contact.email}`}
@@ -233,14 +230,6 @@ export const About = () => {
             <span className="bg-secondary/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 font-medium text-muted-foreground">
               <MapPin className="w-3.5 h-3.5 text-primary" /> {contact.location}
             </span>
-            <a
-              href={contact.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#0A66C2] hover:bg-[#084e96] text-white px-4 py-2 rounded-full flex items-center gap-1.5 transition-colors font-bold shadow-xs hover:shadow-md"
-            >
-              <ExternalLink className="w-3.5 h-3.5" /> Profil LinkedIn Vérifié
-            </a>
           </div>
         </div>
       </section>
