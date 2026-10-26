@@ -6,10 +6,15 @@ import { ThemeProvider } from "next-themes";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CookieConsent from "./components/CookieConsent";
+import BookingDialog from "./components/BookingDialog";
+import { OFFER_LINKS } from "./data/offerRoutes";
 
 // Code Splitting / Lazy Loading par Route pour diviser le payload JS initial par 3
 const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
+const Offer = lazy(() => import("./pages/Offer"));
+const Guides = lazy(() => import("./pages/Guides"));
+const Guide = lazy(() => import("./pages/Guide"));
 const Projets = lazy(() => import("./pages/Projets"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const About = lazy(() => import("./pages/About"));
@@ -34,6 +39,7 @@ const App = () => (
   <>
     <Toaster />
     <CookieConsent />
+    <BookingDialog />
     {/* Seul le toaster Sonner lit le thème : le ThemeProvider ne doit pas englober les pages, car sa mise à jour
         au montage (thème système) empêcherait React d'hydrater le HTML pré-rendu (erreur #421). */}
     <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} enableColorScheme={false}>
@@ -45,6 +51,13 @@ const App = () => (
         <Route element={<Layout />}>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />
+
+          {/* Pages d'offre : une URL par prestation (src/data/offerRoutes.ts) et guides pratiques */}
+          {OFFER_LINKS.map((offer) => (
+            <Route key={offer.id} path={offer.path} element={<Offer id={offer.id} />} />
+          ))}
+          <Route path="/guides" element={<Guides />} />
+          <Route path="/guides/:slug" element={<Guide />} />
 
           {/* Routes Projets en Français */}
           <Route path="/projets" element={<Projets />} />

@@ -1,9 +1,7 @@
-import { FileCheck, Eye, ShieldCheck, CheckCircle2, Sparkles, Calendar } from "lucide-react";
+import { FileCheck, Eye, ShieldCheck, CheckCircle2, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { trackConversionEvent } from "@/lib/analytics";
 
 export const GuaranteesSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
@@ -12,9 +10,9 @@ export const GuaranteesSection = () => {
   const guarantees = [
     {
       icon: FileCheck,
-      badge: "Zéro Surcoût Imprévu",
+      badge: "Zéro surcoût imprévu",
       badgeColor: "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/25",
-      title: "Périmètre Cadré & Budget Forfaitaire",
+      title: "Périmètre cadré & budget forfaitaire",
       description:
         "Cadrage fonctionnel rigoureux et devis ferme validé ensemble dès le départ. Aucun frais caché ni surcoût en cours de réalisation : votre investissement est scrupuleusement maîtrisé.",
       points: [
@@ -25,9 +23,9 @@ export const GuaranteesSection = () => {
     },
     {
       icon: Eye,
-      badge: "Visibilité Continue",
+      badge: "Visibilité continue",
       badgeColor: "bg-[#C7F36B]/25 text-[#123A35] border-[#C7F36B]/50",
-      title: "Démonstrations Régulières & Zéro Boîte Noire",
+      title: "Démonstrations régulières & zéro boîte noire",
       description:
         "Vous suivez l'avancée réelle à chaque sprint via un espace de pré-production privé. Vous donnez vos retours en direct et validez l'ergonomie avant toute mise en ligne.",
       points: [
@@ -38,9 +36,9 @@ export const GuaranteesSection = () => {
     },
     {
       icon: ShieldCheck,
-      badge: "Liberté Totale & Sérénité",
+      badge: "Liberté totale & sérénité",
       badgeColor: "bg-emerald-500/10 text-emerald-800 border-emerald-500/25",
-      title: "Pleine Propriété du Code & Garantie 30 Jours",
+      title: "Pleine propriété du code & garantie 30 jours",
       description:
         "Le code source complet et tous les comptes d'hébergement vous sont remis à 100%. Tout aléa technique éventuel est pris en charge et résolu en priorité sans frais durant les 30 jours suivant le lancement.",
       points: [
@@ -50,14 +48,6 @@ export const GuaranteesSection = () => {
       ],
     },
   ];
-
-  const scrollToReservation = () => {
-    trackConversionEvent("click_booking_calendly", { source: "guarantees_banner" });
-    const el = document.getElementById("reservation-calendrier");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-background via-secondary/25 to-background border-t border-border/60 relative overflow-hidden">
@@ -75,10 +65,10 @@ export const GuaranteesSection = () => {
             className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
           >
             <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" />
-            Engagements de Sérénité
+            Nos engagements
           </Badge>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            3 Garanties Concrètes pour Votre Projet
+            Trois garanties écrites pour votre projet
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Engagements contractuels fermes et règles déontologiques qui protègent votre investissement et cadrent votre projet.
@@ -131,7 +121,7 @@ export const GuaranteesSection = () => {
                     {item.description}
                   </p>
 
-                  <div className="pt-3 border-t border-border/60 space-y-2">
+                  <div className="hidden sm:block pt-3 border-t border-border/60 space-y-2">
                     {item.points.map((pt, pIdx) => (
                       <div key={pIdx} className="flex items-start gap-2 text-xs font-semibold text-foreground/90">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
@@ -143,27 +133,6 @@ export const GuaranteesSection = () => {
               </Card>
             );
           })}
-        </div>
-
-        {/* Bandeau d'Appel à l'Action de transition */}
-        <div className="p-6 rounded-2xl glass-card border border-border/80 text-center max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
-          <div className="text-center sm:text-left space-y-1">
-            <h4 className="font-extrabold text-foreground text-base sm:text-lg tracking-tight">
-              Vous avez un projet en tête ou un besoin à préciser&nbsp;?
-            </h4>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Échangeons simplement lors d'une session de cadrage offerte de 30 minutes.
-            </p>
-          </div>
-
-          <Button
-            variant="lime"
-            size="sm"
-            className="rounded-xl px-5 py-2.5 font-bold shadow-sm shrink-0 cursor-pointer gap-2"
-            onClick={scrollToReservation}
-          >
-            <Calendar className="w-4 h-4" /> Planifier un cadrage offert (30 min)
-          </Button>
         </div>
 
       </div>

@@ -51,7 +51,7 @@ export const ProjectsSection = () => {
             <div className="inline-flex p-1 rounded-xl bg-muted/80 border border-border/80 shadow-2xs">
               {(
                 [
-                  { key: "web", label: "Web & Mobile", icon: Laptop },
+                  { key: "web", label: "Web & mobile", icon: Laptop },
                   { key: "si", label: "Architecture SI & MEGA HOPEX", icon: Layers },
                 ] as const
               ).map(({ key, label, icon: Icon }) => (

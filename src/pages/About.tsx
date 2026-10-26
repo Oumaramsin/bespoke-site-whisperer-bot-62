@@ -21,7 +21,7 @@ import {
   Users2,
   HeartHandshake,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import PoleProjects from "@/components/projects/PoleProjects";
 
@@ -35,16 +35,16 @@ const ABOUT_JSONLD = {
   knowsAbout: ["Architecture des Systèmes d'Information", "MEGA HOPEX", "Next.js", "React Native", "Développement web et mobile"],
 };
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { openBooking } from "@/lib/calendly";
 
 export const About = () => {
   const { ref: expRef, isVisible: expVisible } = useScrollAnimation();
   const { ref: eduRef, isVisible: eduVisible } = useScrollAnimation();
   const { ref: ctaRef, isVisible: ctaVisible } = useScrollAnimation();
-  const navigate = useNavigate();
 
   const experiences = [
     {
-      title: "Consultant Architecte SI & MEGA HOPEX V5",
+      title: "Consultant architecte SI & MEGA HOPEX V5",
       company: "COVEA (Assurances MAAF, MMA, GMF)",
       logo: "/logos/covea.png",
       period: "Juin 2023 - Présent",
@@ -58,7 +58,7 @@ export const About = () => {
       ],
     },
     {
-      title: "Consultant Architecte Solution & Cadrage",
+      title: "Consultant architecte solution & cadrage",
       company: "La Banque Postale (via Marte)",
       logo: "/logos/banque-postale.webp",
       period: "Septembre 2022 - Mai 2023",
@@ -72,7 +72,7 @@ export const About = () => {
       ],
     },
     {
-      title: "Consultant Solution AE MEGA HOPEX",
+      title: "Consultant solution AE MEGA HOPEX",
       company: "Marte Conseil",
       logo: "/logos/marte.webp",
       period: "Janvier 2020 - Septembre 2022",
@@ -86,7 +86,7 @@ export const About = () => {
       ],
     },
     {
-      title: "Ingénieur Études et Développement Full-Stack",
+      title: "Ingénieur études et développement full-stack",
       company: "Société Générale",
       logo: "/logos/societe-generale.png",
       period: "Janvier 2017 - Janvier 2019",
@@ -118,7 +118,7 @@ export const About = () => {
 
   const skillGroups = [
     {
-      title: "Architecture & Cartographie SI",
+      title: "Architecture & cartographie SI",
       icon: Layers,
       accent: "border-l-[#123A35]",
       items: [
@@ -132,7 +132,7 @@ export const About = () => {
       ],
     },
     {
-      title: "Développement Web & Mobile Full-Stack",
+      title: "Développement web & mobile full-stack",
       icon: Code2,
       accent: "border-l-emerald-600",
       items: [
@@ -146,7 +146,7 @@ export const About = () => {
       ],
     },
     {
-      title: "Méthodologie, Cloud & DevOps",
+      title: "Méthodologie, cloud & DevOps",
       icon: Database,
       accent: "border-l-[#123A35]",
       items: [
@@ -167,14 +167,12 @@ export const About = () => {
     location: "Basés à Fresnes (94) · Interventions Paris & Remote",
   };
 
-  const handleBookingRedirect = () => {
-    navigate("/contact", { state: { scrollToBooking: true } });
-  };
+  const handleBookingRedirect = () => openBooking("about_footer");
 
   return (
     <>
       <SEO
-        title="À Propos de RAMSIN Conseil | Consultant Fondateur & Architecte SI Senior"
+        title="À propos de RAMSIN Conseil | Oumar Sidibé, architecte SI & développeur"
         description="Découvrez le profil de RAMSIN Conseil : 7 ans d'expérience professionnelle en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
         canonical="https://www.ramsin.fr/a-propos"
         jsonLd={ABOUT_JSONLD}
@@ -198,15 +196,11 @@ export const About = () => {
               Disponible pour missions SI & projets applicatifs
             </div>
 
-            <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-              <Star className="w-3.5 h-3.5 mr-1.5 inline text-amber-500" />
-              Cabinet Conseil & Développement Indépendant
-            </Badge>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
-            L'Expertise d'un Spécialiste Senior.
-            <span className="block gradient-text mt-2 pb-2">La Proximité d'un Partenaire Dédié.</span>
+            L'expertise d'un architecte senior.
+            <span className="block gradient-text mt-2 pb-2">La proximité d'un partenaire dédié.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
@@ -242,7 +236,7 @@ export const About = () => {
         <div className="space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-              Pourquoi Travailler avec RAMSIN Conseil ?
+              Pourquoi travailler avec RAMSIN Conseil ?
             </h2>
             <p className="text-sm text-muted-foreground">
               Les 4 engagements d'un modèle sans intermédiaire qui fait la différence pour votre organisation.
@@ -253,22 +247,22 @@ export const About = () => {
             {[
               {
                 icon: Users2,
-                title: "1. Interlocuteur Unique Senior",
+                title: "1. Un interlocuteur unique, senior",
                 desc: "Pas de commercial qui disparaît après la signature ni de stagiaire envoyé en sous-traitance : vous échangez et travaillez directement avec l'expert qui conçoit vos architectures ou développe votre code.",
               },
               {
                 icon: Zap,
-                title: "2. Circuit Décisionnel Court & Réactivité",
+                title: "2. Circuit de décision court & réactivité",
                 desc: "Démarrage de mission rapide, ajustements agiles en direct et réponse garantie sous 24h ouvrées. Zéro lourdeur administrative d'ESN traditionnelle.",
               },
               {
                 icon: HeartHandshake,
-                title: "3. Transparence Budgétaire Totale",
+                title: "3. Transparence budgétaire totale",
                 desc: "Pas de frais de structure superflus d'agence. Des tarifs forfaitaires ou régie clairs, fixés en amont et respectés scrupuleusement.",
               },
               {
                 icon: ShieldCheck,
-                title: "4. Souveraineté & Propriété Contractuelle",
+                title: "4. Souveraineté & propriété contractuelle",
                 desc: "Vos référentiels d'architecture sont documentés pour vos équipes internes et l'intégralité du code source applicatif vous est cédée sans aucun abonnement captif.",
               },
             ].map((adv, i) => {
@@ -292,10 +286,10 @@ export const About = () => {
         <Card className="border-2 border-primary/20 bg-gradient-to-r from-primary/5 via-background to-background glass-card rounded-3xl overflow-hidden shadow-md">
           <CardHeader className="p-6 sm:p-8 pb-3">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              La Philosophie RAMSIN
+              La philosophie RAMSIN
             </span>
             <CardTitle className="text-xl sm:text-2xl font-bold">
-              Allier Vision Stratégique des SI & Concrétisation Technique Réelle
+              Allier vision stratégique des SI et réalisation technique
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6 sm:p-8 pt-0 space-y-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
@@ -308,11 +302,11 @@ export const About = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs sm:text-sm text-foreground font-semibold">
               <div className="p-3.5 rounded-xl bg-[#123A35]/10 border border-[#123A35]/25 flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#123A35] shrink-0 mt-0.5" />
-                <span>Pour la DSI : Cartographies rigoureuses, conformité MEGA HOPEX V5 et passage réussi des DAT.</span>
+                <span>Pour la DSI : cartographies rigoureuses, conformité MEGA HOPEX V5 et passage réussi des DAT.</span>
               </div>
               <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
-                <span>Pour les Métiers : Applications fluides, sécurisées, livrées dans les délais avec code propriétaire.</span>
+                <span>Pour les métiers : applications fluides, sécurisées, livrées dans les délais avec code propriétaire.</span>
               </div>
             </div>
           </CardContent>
@@ -331,7 +325,7 @@ export const About = () => {
             </div>
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Parcours Professionnel Vérifiable
+                Parcours professionnel
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Missions exercées au sein d'environnements grands comptes et structures exigeantes.
@@ -383,7 +377,7 @@ export const About = () => {
             </div>
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Diplômes & Formation Supérieure
+                Diplômes & formation
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Une formation académique solide en Architecture des SI et Informatique de Gestion.
@@ -419,7 +413,7 @@ export const About = () => {
             </div>
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Compétences & Outils Maîtrisés
+                Compétences & outils
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Les technologies et standards réellement déployés en production.
@@ -479,10 +473,10 @@ export const About = () => {
               className="gap-2 font-bold cursor-pointer shadow-md bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-7"
             >
               <Calendar className="w-4 h-4" />
-              Réserver mon échange offert (30 min) <ArrowRight className="w-4 h-4" />
+              Réserver 30 min offertes <ArrowRight className="w-4 h-4" />
             </Button>
             <Button asChild variant="outline" size="lg" className="font-bold rounded-xl px-7">
-              <Link to="/contact">Envoyer un message direct</Link>
+              <Link to="/contact?tunnel=form">Décrire mon projet par écrit</Link>
             </Button>
           </div>
         </div>

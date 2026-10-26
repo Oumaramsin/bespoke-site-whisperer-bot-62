@@ -3,13 +3,7 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -59,12 +53,9 @@ import SEO from "@/components/SEO";
 import BookingWidget from "@/components/index/BookingWidget";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "@/components/CopyEmailButton";
-import {
-  sendContactRequest,
-  formatServiceType,
-  formatTimeline,
-} from "@/services/contactService";
+import { sendContactRequest, formatServiceType } from "@/services/contactService";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 
 const formSchema = z.object({
   name: z
@@ -75,16 +66,10 @@ const formSchema = z.object({
     .string()
     .max(254, { message: "L'adresse e-mail est trop longue" })
     .email({ message: "Veuillez entrer une adresse e-mail valide (ex: vous@entreprise.fr)" }),
-  company: z.string().max(150, { message: "Le nom d'entreprise ne doit pas dépasser 150 caractères" }).optional(),
   phone: z.string().max(40, { message: "Le numéro ne doit pas dépasser 40 caractères" }).optional(),
   serviceType: z
     .string()
     .min(1, { message: "Veuillez sélectionner le domaine concerné par votre besoin" }),
-  timeline: z.string().optional(),
-  subject: z
-    .string()
-    .min(4, { message: "Veuillez préciser le sujet de votre demande (au moins 4 caractères)" })
-    .max(150, { message: "Le sujet ne doit pas dépasser 150 caractères" }),
   message: z
     .string()
     .min(10, { message: "Veuillez décrire brièvement votre besoin (au moins 10 caractères)" })
@@ -122,11 +107,8 @@ export const Contact = () => {
     defaultValues: {
       name: "",
       email: "",
-      company: "",
       phone: "",
       serviceType: serviceParam === "si" ? "architecture-si" : serviceParam === "web" ? "web-app" : "",
-      timeline: "asap",
-      subject: serviceParam === "si" ? "Échange sur une mission d'Architecture SI" : serviceParam === "web" ? "Présentation d'un projet Web / Mobile" : "",
       message: "",
     },
   });
@@ -167,13 +149,10 @@ export const Contact = () => {
       const raw = location.state.selectedService;
       if (raw.includes("Web") || raw.includes("Applications")) {
         form.setValue("serviceType", "web-app");
-        form.setValue("subject", "Demande de devis : Projet Web / Mobile");
       } else if (raw.includes("Architecture") || raw.includes("SI")) {
         form.setValue("serviceType", "architecture-si");
-        form.setValue("subject", "Demande d'échange : Mission Architecture SI");
       } else if (raw.includes("HOPEX")) {
         form.setValue("serviceType", "mega-hopex");
-        form.setValue("subject", "Demande d'expertise : MEGA HOPEX V5");
       }
     }
   }, [location.state, location.hash, searchParams, form, isExpressTunnel]);
@@ -189,14 +168,12 @@ export const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      // Le sujet de l'email est déduit du domaine par le serveur (api/contact.ts)
       await sendContactRequest({
         name: data.name,
         email: data.email,
-        company: data.company,
         phone: data.phone,
         serviceType: data.serviceType,
-        timeline: data.timeline,
-        subject: data.subject,
         message: data.message,
         website: honeypot,
       });
@@ -204,7 +181,6 @@ export const Contact = () => {
       // Suivi de conversion éthique
       trackConversionEvent("submit_contact_form", {
         serviceType: data.serviceType,
-        timeline: data.timeline,
         pole: data.serviceType.includes("si") || data.serviceType.includes("hopex") ? "si" : "web",
       });
 
@@ -258,17 +234,10 @@ export const Contact = () => {
     },
   ];
 
-  const scrollToCalendar = () => {
-    const el = document.getElementById("reservation-calendrier");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <>
       <SEO
-        title="Contact & Prise de RDV | RAMSIN Conseil - Échangez sur Vos Projets"
+        title="Contact & prise de rendez-vous | RAMSIN Conseil"
         description="Contactez RAMSIN Conseil pour vos besoins en Architecture SI (MEGA HOPEX V5) ou conception d'applications web & mobiles sur-mesure. Réponse assurée sous 24h ouvrées."
         canonical="https://www.ramsin.fr/contact"
       />
@@ -283,17 +252,17 @@ export const Contact = () => {
               className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
             >
               <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" />
-              Échange Direct & Sans Engagement
+              Échange direct, sans engagement
             </Badge>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-              Parlons de Votre Besoin
+              Parlons de votre projet
             </h1>
             <p className="text-muted-foreground text-base sm:text-xl leading-relaxed max-w-2xl mx-auto">
-              Vous avez un enjeu d'Architecture SI ou un projet d'application à concrétiser ? Deux moyens simples pour démarrer la discussion :
+              Réservez 30 minutes offertes dans l'agenda d'Oumar Sidibé, ou décrivez votre projet par écrit : réponse sous 24 h ouvrées.
             </p>
           </div>
 
-          {/* 3 CARTES DE CONTACT DIRECT RAPIDE */}
+          {/* COORDONNÉES DIRECTES : e-mail, téléphone et localisation, visibles dès l'arrivée */}
           <h2 className="sr-only">Nos coordonnées</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <Card className="hover:border-primary/40 transition-colors hover-lift glass-card">
@@ -301,9 +270,9 @@ export const Contact = () => {
                 <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
                   <Mail className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-lg">Email Direct</CardTitle>
+                <CardTitle className="text-lg">E-mail direct</CardTitle>
                 <CardDescription className="text-xs sm:text-sm">
-                  Pour tout dossier, cahier des charges ou question
+                  Pour un dossier, un cahier des charges ou une question
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -321,9 +290,9 @@ export const Contact = () => {
                 <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
                   <Phone className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-lg">Téléphone Direct</CardTitle>
+                <CardTitle className="text-lg">Téléphone direct</CardTitle>
                 <CardDescription className="text-xs sm:text-sm">
-                  Du Lundi au Vendredi (9h - 19h)
+                  Du lundi au vendredi, 9 h à 19 h
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -341,9 +310,9 @@ export const Contact = () => {
                 <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
                   <MapPin className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-lg">Localisation & Mobilité</CardTitle>
+                <CardTitle className="text-lg">Localisation & mobilité</CardTitle>
                 <CardDescription className="text-xs sm:text-sm">
-                  Proximité et déplacements
+                  Sur place ou à distance
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -351,7 +320,7 @@ export const Contact = () => {
                   Basés à Fresnes (94)
                   <br />
                   <span className="text-xs text-muted-foreground font-normal">
-                    Interventions Paris, Île-de-France & Remote
+                    Interventions Paris, Île-de-France & à distance
                   </span>
                 </p>
               </CardContent>
@@ -394,14 +363,14 @@ export const Contact = () => {
                     variant="outline"
                     className="w-fit px-3 py-0.5 text-xs border-primary/30 text-primary font-semibold"
                   >
-                    Option Alternative : Message Écrit (2 min)
+                    Par écrit, en 2 minutes
                   </Badge>
                 )}
                 <CardTitle className="text-2xl font-bold">
-                  Décrivez Votre Projet ou Votre Besoin
+                  Décrivez votre projet en 2 minutes
                 </CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Remplissez ce formulaire synthétique. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées.
+                  Quatre champs suffisent, pas besoin de cahier des charges. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées avec de premières pistes.
                 </CardDescription>
               </CardHeader>
 
@@ -415,7 +384,7 @@ export const Contact = () => {
 
                     <div className="space-y-2 max-w-lg mx-auto">
                       <h3 className="text-2xl font-extrabold text-foreground">
-                        Demande Reçue avec Succès !
+                        Demande bien reçue !
                       </h3>
                       <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                         Merci pour votre confiance. Votre message a bien été transmis directement à <strong>Oumar Sidibé</strong>.
@@ -433,15 +402,11 @@ export const Contact = () => {
                           <span className="text-muted-foreground">E-mail :</span>
                           <span className="font-semibold text-primary">{submittedData.email}</span>
                         </div>
-                        <div className="flex justify-between border-b border-border/60 pb-2">
+                        <div className="flex justify-between">
                           <span className="text-muted-foreground">Domaine :</span>
                           <span className="font-bold text-foreground">
                             {formatServiceType(submittedData.serviceType)}
                           </span>
-                        </div>
-                        <div className="pt-1">
-                          <span className="text-muted-foreground block mb-1">Objet :</span>
-                          <span className="font-medium text-foreground">{submittedData.subject}</span>
                         </div>
                       </div>
                     )}
@@ -454,11 +419,11 @@ export const Contact = () => {
                     <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
                       <Button
                         type="button"
-                        onClick={scrollToCalendar}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl gap-2"
+                        onClick={() => openBooking("contact_after_form")}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl gap-2 cursor-pointer"
                       >
                         <Calendar className="w-4 h-4" />
-                        Réserver aussi un créneau visio
+                        Réserver 30 min offertes
                       </Button>
                       <Button
                         type="button"
@@ -521,7 +486,7 @@ export const Contact = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel htmlFor="contact-email">
-                                Adresse e-mail professionnelle <span className="text-rose-500">*</span>
+                                Adresse e-mail <span className="text-rose-500">*</span>
                               </FormLabel>
                               <FormControl>
                                 <Input
@@ -538,53 +503,7 @@ export const Contact = () => {
                         />
                       </div>
 
-                      {/* Ligne 2 : Téléphone & Entreprise */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel htmlFor="contact-phone">
-                                Téléphone <span className="text-xs text-muted-foreground font-normal">(conseillé pour rappel)</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  id="contact-phone"
-                                  type="tel"
-                                  placeholder="06 12 34 56 78 (optionnel)"
-                                  autoComplete="tel"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage className="text-xs" />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="company"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel htmlFor="contact-company">
-                                Entreprise ou Organisation <span className="text-xs text-muted-foreground font-normal">(optionnel)</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  id="contact-company"
-                                  placeholder="Ex: Acme SAS"
-                                  autoComplete="organization"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage className="text-xs" />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-
-                      {/* Ligne 3 : Sélecteur de Besoin & Délai */}
+                      {/* Ligne 2 : Domaine & Téléphone */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <FormField
                           control={form.control}
@@ -609,37 +528,37 @@ export const Contact = () => {
                                       <Building2 className="w-3.5 h-3.5" /> Architecture des SI & MEGA HOPEX
                                     </SelectLabel>
                                     <SelectItem value="architecture-si">
-                                      Architecture des SI, Urbanisation & Trajectoires
+                                      Architecture des SI, urbanisation & trajectoires
                                     </SelectItem>
                                     <SelectItem value="mega-hopex">
-                                      Expertise, Configuration & Administration MEGA HOPEX V5
+                                      Expertise, configuration & administration MEGA HOPEX V5
                                     </SelectItem>
                                     <SelectItem value="po-agile">
-                                      Product Ownership SI & Cadrage Dossiers DAT
+                                      Product ownership SI & cadrage de DAT
                                     </SelectItem>
                                   </SelectGroup>
 
                                   <SelectGroup className="pt-1.5 border-t border-border/40">
                                     <SelectLabel className="font-bold text-emerald-700 flex items-center gap-1.5">
-                                      <Smartphone className="w-3.5 h-3.5" /> Web & Applications Sur-Mesure
+                                      <Smartphone className="w-3.5 h-3.5" /> Web & applications sur-mesure
                                     </SelectLabel>
                                     <SelectItem value="web-app">
-                                      Application Web & Logiciel SaaS Métier
+                                      Application web & logiciel SaaS métier
                                     </SelectItem>
                                     <SelectItem value="mobile-app">
-                                      Application Mobile iOS & Android (React Native)
+                                      Application mobile iOS & Android (React Native)
                                     </SelectItem>
                                     <SelectItem value="site-vitrine">
-                                      Site Web Professionnel & E-Commerce Haute Conversion
+                                      Site web professionnel & e-commerce
                                     </SelectItem>
                                   </SelectGroup>
 
                                   <SelectGroup className="pt-1.5 border-t border-border/40">
                                     <SelectLabel className="font-bold text-muted-foreground">
-                                      Autre Accompagnement
+                                      Autre accompagnement
                                     </SelectLabel>
                                     <SelectItem value="transformation">
-                                      Conseil en Transformation Digitale
+                                      Conseil en transformation digitale
                                     </SelectItem>
                                     <SelectItem value="autre">
                                       Autre besoin ou demande spécifique
@@ -654,68 +573,40 @@ export const Contact = () => {
 
                         <FormField
                           control={form.control}
-                          name="timeline"
+                          name="phone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel htmlFor="contact-timeline">
-                                Échéance Souhaitée <span className="text-xs text-muted-foreground font-normal">(optionnel)</span>
+                              <FormLabel htmlFor="contact-phone">
+                                Téléphone <span className="text-xs text-muted-foreground font-normal">(optionnel, pour un rappel rapide)</span>
                               </FormLabel>
-                              <Select
-                                onValueChange={field.onChange}
-                                value={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger id="contact-timeline">
-                                    <SelectValue placeholder="Délai estimé" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="asap">Dès que possible (Prioritaire)</SelectItem>
-                                  <SelectItem value="1-month">D'ici 1 mois</SelectItem>
-                                  <SelectItem value="3-months">Sous 3 mois</SelectItem>
-                                  <SelectItem value="flexible">Flexible / En réflexion</SelectItem>
-                                </SelectContent>
-                              </Select>
+                              <FormControl>
+                                <Input
+                                  id="contact-phone"
+                                  type="tel"
+                                  placeholder="06 12 34 56 78"
+                                  autoComplete="tel"
+                                  {...field}
+                                />
+                              </FormControl>
                               <FormMessage className="text-xs" />
                             </FormItem>
                           )}
                         />
                       </div>
 
-                      {/* Ligne 4 : Objet du Message */}
-                      <FormField
-                        control={form.control}
-                        name="subject"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel htmlFor="contact-subject">
-                              Sujet de votre demande <span className="text-rose-500">*</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                id="contact-subject"
-                                placeholder="Ex: Cadrage d'une cartographie applicative SI ou création d'une application métier"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage className="text-xs" />
-                          </FormItem>
-                        )}
-                      />
-
-                      {/* Ligne 5 : Description du Besoin */}
+                      {/* Ligne 3 : Description du Besoin */}
                       <FormField
                         control={form.control}
                         name="message"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel htmlFor="contact-message">
-                              Votre Message ou Contexte du Projet <span className="text-rose-500">*</span>
+                              Votre projet en quelques mots <span className="text-rose-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Textarea
                                 id="contact-message"
-                                placeholder="Quelques mots sur votre contexte, vos contraintes ou vos questions pour préparer notre échange..."
+                                placeholder="Votre activité, ce que vous voulez créer ou améliorer, votre budget ou vos questions. Pas besoin de cahier des charges."
                                 className="min-h-[130px] resize-y"
                                 {...field}
                               />
@@ -765,7 +656,7 @@ export const Contact = () => {
               <Card className="border-2 border-primary/20 bg-primary/5 glass-card rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-lg">
-                    <Clock className="h-5 w-5" /> Réponse Sous 24h Ouvrées
+                    <Clock className="h-5 w-5" /> Réponse sous 24 h ouvrées
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -778,7 +669,7 @@ export const Contact = () => {
               <Card className="border-border/80 glass-card rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 text-foreground font-bold text-lg">
-                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Nos 3 Garanties
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Nos 3 garanties
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -786,7 +677,7 @@ export const Contact = () => {
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-sm text-foreground block">
-                        100% en Langage Clair
+                        100 % en langage clair
                       </span>
                       <span className="text-xs text-muted-foreground leading-relaxed">
                         Des explications concrètes sur vos enjeux, zéro jargon technique obscur pour masquer les réalités.
@@ -798,7 +689,7 @@ export const Contact = () => {
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-sm text-foreground block">
-                        Transparence Forfaitaire
+                        Transparence forfaitaire
                       </span>
                       <span className="text-xs text-muted-foreground leading-relaxed">
                         Devis clair, périmètre maîtrisé et budget forfaitaire ferme sans aucun surcoût imprévu.
@@ -810,7 +701,7 @@ export const Contact = () => {
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-sm text-foreground block">
-                        Confidentialité Absolue
+                        Confidentialité absolue
                       </span>
                       <span className="text-xs text-muted-foreground leading-relaxed">
                         Protection stricte de vos secrets d'affaires, de votre code et de vos architectures.
@@ -833,10 +724,10 @@ export const Contact = () => {
                 variant="outline"
                 className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold"
               >
-                <HelpCircle className="w-3.5 h-3.5 mr-1 inline" /> Questions Fréquentes
+                <HelpCircle className="w-3.5 h-3.5 mr-1 inline" /> Questions fréquentes
               </Badge>
               <h2 className="text-2xl sm:text-3xl font-extrabold">
-                F.A.Q - Réponses Claires à Vos Questions
+                Vos questions, nos réponses
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base">
                 Tout ce que vous devez savoir avant d'engager un échange commercial avec RAMSIN Conseil.

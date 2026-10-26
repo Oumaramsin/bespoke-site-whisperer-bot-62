@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,8 +16,10 @@ import {
   Zap,
   AlertTriangle,
   Phone,
+  Quote,
 } from "lucide-react";
 import { PROJECTS_DATA } from "@/data/projects";
+import { getTestimonialForProject } from "@/data/testimonials";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import NotFound from "@/pages/NotFound";
@@ -25,11 +27,11 @@ import BrowserFrame from "@/components/projects/BrowserFrame";
 import ProjectCard from "@/components/projects/ProjectCard";
 import MethodSteps from "@/components/projects/MethodSteps";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 import { cn } from "@/lib/utils";
 
 export const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
-  const navigate = useNavigate();
   const project = PROJECTS_DATA.find((p) => p.id === projectId);
 
   const jsonLd = useMemo(() => {
@@ -68,11 +70,14 @@ export const ProjectDetail = () => {
     ...PROJECTS_DATA.filter((p) => p.id !== project.id && p.pole !== project.pole),
   ].slice(0, 2);
 
-  const openBooking = (source: string) => {
+  const book = (source: string) => {
     trackConversionEvent("click_case_study_cta", { projectId: project.id, pole: project.pole, source });
-    navigate("/contact", { state: { scrollToBooking: true } });
+    openBooking(`case_${source}`);
   };
   const formLink = `/contact?tunnel=form&service=${isSI ? "si" : "web"}`;
+
+  // Avis du client, affiché seulement s'il l'a écrit ou validé (src/data/testimonials.ts)
+  const testimonial = getTestimonialForProject(project.id);
 
   const story = [
     { icon: Target, step: "01", title: "Le contexte", text: project.context, tone: "bg-secondary text-foreground" },
@@ -106,7 +111,7 @@ export const ProjectDetail = () => {
             <div className="space-y-6">
               <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
                 <span className="uppercase tracking-wider bg-[#C7F36B] text-[#123A35] px-3 py-1 rounded-full">
-                  {isSI ? "Architecture SI & MEGA HOPEX" : "Web & Mobile"}
+                  {isSI ? "Architecture SI & MEGA HOPEX" : "Web & mobile"}
                 </span>
                 <span className="text-slate-300">{project.categoryLabel}</span>
                 <span className="text-slate-400">·</span>
@@ -184,6 +189,19 @@ export const ProjectDetail = () => {
               </ol>
             </section>
 
+            {testimonial && (
+              <section aria-labelledby="testimonial" className="rounded-3xl border border-[#C7F36B] bg-[#C7F36B]/10 p-6 sm:p-8 space-y-4">
+                <h2 id="testimonial" className="text-sm font-extrabold uppercase tracking-wider text-[#123A35] inline-flex items-center gap-2">
+                  <Quote className="w-4 h-4" aria-hidden="true" /> Ce qu'en dit le client
+                </h2>
+                <blockquote className="text-lg sm:text-xl font-semibold leading-relaxed text-foreground">« {testimonial.quote} »</blockquote>
+                <p className="text-sm font-semibold text-muted-foreground">
+                  {testimonial.name ? `${testimonial.name}, ${testimonial.role}` : testimonial.role} · {testimonial.company}
+                  {testimonial.source ? ` · ${testimonial.source}` : ""}
+                </p>
+              </section>
+            )}
+
             <section aria-labelledby="deliverables" className="space-y-5">
               <h2 id="deliverables" className="text-2xl sm:text-3xl font-extrabold tracking-tight">Ce qui a été livré</h2>
               <ul className="grid sm:grid-cols-2 gap-3">
@@ -250,8 +268,8 @@ export const ProjectDetail = () => {
                 {isSI ? "Un enjeu d'architecture similaire ?" : `Un projet comme ${project.client} ?`}
               </p>
               <p className="text-sm text-slate-300">30 minutes offertes avec Oumar Sidibé pour en parler, sans engagement.</p>
-              <Button variant="lime" className="w-full rounded-xl gap-2 cursor-pointer" onClick={() => openBooking("case_aside")}>
-                <Calendar className="w-4 h-4" /> Réserver mon créneau
+              <Button variant="lime" className="w-full rounded-xl gap-2 cursor-pointer" onClick={() => book("aside")}>
+                <Calendar className="w-4 h-4" /> Réserver 30 min offertes
               </Button>
               <a href="tel:+33761518890" className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-200 hover:text-white">
                 <Phone className="w-4 h-4" /> +33 (0)7 61 51 88 90
@@ -276,8 +294,8 @@ export const ProjectDetail = () => {
             <p className="text-sm font-semibold inline-flex items-center gap-2 pt-1"><ShieldCheck className="w-4 h-4" /> Sans engagement · Réponse sous 24 h ouvrées</p>
           </div>
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-            <Button size="lg" className="rounded-xl gap-2 bg-[#123A35] hover:bg-[#0c2621] text-white cursor-pointer" onClick={() => openBooking("case_footer")}>
-              <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+            <Button size="lg" className="rounded-xl gap-2 bg-[#123A35] hover:bg-[#0c2621] text-white cursor-pointer" onClick={() => book("footer")}>
+              <Calendar className="w-4 h-4" /> Réserver 30 min offertes
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-xl gap-2 bg-white/60 border-[#123A35]/30 text-[#123A35]">
               <Link to={formLink}><FileText className="w-4 h-4" /> Décrire mon projet par écrit</Link>

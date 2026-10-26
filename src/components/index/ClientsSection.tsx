@@ -18,28 +18,28 @@ const ClientsSection = () => {
       logo: "/logos/covea.png",
       category: "Assurance & Mutuelle",
       description: "Architecture & Cartographie SI MEGA HOPEX V5",
-      imgClassName: "max-h-14 max-w-[140px]"
+      imgClassName: "max-h-12"
     },
     {
       name: "La Banque Postale",
       logo: "/logos/banque-postale.webp",
       category: "Secteur Bancaire",
       description: "Dossiers d'Architecture Solution (DAT) & Crédit",
-      imgClassName: "max-h-14 max-w-[140px]"
+      imgClassName: "max-h-12"
     },
     {
       name: "Société Générale",
       logo: "/logos/societe-generale.png",
       category: "Banque & Finance",
       description: "Développement d'Applications Web & Agilité",
-      imgClassName: "max-h-16 max-w-[170px] scale-125 sm:scale-135"
+      imgClassName: "max-h-10"
     },
     {
       name: "France Travail",
       logo: "/logos/france-travail.webp",
       category: "Service Public",
       description: "Systèmes d'Information & Projets Métiers",
-      imgClassName: "max-h-16 max-w-[170px] scale-125 sm:scale-135"
+      imgClassName: "max-h-12"
     }
   ];
 
@@ -61,7 +61,7 @@ const ClientsSection = () => {
               key={index}
               className={`p-5 rounded-2xl bg-white/90 backdrop-blur-md border border-border/80 hover:border-emerald-500/50 transition-all text-center space-y-4 flex flex-col justify-between shadow-[0_4px_20px_-8px_rgba(0,0,0,0.05)] hover:shadow-xl hover:shadow-emerald-950/5 group hover-lift h-full stagger-${index + 1}`}
             >
-              {/* Logo de l'entreprise sur piédestal soigné */}
+              {/* Logo de l'entreprise : case de 48 px de haut utile (h-16 moins p-2), hauteur des logos fixée en rem, jamais en pourcentage */}
               <div className="h-16 flex items-center justify-center p-2 rounded-xl bg-gradient-to-b from-slate-50 to-white border border-border/40 overflow-hidden group-hover:border-emerald-500/30 transition-colors">
                 <img
                   src={client.logo}
@@ -70,7 +70,7 @@ const ClientsSection = () => {
                   height="60"
                   loading="lazy"
                   decoding="async"
-                  className={`object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 group-hover:scale-105 ${client.imgClassName || "max-h-14 max-w-[140px]"}`}
+                  className={`w-auto h-auto max-w-full object-contain transition-all duration-300 opacity-90 group-hover:opacity-100 group-hover:scale-105 ${client.imgClassName || "max-h-12"}`}
                 />
               </div>
 

@@ -18,7 +18,7 @@ const NotFound = () => {
   return (
     <>
       <SEO
-        title="Page Non Trouvée (404) | RAMSIN Conseil"
+        title="Page non trouvée (404) | RAMSIN Conseil"
         description="La page que vous recherchez n'existe pas ou a été déplacée. Retournez à l'accueil du site RAMSIN Conseil."
         noIndex={true}
       />
@@ -40,7 +40,7 @@ const NotFound = () => {
 
           <div className="space-y-2">
             <h2 className="text-xl sm:text-2xl font-extrabold text-foreground">
-              Page Non Trouvée
+              Page non trouvée
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Désolé, la page que vous cherchez n'existe pas, a été déplacée ou l'adresse saisie est incorrecte.

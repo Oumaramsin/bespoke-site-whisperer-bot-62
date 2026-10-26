@@ -49,7 +49,8 @@ const contactSchema = z.object({
   timeline: z
     .enum(Object.keys(TIMELINE_LABELS) as [string, ...string[]])
     .optional(),
-  subject: singleLine(150).pipe(z.string().min(4)),
+  // Facultatif depuis le formulaire court : déduit de la prestation si absent
+  subject: singleLine(150).optional().default(""),
   message: z.string().trim().min(10).max(5000),
   // Champ piège invisible : rempli uniquement par les robots
   website: z.string().max(200).optional().default(""),
@@ -190,7 +191,10 @@ export async function POST(request: Request): Promise<Response> {
     return json(400, { success: false, error: "invalid_fields" });
   }
 
-  const data = parsed.data;
+  const data = {
+    ...parsed.data,
+    subject: parsed.data.subject || `Demande de contact — ${SERVICE_LABELS[parsed.data.serviceType]}`,
+  };
 
   // Robot détecté : on répond comme si tout s'était bien passé, sans rien envoyer
   if (data.website) {

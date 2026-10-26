@@ -13,7 +13,7 @@ const PoleBadge = ({ pole }: { pole: Project["pole"] }) => (
     )}
   >
     {pole === "web" ? <Smartphone className="w-3.5 h-3.5" /> : <Building2 className="w-3.5 h-3.5" />}
-    {pole === "web" ? "Web & Mobile" : "Architecture SI & MEGA HOPEX"}
+    {pole === "web" ? "Web & mobile" : "Architecture SI & MEGA HOPEX"}
   </span>
 );
 
@@ -22,9 +22,11 @@ interface ProjectCardProps {
   source?: string;
   /** Carte large en deux colonnes : défi → solution → résultat */
   featured?: boolean;
+  /** Carte horizontale (capture à gauche, texte à droite) pour les listes à une colonne */
+  wide?: boolean;
 }
 
-export const ProjectCard = ({ project, source = "projects_grid", featured = false }: ProjectCardProps) => {
+export const ProjectCard = ({ project, source = "projects_grid", featured = false, wide = false }: ProjectCardProps) => {
   const track = () => trackConversionEvent("click_case_study", { projectId: project.id, source });
 
   if (featured) {
@@ -47,10 +49,10 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
               className="relative"
             />
           )}
-          {project.metric && (
-            <div className="relative mt-5 inline-flex items-baseline gap-2 rounded-2xl bg-[#C7F36B] px-4 py-2.5 text-[#123A35] shadow-lg">
-              <span className="text-2xl font-black">{project.metric.value}</span>
-              <span className="text-sm font-bold">{project.metric.label}</span>
+          {project.highlight && (
+            <div className="relative mt-5 inline-flex flex-wrap items-baseline gap-x-2 rounded-2xl bg-[#C7F36B] px-4 py-2.5 text-[#123A35] shadow-lg">
+              <span className="text-lg sm:text-xl font-black">{project.highlight.value}</span>
+              <span className="text-sm font-bold">{project.highlight.label}</span>
             </div>
           )}
         </div>
@@ -102,6 +104,65 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
     );
   }
 
+  if (wide) {
+    return (
+      <Link
+        to={`/projets/${project.id}`}
+        onClick={track}
+        className="group grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] rounded-3xl overflow-hidden border border-border/80 bg-card shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+      >
+        <div className="relative p-5 sm:p-6 bg-gradient-to-br from-[#123A35] to-[#0b2320] flex items-center">
+          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[#C7F36B]/15 blur-3xl pointer-events-none" />
+          {project.image && (
+            <BrowserFrame
+              src={project.image}
+              alt={`Aperçu de ${project.client}`}
+              label={project.client}
+              illustrative={project.imageIllustrative}
+              bg={project.imageBg}
+              position={project.imagePosition}
+              className="relative w-full"
+            />
+          )}
+        </div>
+
+        <div className="p-6 sm:p-8 flex flex-col gap-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <PoleBadge pole={project.pole} />
+            <span className="text-xs font-semibold text-muted-foreground">{project.categoryLabel} · {project.period}</span>
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-sm font-extrabold text-primary">{project.client}</p>
+            <h3 className="text-xl sm:text-2xl font-extrabold leading-snug tracking-tight group-hover:text-primary transition-colors">
+              {project.headline}
+            </h3>
+          </div>
+          <ul className="space-y-2">
+            {project.results.slice(0, 3).map((result) => (
+              <li key={result} className="flex items-start gap-2.5 text-sm text-foreground/85">
+                <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0 text-emerald-600" />
+                {result}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-auto pt-4 border-t border-border/60 flex flex-wrap items-center justify-between gap-3">
+            {project.highlight ? (
+              <span className="inline-flex flex-wrap items-baseline gap-x-1.5 rounded-xl bg-[#C7F36B] px-3 py-1.5 text-[#123A35]">
+                <span className="text-sm font-black">{project.highlight.value}</span>
+                <span className="text-[11px] font-bold">{project.highlight.label}</span>
+              </span>
+            ) : (
+              <span />
+            )}
+            <span className="inline-flex items-center gap-1.5 text-sm font-extrabold text-primary group-hover:gap-2.5 transition-all">
+              Lire l'étude de cas <ArrowUpRight className="w-4 h-4" />
+            </span>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link
       to={`/projets/${project.id}`}
@@ -120,10 +181,10 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
             className="rounded-b-none border-b-0 translate-y-1"
           />
         )}
-        {project.metric && (
-          <span className="absolute bottom-4 left-8 inline-flex items-baseline gap-1.5 rounded-xl bg-[#C7F36B] px-3 py-1.5 text-[#123A35] shadow-lg">
-            <span className="text-base font-black">{project.metric.value}</span>
-            <span className="text-[11px] font-bold">{project.metric.label}</span>
+        {project.highlight && (
+          <span className="absolute bottom-4 left-8 right-8 inline-flex flex-wrap items-baseline gap-x-1.5 rounded-xl bg-[#C7F36B] px-3 py-1.5 text-[#123A35] shadow-lg w-fit max-w-[calc(100%-4rem)]">
+            <span className="text-sm font-black">{project.highlight.value}</span>
+            <span className="text-[11px] font-bold">{project.highlight.label}</span>
           </span>
         )}
       </div>

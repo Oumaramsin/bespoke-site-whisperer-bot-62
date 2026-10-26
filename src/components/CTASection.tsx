@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShieldCheck, Clock, MessageSquare, CheckCircle2, FileText } from "lucide-react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 
 interface CTASectionProps {
   title?: string;
@@ -14,20 +15,7 @@ export const CTASection = ({
   subtitle = "Réservez votre premier échange gratuit de 30 minutes sans aucun engagement pour discuter de vos besoins en langage clair.",
 }: CTASectionProps) => {
   const { ref, isVisible } = useScrollAnimation();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleBookingClick = () => {
-    trackConversionEvent("click_booking_calendly", { source: "cta_section" });
-    if (location.pathname === "/") {
-      const el = document.getElementById("reservation-calendrier");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-    }
-    navigate("/contact", { state: { scrollToBooking: true } });
-  };
+  const handleBookingClick = () => openBooking("cta_section");
 
   return (
     <section className="py-20 md:py-28 bg-gradient-to-r from-[#123A35]/10 via-background to-[#C7F36B]/15 border-y border-border/60 relative overflow-hidden">
@@ -60,7 +48,7 @@ export const CTASection = ({
             onClick={handleBookingClick}
             className="gap-3 px-7 py-6 text-base font-extrabold shadow-xl hover:scale-[1.03] transition-all rounded-2xl cursor-pointer"
           >
-            Réserver un échange de cadrage (30 min) <ArrowRight className="w-5 h-5" />
+            Réserver 30 min offertes <ArrowRight className="w-5 h-5" />
           </Button>
 
           <Button
@@ -79,7 +67,7 @@ export const CTASection = ({
               }
             >
               <FileText className="w-4 h-4 text-primary" />
-              Transmettre mon besoin par écrit
+              Décrire mon projet par écrit
             </Link>
           </Button>
         </div>

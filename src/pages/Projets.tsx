@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Calendar, FileText, Layers, ShieldCheck, Smartphone, Sparkles } from "lucide-react";
 import { PROJECTS_DATA } from "@/data/projects";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import SEO from "@/components/SEO";
 import ProjectCard from "@/components/projects/ProjectCard";
 import MethodSteps from "@/components/projects/MethodSteps";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 import { cn } from "@/lib/utils";
 
 type Filter = "all" | "web" | "si";
@@ -31,21 +32,17 @@ const FILTERS: { key: Filter; label: string; icon: typeof Layers }[] = [
 
 export const Projets = () => {
   const [filter, setFilter] = useState<Filter>("all");
-  const navigate = useNavigate();
 
   const projects = filter === "all" ? PROJECTS_DATA : PROJECTS_DATA.filter((p) => p.pole === filter);
   const [featured, ...others] = projects;
   const count = (pole: Filter) => (pole === "all" ? PROJECTS_DATA.length : PROJECTS_DATA.filter((p) => p.pole === pole).length);
 
-  const openBooking = (source: string) => {
-    trackConversionEvent("click_booking_calendly", { source });
-    navigate("/contact", { state: { scrollToBooking: true } });
-  };
+  const book = (source: string) => openBooking(source);
 
   return (
     <>
       <SEO
-        title="Réalisations & Études de Cas | RAMSIN Conseil"
+        title="Réalisations & études de cas | RAMSIN Conseil"
         description="Applications web & mobiles, boutiques en ligne et missions d'architecture SI : découvrez le défi de départ, la solution construite et le résultat obtenu pour chaque client RAMSIN."
         canonical="https://www.ramsin.fr/projets"
         jsonLd={PROJECTS_JSONLD}
@@ -158,8 +155,8 @@ export const Projets = () => {
               Racontez-le en 30 minutes : vous repartez avec un plan clair, sans engagement.
             </p>
           </div>
-          <Button variant="lime" size="lg" className="rounded-xl gap-2 shrink-0 cursor-pointer" onClick={() => openBooking("projects_mid")}>
-            <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+          <Button variant="lime" size="lg" className="rounded-xl gap-2 shrink-0 cursor-pointer" onClick={() => book("projects_mid")}>
+            <Calendar className="w-4 h-4" /> Réserver 30 min offertes
           </Button>
         </div>
       </div>
@@ -192,8 +189,8 @@ export const Projets = () => {
           Échange direct avec Oumar Sidibé, fondateur de RAMSIN. Réponse sous 24 h ouvrées si vous préférez écrire.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button variant="lime" size="lg" className="rounded-xl gap-2 px-7 cursor-pointer" onClick={() => openBooking("projects_footer")}>
-            <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes <ArrowRight className="w-4 h-4" />
+          <Button variant="lime" size="lg" className="rounded-xl gap-2 px-7 cursor-pointer" onClick={() => book("projects_footer")}>
+            <Calendar className="w-4 h-4" /> Réserver 30 min offertes <ArrowRight className="w-4 h-4" />
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-xl gap-2 px-7">
             <Link to="/contact?tunnel=form">

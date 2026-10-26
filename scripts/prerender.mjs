@@ -65,6 +65,9 @@ const writePage = async (route, file, { html, head }) => {
   console.log(`prerender  ${route.padEnd(36)} → ${path.relative(root, file)}`);
 };
 
+// URL indexables (robots « index ») : elles forment le sitemap, généré au build pour ne jamais diverger des routes
+const sitemapUrls = [];
+
 for (const route of PRERENDER_ROUTES) {
   const result = await render(route);
 
@@ -75,7 +78,18 @@ for (const route of PRERENDER_ROUTES) {
   }
 
   await writePage(route, path.join(distDir, route === "/" ? "" : route.slice(1), "index.html"), result);
+  if (result.seo.robots.startsWith("index")) sitemapUrls.push(expectedCanonical);
 }
+
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`),
+  "</urlset>",
+  "",
+].join("\n");
+await fs.writeFile(path.join(distDir, "sitemap.xml"), sitemap);
+console.log(`sitemap    ${String(sitemapUrls.length).padEnd(36)} → dist/sitemap.xml`);
 
 // Page 404 : Vercel sert dist/404.html, avec le statut 404, pour toute URL sans fichier correspondant.
 // Rendue sur une URL inexistante (route "*" → NotFound) ; le client l'hydrate quelle que soit l'URL demandée.

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Calendar, ArrowRight, X } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { openBooking } from "@/lib/calendly";
 
+/** Bouton flottant (après un premier défilement) : ouvre la fenêtre de réservation, sans changer de page */
 export const MobileStickyCTA = () => {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,18 +22,6 @@ export const MobileStickyCTA = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [dismissed]);
 
-  const handleReservationClick = () => {
-    if (location.pathname === "/") {
-      const el = document.getElementById("reservation-calendrier");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-    }
-    // Navigation React Router SPA instantanée sans rechargement ni # dans l'URL
-    navigate("/contact", { state: { scrollToBooking: true } });
-  };
-
   // Ne pas afficher si le visiteur est déjà sur la page Contact ou a fermé le bouton
   if (!visible || dismissed || location.pathname === "/contact") return null;
 
@@ -46,12 +35,12 @@ export const MobileStickyCTA = () => {
         </span>
 
         <button
-          onClick={handleReservationClick}
+          onClick={() => openBooking("sticky_mobile")}
           className="flex items-center gap-2.5 text-xs sm:text-sm font-extrabold pr-1 text-white tracking-tight cursor-pointer"
         >
           <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[#C7F36B] shrink-0 group-hover:scale-110 transition-transform" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-[#C7F36B]">
-            Session 30 min Offerte
+            Réserver 30 min offertes
           </span>
           <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C7F36B] group-hover:translate-x-1 transition-transform" />
         </button>

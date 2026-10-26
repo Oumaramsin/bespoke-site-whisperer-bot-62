@@ -5,14 +5,19 @@ import { renderToPipeableStream } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import App from "./App";
 import { PROJECTS_DATA } from "./data/projects";
+import { OFFER_LINKS } from "./data/offerRoutes";
+import { GUIDES } from "./data/guides";
 import { renderSeoHead, SeoCollectorContext, SITE_URL, type ResolvedSeo, type SeoCollector } from "./lib/seo";
 
 /** Routes servies en HTML statique ; les autres URL reçoivent dist/404.html (statut 404), sauf redirections de vercel.json. */
 export const PRERENDER_ROUTES = [
   "/",
   "/services",
+  ...OFFER_LINKS.map((offer) => offer.path),
   "/projets",
   ...PROJECTS_DATA.map((project) => `/projets/${project.id}`),
+  "/guides",
+  ...GUIDES.map((guide) => `/guides/${guide.slug}`),
   "/a-propos",
   "/contact",
   "/mentions-legales",

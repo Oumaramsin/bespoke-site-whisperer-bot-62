@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,6 +30,7 @@ import CTASection from "@/components/CTASection";
 import PoleProjects from "@/components/projects/PoleProjects";
 import ServicesFaq from "@/components/services/ServicesFaq";
 import { WEB_FAQ } from "@/data/services";
+import { offerPath, type OfferId } from "@/data/offerRoutes";
 
 const SERVICES_JSONLD = [
   {
@@ -63,12 +64,12 @@ const SERVICES_JSONLD = [
   },
 ];
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 
 type ServicePole = "si" | "web";
 
 export const Services = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   // Initialisation du pôle selon l'URL (?pole=si ou ?pole=web, défaut : web)
   const poleParam = searchParams.get("pole");
@@ -89,10 +90,7 @@ export const Services = () => {
     window.scrollTo({ top: 320, behavior: "smooth" });
   };
 
-  const handleBookingRedirect = () => {
-    trackConversionEvent("click_booking_calendly", { source: "services_page" });
-    navigate("/contact", { state: { scrollToBooking: true } });
-  };
+  const handleBookingRedirect = () => openBooking("services_page");
 
   return (
     <>
@@ -112,16 +110,17 @@ export const Services = () => {
 
         <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux Pôles d'Excellence Dédiés
+            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux parcours, un interlocuteur
           </Badge>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
-            Des Expertises Spécialisées.
-            <span className="block gradient-text mt-2 pb-2">Des Livrables Clairs & Tangibles.</span>
+            Applications web & mobiles sur-mesure,
+            <span className="block gradient-text mt-2 pb-2">et architecture SI pour les DSI.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed">
-            Pour répondre précisément à vos enjeux, RAMSIN structure ses prestations autour de deux parcours indépendants. Choisissez le domaine correspondant à votre besoin :
+            Créateurs, indépendants et entreprises : nous concevons votre application ou votre site et vous en cédons l'intégralité.
+            Directions informatiques : cartographie, urbanisation et MEGA HOPEX V5. Choisissez votre parcours :
           </p>
 
           {/* SÉLECTEUR DE PÔLE COMMERCIAL (SWITCHER CLÉ : Web à Gauche par Défaut) */}
@@ -136,9 +135,9 @@ export const Services = () => {
                 }`}
               >
                 <Smartphone className="w-5 h-5 shrink-0" />
-                <span>Web & Applications Sur-Mesure</span>
+                <span>Web & applications sur-mesure</span>
                 <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
-                  Porteurs de Projet & Entreprises
+                  Porteurs de projet & entreprises
                 </span>
               </button>
 
@@ -194,10 +193,10 @@ export const Services = () => {
                 </div>
                 <div className="pt-3 flex flex-wrap gap-3">
                   <Button variant="lime" className="rounded-xl gap-2 cursor-pointer" onClick={handleBookingRedirect}>
-                    <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+                    <Calendar className="w-4 h-4" /> Réserver 30 min offertes
                   </Button>
                   <Button asChild variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
-                    <Link to="/contact?tunnel=form&service=web">Décrire mon besoin par écrit</Link>
+                    <Link to="/contact?tunnel=form&service=web">Décrire mon projet par écrit</Link>
                   </Button>
                 </div>
               </div>
@@ -208,7 +207,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Quels Types de Projets Réalisons-Nous ?
+                Ce que nous réalisons
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Des solutions techniques modernes, fiables et adaptées à vos objectifs commerciaux.
@@ -220,9 +219,10 @@ export const Services = () => {
                 {
                   icon: Code2,
                   badge: "Web & SaaS",
-                  title: "Applications Web & Outils Métiers",
+                  title: "Applications web & outils métiers",
                   desc: "Portails clients, tableaux de bord de gestion, logiciels SaaS internes et espaces membres interactifs.",
                   stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
+                  offer: "application-web" as OfferId | undefined,
                   features: [
                     "Authentification sécurisée (JWT, rôles)",
                     "Automatisation de flux métiers & exports",
@@ -232,9 +232,10 @@ export const Services = () => {
                 {
                   icon: Smartphone,
                   badge: "iOS & Android",
-                  title: "Applications Mobiles Cross-Platform",
+                  title: "Applications mobiles iOS & Android",
                   desc: "Applications natives rapides et intuitives pour smartphones et tablettes, publiées sur l'App Store et Google Play.",
                   stack: "React Native, Expo, Notifications Push, Caméra",
+                  offer: "application-mobile" as OfferId | undefined,
                   features: [
                     "Une seule base de code pour iOS & Android",
                     "Expérience utilisateur fluide à 60 FPS",
@@ -243,10 +244,11 @@ export const Services = () => {
                 },
                 {
                   icon: Sparkles,
-                  badge: "Haute Conversion",
-                  title: "Sites Web & E-Commerce Premium",
+                  badge: "Haute conversion",
+                  title: "Sites web & e-commerce",
                   desc: "Sites vitrines d'autorité et boutiques e-commerce conçus pour convertir vos visiteurs en demandes qualifiées.",
                   stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
+                  offer: "site-ecommerce" as OfferId | undefined,
                   features: [
                     "Temps de chargement instantanés (Core Web Vitals)",
                     "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
@@ -256,9 +258,10 @@ export const Services = () => {
                 {
                   icon: Server,
                   badge: "Après lancement",
-                  title: "Hébergement, Maintenance & Évolutions",
+                  title: "Hébergement, maintenance & évolutions",
                   desc: "Après la mise en ligne, nous gardons votre site ou votre application en ligne, sécurisé et à jour, pour que vous restiez concentré sur votre activité.",
                   stack: "Vercel, AWS, Cloudflare, VPS",
+                  offer: undefined as OfferId | undefined,
                   features: [
                     "Hébergement, nom de domaine & certificat SSL",
                     "Mises à jour, correctifs de sécurité & sauvegardes",
@@ -303,6 +306,14 @@ export const Services = () => {
                       <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
                         <strong>Stack :</strong> {proj.stack}
                       </div>
+                      {proj.offer && (
+                        <Link
+                          to={offerPath(proj.offer)}
+                          className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 hover:text-emerald-900 transition-colors"
+                        >
+                          Voir la prestation en détail <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      )}
                     </CardContent>
                   </Card>
                 );
@@ -317,7 +328,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Notre Méthode de Projet en 5 Étapes Transparentes
+                Notre méthode en 5 étapes
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Vous savez exactement où en est votre projet, sans mauvaise surprise ni retard imprévu.
@@ -343,12 +354,12 @@ export const Services = () => {
                 },
                 {
                   step: "04",
-                  title: "Recette & Tests",
+                  title: "Recette & tests",
                   desc: "Vérification sur tous les appareils, audits de performance et sécurité.",
                 },
                 {
                   step: "05",
-                  title: "Livraison & Code",
+                  title: "Livraison & code",
                   desc: "Mise en ligne, remise du code source et formation vidéo à l'administration.",
                 },
               ].map((step, i) => (
@@ -367,7 +378,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Nos 4 Engagements Contractuels & Déontologiques
+                Nos 4 engagements contractuels
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Les engagements concrets et vérifiables qui protègent votre investissement.
@@ -378,22 +389,22 @@ export const Services = () => {
               {[
                 {
                   icon: Lock,
-                  title: "Pleine Propriété du Code",
+                  title: "Pleine propriété du code",
                   desc: "Vous êtes propriétaire de votre projet, avec cession contractuelle 100% du code source et accès complets à vos comptes d'hébergement.",
                 },
                 {
                   icon: ShieldCheck,
-                  title: "Garantie 30 Jours Incluse",
+                  title: "Garantie 30 jours incluse",
                   desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la livraison est pris en charge et résolu en priorité sans frais.",
                 },
                 {
                   icon: Compass,
-                  title: "Hébergement au Choix",
+                  title: "Hébergement au choix",
                   desc: "Déploiement sur votre infrastructure ou nos serveurs haute disponibilité (Vercel, AWS, Cloudflare, VPS).",
                 },
                 {
                   icon: Clock,
-                  title: "Délais & Tarifs Forfaitaires",
+                  title: "Délais & tarifs forfaitaires",
                   desc: "Un devis clair, un budget ferme et un planning d'exécution validé ensemble dès le départ.",
                 },
               ].map((g, i) => {
@@ -425,22 +436,21 @@ export const Services = () => {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                 <Button
-                  asChild
+                  onClick={handleBookingRedirect}
                   size="lg"
-                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg cursor-pointer"
                 >
-                  <Link to="/contact?service=web">
-                    Décrire mon projet web ou mobile <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  <Calendar className="w-4 h-4" /> Réserver 30 min offertes
                 </Button>
                 <Button
-                  onClick={handleBookingRedirect}
+                  asChild
                   variant="outline"
                   size="lg"
                   className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
                 >
-                  <Calendar className="w-4 h-4 text-emerald-600" />
-                  Réserver un cadrage de 30 min (Gratuit)
+                  <Link to="/contact?tunnel=form&service=web">
+                    Décrire mon projet par écrit <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -482,10 +492,10 @@ export const Services = () => {
                 </div>
                 <div className="pt-3 flex flex-wrap gap-3">
                   <Button variant="lime" className="rounded-xl gap-2 cursor-pointer" onClick={handleBookingRedirect}>
-                    <Calendar className="w-4 h-4" /> Réserver mes 30 min offertes
+                    <Calendar className="w-4 h-4" /> Réserver 30 min offertes
                   </Button>
                   <Button asChild variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
-                    <Link to="/contact?tunnel=form&service=si">Décrire mon besoin par écrit</Link>
+                    <Link to="/contact?tunnel=form&service=si">Décrire mon projet par écrit</Link>
                   </Button>
                 </div>
               </div>
@@ -496,7 +506,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Les Défis d'Architecture SI que Nous Résolvons
+                Les défis d'architecture SI que nous résolvons
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Une intervention ciblée sur les véritables points de friction des directions informatiques.
@@ -553,7 +563,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Nos Prestations d'Architecture SI & Livrables Concrets
+                Nos prestations d'architecture SI et leurs livrables
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Chaque mission débouche sur des livrables tangibles, vérifiables et immédiatement exploitables par vos équipes.
@@ -564,7 +574,7 @@ export const Services = () => {
               {[
                 {
                   icon: Layers,
-                  title: "Cartographie & Urbanisation du SI",
+                  title: "Cartographie & urbanisation du SI",
                   scope: "Recensement exhaustif des briques logicielles, cartographie des flux d'échanges, découpage en zones fonctionnelles et urbanisation globale.",
                   deliverables: [
                     "Cartographie applicative interactive (Niveaux Fonctionnel, Applicatif, Technique)",
@@ -574,7 +584,7 @@ export const Services = () => {
                 },
                 {
                   icon: Database,
-                  title: "Administration & Configuration MEGA HOPEX",
+                  title: "Administration & configuration MEGA HOPEX",
                   scope: "Paramétrage expert de la plateforme MEGA HOPEX V5 / V2R1, modélisation des référentiels, automatisation par scripts et gouvernance des données.",
                   deliverables: [
                     "Métamodèle personnalisé et référentiel nettoyé",
@@ -584,17 +594,17 @@ export const Services = () => {
                 },
                 {
                   icon: FileText,
-                  title: "Dossiers d'Architecture Technique (DAT)",
+                  title: "Dossiers d'architecture technique (DAT)",
                   scope: "Cadrage d'architecture de vos projets majeurs, identification des contraintes de sécurité, dimensionnement et passage en comité d'architecture.",
                   deliverables: [
-                    "Dossiers d'Architecture Technique (DAT) complets et validés",
+                    "Dossiers d'architecture technique (DAT) complets et validés",
                     "Matrices d'impact technique et d'évaluation des risques",
                     "Trajectoire cible (état actuel 'As-Is' vers cible 'To-Be')",
                   ],
                 },
                 {
                   icon: Workflow,
-                  title: "Product Ownership SI & Conduite du Changement",
+                  title: "Product ownership SI & conduite du changement",
                   scope: "Rapprochement des équipes métiers et informatiques, formalisation des besoins, rédaction de spécifications fonctionnelles et animation des rituels.",
                   deliverables: [
                     "Backlog produit priorisé et User Stories détaillées",
@@ -642,7 +652,7 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Comment se déroule une Mission d'Architecture avec RAMSIN ?
+                Comment se déroule une mission d'architecture avec RAMSIN ?
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
                 Une démarche cadrée, collaborative et transparente du premier échange à la restitution finale.
@@ -653,22 +663,22 @@ export const Services = () => {
               {[
                 {
                   step: "01",
-                  title: "Cadrage & Diagnostic",
+                  title: "Cadrage & diagnostic",
                   desc: "Échange avec les parties prenantes, analyse de l'existant documentaire et fixation du périmètre d'intervention.",
                 },
                 {
                   step: "02",
-                  title: "Modélisation & Analyse",
+                  title: "Modélisation & analyse",
                   desc: "Travail dans le référentiel, entretiens techniques, identification des flux et formalisation de l'architecture.",
                 },
                 {
                   step: "03",
-                  title: "Restitution & Validation",
+                  title: "Restitution & validation",
                   desc: "Présentation des livrables en comités d'architecture, confrontation aux contraintes opérationnelles et validation.",
                 },
                 {
                   step: "04",
-                  title: "Transfert d'Autonomie",
+                  title: "Transfert d'autonomie",
                   desc: "Documentation remise, ateliers de prise en main avec vos architectes internes et support de transition.",
                 },
               ].map((step, i) => (
@@ -687,29 +697,28 @@ export const Services = () => {
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="p-8 sm:p-10 rounded-3xl bg-secondary/50 border-2 border-[#123A35]/30 text-center space-y-6">
               <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Vous avez une mission d'Architecture SI ou un besoin MEGA HOPEX ?
+                Une mission d'architecture SI ou un besoin MEGA HOPEX ?
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Discutons de vos enjeux applicatifs, de vos échéances et des modalités d'intervention (régie ou forfait) lors d'un premier échange technique de 30 minutes.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                 <Button
-                  asChild
+                  onClick={handleBookingRedirect}
                   size="lg"
-                  className="bg-[#123A35] hover:bg-[#0c2724] text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg"
+                  className="bg-[#123A35] hover:bg-[#0c2724] text-white font-bold rounded-xl px-8 py-6 text-base gap-2 shadow-lg cursor-pointer"
                 >
-                  <Link to="/contact?service=si">
-                    Échanger sur une mission d'architecture SI <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  <Calendar className="w-4 h-4" /> Réserver 30 min offertes
                 </Button>
                 <Button
-                  onClick={handleBookingRedirect}
+                  asChild
                   variant="outline"
                   size="lg"
                   className="rounded-xl px-8 py-6 text-base font-semibold border-border/80 hover:bg-secondary gap-2"
                 >
-                  <Calendar className="w-4 h-4 text-[#123A35]" />
-                  Réserver un créneau de 30 min (Gratuit)
+                  <Link to="/contact?tunnel=form&service=si">
+                    Décrire mon projet par écrit <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </Button>
               </div>
             </div>

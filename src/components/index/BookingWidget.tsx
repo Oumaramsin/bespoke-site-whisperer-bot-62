@@ -5,17 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Calendar as CalendarIcon, Clock, ShieldCheck, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
-import { calendlyUtmParams } from "@/lib/attribution";
-
-const CALENDLY_URL =
-  "https://calendly.com/contact-ramsin/30min?hide_landing_page_details=1&hide_gdpr_banner=1&primary_color=123a35&locale=fr";
-const CALENDLY_SCRIPT = "https://assets.calendly.com/assets/external/widget.js";
-
-declare global {
-  interface Window {
-    Calendly?: { initInlineWidget: (options: { url: string; parentElement: HTMLElement }) => void };
-  }
-}
+import { CALENDLY_PAGE_URL, mountCalendly } from "@/lib/calendly";
 
 /**
  * Agenda Calendly chargé à la demande : il pèse ~3 Mo (scripts, Stripe, cookies tiers).
@@ -60,48 +50,22 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
     };
   }, [open]);
 
-  // Chargement du script officiel puis initialisation de l'agenda
+  // Chargement du script officiel puis initialisation de l'agenda (provenance utm_* incluse, voir lib/calendly).
+  // Les rendez-vous confirmés sont suivis une seule fois pour tout le site, dans BookingDialog.
   useEffect(() => {
     if (!open || !calendarRef.current) return;
-    const parentElement = calendarRef.current;
-    // La provenance (Google Ads, autre site, direct…) est enregistrée par Calendly avec le rendez-vous
-    const url = `${CALENDLY_URL}&${calendlyUtmParams()}`;
-    const init = () => window.Calendly?.initInlineWidget({ url, parentElement });
-    if (window.Calendly) {
-      init();
-      return;
-    }
-    let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT}"]`);
-    if (!script) {
-      script = document.createElement("script");
-      script.src = CALENDLY_SCRIPT;
-      script.async = true;
-      document.head.appendChild(script);
-    }
-    script.addEventListener("load", init, { once: true });
-    return () => script?.removeEventListener("load", init);
+    mountCalendly(calendarRef.current).catch(() => undefined);
   }, [open]);
-
-  // Suivi des rendez-vous confirmés
-  useEffect(() => {
-    const handleCalendlyMessage = (e: MessageEvent) => {
-      if (e.data?.event === "calendly.event_scheduled") {
-        trackConversionEvent("schedule_meeting_calendly", { serviceType: "calendly_30min" });
-      }
-    };
-    window.addEventListener("message", handleCalendlyMessage);
-    return () => window.removeEventListener("message", handleCalendlyMessage);
-  }, []);
 
   return (
     <section ref={sectionRef} id="reservation-calendrier" className="pt-0 pb-2 bg-gradient-to-b from-background via-primary/5 to-background border-t border-border/60">
       <div className="container mx-auto px-4">
         <div ref={widgetRef} className={`max-w-4xl mx-auto text-center mb-2 space-y-1 scroll-fade-up ${widgetVisible ? "is-visible" : ""}`}>
           <Badge variant="outline" className="px-2.5 py-0 text-[11px] border-primary/30 text-primary font-semibold">
-            <CalendarIcon className="w-3 h-3 mr-1 inline" /> Prise de Rendez-vous en Ligne
+            <CalendarIcon className="w-3 h-3 mr-1 inline" /> Prise de rendez-vous en ligne
           </Badge>
           <h2 className="text-xl md:text-3xl font-extrabold tracking-tight">
-            Session de Cadrage Offerte (30 Min)
+            Réservez vos 30 minutes offertes
           </h2>
           <p className="text-muted-foreground text-xs sm:text-sm max-w-2xl mx-auto">
             Choisissez le créneau qui vous convient. Échange direct avec votre interlocuteur technique, sans engagement commercial et sans jargon.
@@ -111,7 +75,7 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
         <Card className="max-w-4xl mx-auto border-2 border-primary/30 shadow-xl bg-card glass-card overflow-hidden">
           <CardHeader className="text-center border-b border-border/60 pb-2 pt-2.5 bg-muted/20">
             <CardTitle className="text-base sm:text-lg font-bold flex items-center justify-center gap-2">
-              <Clock className="w-4 h-4 text-primary" /> Session de Cadrage Offerte (30 min)
+              <Clock className="w-4 h-4 text-primary" /> Choisissez votre créneau
             </CardTitle>
             <CardDescription className="text-xs text-muted-foreground mt-0.5 max-w-xl mx-auto">
               Échangez directement avec RAMSIN Conseil sur vos besoins web, applicatifs ou d'architecture SI.
@@ -158,7 +122,7 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
             <div className="py-2.5 px-4 bg-muted/30 border-t border-border/60 text-center text-xs text-muted-foreground flex flex-wrap items-center justify-center gap-2">
               <span>Un souci de chargement du calendrier ?</span>
               <a
-                href="https://calendly.com/contact-ramsin/30min"
+                href={CALENDLY_PAGE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackConversionEvent("click_booking_calendly", { destination: "external" })}

@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 
 /* ──────────────────────────────────────────────────────────
    LECTEUR VIDÉO DE PRÉSENTATION RAMSIN (Master 1080p)
@@ -55,7 +56,7 @@ const VALUE_PILLARS = [
   },
   {
     icon: Code2,
-    title: "4. 100 % propriétaire & Hébergement inclus",
+    title: "4. 100 % propriétaire & hébergement inclus",
     text: "Tout vous appartient à 100 % et RAMSIN assure l'hébergement ainsi que la maintenance technique.",
   },
 ];
@@ -326,7 +327,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider mb-1">
               <Sparkles className="w-3 h-3 text-[#C7F36B]" /> Présentation en vidéo ({fmt(duration)})
             </div>
-            <h3 className="text-lg sm:text-3xl font-black text-white tracking-tight leading-snug">
+            <h3 className="hidden sm:block text-3xl font-black text-white tracking-tight leading-snug">
               Vous avez un projet web ou mobile ?
               <span className="block text-[#C7F36B]">Découvrez la méthode RAMSIN en images.</span>
             </h3>
@@ -339,35 +340,34 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
 
       {/* ── Overlay Écran de Fin (Ended) ── */}
       {status === "ended" && (
-        <div className="absolute inset-0 z-30 bg-[#051412]/95 backdrop-blur-md flex flex-col items-center justify-center gap-4 sm:gap-6 p-6 sm:p-8 text-center animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-xs font-bold font-mono uppercase tracking-wider">
+        <div className="absolute inset-0 z-30 bg-[#051412]/95 backdrop-blur-md flex flex-col items-center justify-center gap-3 sm:gap-6 p-4 sm:p-8 text-center animate-fade-in">
+          <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-xs font-bold font-mono uppercase tracking-wider">
             <Check className="w-3.5 h-3.5" /> Du premier échange au produit en production
           </div>
 
-          <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight max-w-lg">
+          <h3 className="text-base sm:text-4xl font-black text-white tracking-tight max-w-lg leading-snug sm:leading-tight">
             Donnez vie à votre projet dès aujourd'hui.
           </h3>
 
-          <p className="text-xs sm:text-sm text-slate-300 max-w-md leading-relaxed">
+          <p className="hidden sm:block text-sm text-slate-300 max-w-md leading-relaxed">
             30 minutes offertes avec <strong>Oumar Sidibé</strong> pour clarifier votre besoin, définir vos priorités et structurer votre projet, sans aucun engagement.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full max-w-md justify-center">
-            <Button asChild variant="lime" size="lg" className="w-full sm:w-auto gap-2 font-black text-xs sm:text-sm px-6 py-4 rounded-xl shadow-xl hover:scale-105 transition-all">
-              <Link
-                to="/contact?tunnel=booking#reservation-calendrier"
-                state={{ scrollToBooking: true }}
-                onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_end" })}
-              >
-                <Calendar className="w-4 h-4" /> Réserver mon échange offert (30 min)
-              </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 sm:pt-2 w-full max-w-md justify-center">
+            <Button
+              variant="lime"
+              size="lg"
+              onClick={() => openBooking("method_motion_end")}
+              className="w-full sm:w-auto gap-2 font-black text-xs sm:text-sm px-6 py-4 rounded-xl shadow-xl hover:scale-105 transition-all cursor-pointer"
+            >
+              <Calendar className="w-4 h-4" /> Réserver 30 min offertes
             </Button>
 
             <Button
               variant="outline"
               size="lg"
               onClick={handlePlay}
-              className="w-full sm:w-auto gap-2 text-white border-white/30 bg-white/5 hover:bg-white/15 font-semibold text-xs py-4 rounded-xl"
+              className="w-full sm:w-auto h-9 sm:h-11 gap-2 text-white border-white/30 bg-white/5 hover:bg-white/15 font-semibold text-xs py-2 sm:py-4 rounded-xl"
             >
               <RotateCcw className="w-4 h-4" /> Revoir la vidéo
             </Button>
@@ -569,14 +569,13 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
         {/* Call to action de contact */}
         <div className="mt-8 text-center max-w-xl mx-auto space-y-3">
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button asChild size="lg" variant="lime" className="gap-2 font-black px-7 shadow-lg hover:scale-105 transition-all">
-              <Link
-                to="/contact?tunnel=booking#reservation-calendrier"
-                state={{ scrollToBooking: true }}
-                onClick={() => trackConversionEvent("click_booking_calendly", { source: "method_motion_hero" })}
-              >
-                <Calendar className="w-4 h-4" /> Parler de mon idée avec Oumar Sidibé (30 min)
-              </Link>
+            <Button
+              size="lg"
+              variant="lime"
+              onClick={() => openBooking("method_motion_hero")}
+              className="gap-2 font-black px-7 shadow-lg hover:scale-105 transition-all cursor-pointer"
+            >
+              <Calendar className="w-4 h-4" /> Réserver 30 min offertes
             </Button>
             <Button asChild variant="outline" size="lg" className="font-semibold text-xs">
               <Link

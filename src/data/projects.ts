@@ -20,7 +20,8 @@ export interface Project {
   featured?: boolean;
   logo?: string;
   image?: string;
-  metric?: {
+  /** Fait vérifiable mis en avant sur la carte (ce qui a été livré), jamais un résultat chiffré que l'on ne peut pas prouver */
+  highlight?: {
     value: string;
     label: string;
   };
@@ -47,7 +48,7 @@ export const PROJECTS_DATA: Project[] = [
     client: "Dabari",
     headline: "Une marketplace web & mobile qui sécurise les commandes de la diaspora",
     results: [
-      "-80 % de litiges de commande",
+      "Application web, iOS et Android livrées",
       "Devis calculés automatiquement en temps réel",
       "Suivi des envois GP en 5 étapes",
     ],
@@ -56,20 +57,20 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "Dabari Marketplace",
     period: "2024 - 2026",
     category: "fullstack",
-    categoryLabel: "Plateforme Web & Mobile",
+    categoryLabel: "Plateforme web & mobile",
     pole: "web",
     summary: "Conception intégrale d'une marketplace web & mobile connectant la diaspora africaine aux traiteurs de proximité et au transport collaboratif GP.",
     context: "Digitaliser et sécuriser les commandes de restauration africaine authentique et les envois de bagages internationaux vers l'Afrique de l'Ouest.",
     problem: "Prise de commande informelle par réseaux sociaux entraînant des erreurs récurrentes, des retards d'expédition et une absence totale de traçabilité.",
     ramsinRole: "Lead Développeur Full-Stack & Architecte Solution (Cadrage, UI/UX, Backend Express, Frontend Next.js 15 et Mobile React Native Expo).",
     solution: "Plateforme tout-en-un avec devis automatisés, validation d'adresses, timeline de suivi en 5 étapes et paiements Stripe sécurisés.",
-    impact: "Sécurisation des paiements, génération instantanée de devis et gain de temps substantiel sur la gestion manuelle des commandes.",
+    impact: "Paiements sécurisés, devis générés instantanément et gestion des commandes centralisée, sans échanges manuels.",
     shortProblem: "Commandes et devis gérés par messagerie informelle sans traçabilité ni paiement sécurisé.",
     shortSolution: "Marketplace Next.js 15 & application mobile Expo avec calcul de devis temps réel et Stripe.",
-    shortImpact: "-80 % de litiges de commande, suivi GP en 5 étapes et environ 6 h de gestion manuelle gagnées par semaine.",
-    metric: {
-      value: "-80%",
-      label: "de litiges de commande"
+    shortImpact: "Paiements sécurisés, devis calculés automatiquement et suivi des envois GP en 5 étapes.",
+    highlight: {
+      value: "Web, iOS & Android",
+      label: "livrés, code cédé"
     },
     targetAudience: "Diaspora Africaine, Traiteurs Indépendants, Voyageurs GP",
     deliverables: [
@@ -103,7 +104,7 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "Maison HamdiWaShukri",
     period: "2024 - 2025",
     category: "fullstack",
-    categoryLabel: "E-Commerce Sur-Mesure",
+    categoryLabel: "E-commerce sur-mesure",
     pole: "web",
     summary: "Création d'une boutique e-commerce haut de gamme d'artisanat traditionnel avec configurateur de mensurations sur-mesure et double passerelle de paiement.",
     context: "Digitaliser les ventes d'une maison d'artisanat d'art à destination d'une clientèle internationale exigeante.",
@@ -113,10 +114,10 @@ export const PROJECTS_DATA: Project[] = [
     impact: "Automatisation du calcul des mensurations d'atelier, suppression des échanges manuels par messagerie et simplification du parcours d'achat international.",
     shortProblem: "Prise de mensurations manuelle par chat avec risque élevé d'erreurs de coupe à l'atelier.",
     shortSolution: "Configurateur interactif de mensurations, boutique Next.js 15 luxe et paiement Stripe / PayPal.",
-    shortImpact: "100% des mensurations calculées sans friction et expansion des commandes à l'international.",
-    metric: {
-      value: "100%",
-      label: "mensurations automatisées"
+    shortImpact: "100 % des mensurations calculées automatiquement et un parcours d'achat simplifié pour la clientèle internationale.",
+    highlight: {
+      value: "Mensurations",
+      label: "calculées automatiquement"
     },
     targetAudience: "Clients B2C Luxe, Artisans Couturiers, Gestionnaires",
     deliverables: [
@@ -140,7 +141,7 @@ export const PROJECTS_DATA: Project[] = [
     client: "L'Éclat du Chef",
     headline: "Un site vitrine qui transforme les visiteurs en demandes qualifiées",
     results: [
-      "x3 demandes de devis pré-qualifiées",
+      "Site vitrine rapide, optimisé mobile",
       "Demandes complètes (date, convives, menu) reçues par email",
       "Référencement local en Île-de-France",
     ],
@@ -150,20 +151,20 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "L'Éclat du Chef (Île-de-France)",
     period: "2024",
     category: "ecommerce-web",
-    categoryLabel: "Site Vitrine & Devis Express",
+    categoryLabel: "Site vitrine & devis express",
     pole: "web",
     summary: "Conception et mise en ligne du site vitrine d'un traiteur événementiel haut de gamme (mariages, séminaires, buffets d'entreprise).",
     context: "Professionnaliser l'image de marque et automatiser la réception des demandes de devis d'événements privés et corporatifs.",
     problem: "Site vieillissant et non adapté aux smartphones, entraînant la perte de prospects qualifiés et une surcharge d'appels téléphoniques.",
     ramsinRole: "Concepteur & Développeur Web (Refonte graphique, intégration SEO locale et formulaire de devis dynamique).",
     solution: "Site vitrine moderne Noir & Or avec consultation des menus, galerie photos haute résolution et simulateur de devis connecté directement à l'email du chef.",
-    impact: "Réception de demandes de devis complètes et pré-qualifiées directement par email, éliminant les pertes de contacts de l'ancien site.",
+    impact: "Réception de demandes de devis complètes et pré-qualifiées directement par e-mail, sans ressaisie ni relance.",
     shortProblem: "Site obsolète sur mobile et absence de tunnel de pré-qualification pour les devis traiteur.",
     shortSolution: "Site vitrine haute conversion Noir & Or avec simulateur d'estimation et envoi d'email instantané.",
     shortImpact: "Demandes de devis 100% complètes (date, convives, menu) reçues directement par email.",
-    metric: {
-      value: "x3",
-      label: "devis pré-qualifiés reçus"
+    highlight: {
+      value: "Devis qualifiés",
+      label: "reçus directement par e-mail"
     },
     targetAudience: "Entreprises, Organisateurs de Mariages, Particuliers",
     deliverables: [
@@ -198,7 +199,7 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "COVEA (MAAF, MMA, GMF)",
     period: "Juin 2023 - Présent",
     category: "mega-hopex",
-    categoryLabel: "Cartographie & Gouvernance SI",
+    categoryLabel: "Cartographie & gouvernance SI",
     pole: "si",
     summary: "Pilotage et fiabilisation de la cartographie du Système d'Information transverse sur la plateforme MEGA HOPEX V5 au sein d'un grand groupe d'assurance.",
     context: "La DSI du groupe Covéa gère un patrimoine de plusieurs centaines d'applications métiers critiques pour les marques MAAF, MMA et GMF.",
@@ -209,8 +210,8 @@ export const PROJECTS_DATA: Project[] = [
     shortProblem: "Patrimoine de centaines d'applications avec doublons logiciels et flux inter-applicatifs non tracés.",
     shortSolution: "Gouvernance et cartographie applicative sous MEGA HOPEX V5 avec contrôle qualité hebdomadaire.",
     shortImpact: "Cartographies fiabilisées, arbitrage d'architecture éclairé et flux redondants assainis.",
-    metric: {
-      value: "100%",
+    highlight: {
+      value: "HOPEX V5",
       label: "référentiel fiabilisé"
     },
     deliverables: [
@@ -245,7 +246,7 @@ export const PROJECTS_DATA: Project[] = [
     clientCompany: "La Banque Postale (via Marte)",
     period: "Septembre 2022 - Mai 2023",
     category: "architecture-si",
-    categoryLabel: "Architecture Solution & DAT",
+    categoryLabel: "Architecture solution & DAT",
     pole: "si",
     summary: "Cadrage d'architecture applicative et technique pour les projets de transformation digitale du Crédit Immobilier au sein d'un SI bancaire régulé.",
     context: "Moderniser le parcours d'octroi de crédit immobilier pour les particuliers tout en respectant les normes strictes de conformité bancaire et de sécurité.",
@@ -256,9 +257,9 @@ export const PROJECTS_DATA: Project[] = [
     shortProblem: "Interfaçage complexe avec le SI bancaire legacy et risques d'arbitrage négatif en comité d'architecture.",
     shortSolution: "Dossiers d'Architecture Technique (DAT) complets et analyse de conformité réglementaire.",
     shortImpact: "Validation sans réserve en Design Authority et sécurisation des flux d'octroi de crédit.",
-    metric: {
-      value: "100%",
-      label: "DAT validés"
+    highlight: {
+      value: "DAT validés",
+      label: "en Design Authority"
     },
     deliverables: [
       "Dossiers d'Architecture Applicative et Technique (DAT) complets et validés",

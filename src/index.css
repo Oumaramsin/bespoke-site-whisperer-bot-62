@@ -150,37 +150,44 @@
    SCROLL REVEAL ANIMATIONS
    ======================================== */
 
-.scroll-fade-up {
+/* Les éléments ne sont masqués qu'une fois le JavaScript actif (classe « js » posée sur <html> par useScrollAnimation) :
+   le HTML pré-rendu reste entièrement lisible avant l'hydratation, même en défilant tout de suite.
+   La transition n'est déclarée que sur l'état révélé : le masquage est instantané, l'apparition est animée. */
+.js .scroll-fade-up {
   opacity: 0;
   transform: translateY(40px) translateZ(0);
   will-change: transform, opacity;
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.scroll-fade-up.is-visible {
+.js .scroll-fade-up.is-visible {
   opacity: 1;
   transform: translateY(0) translateZ(0);
+  transition-property: opacity, transform;
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.scroll-fade-in {
+.js .scroll-fade-in {
   opacity: 0;
   will-change: opacity;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.scroll-fade-in.is-visible {
+.js .scroll-fade-in.is-visible {
   opacity: 1;
+  transition-property: opacity;
+  transition-duration: 0.8s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.scroll-scale-up {
+.js .scroll-scale-up {
   opacity: 0;
   transform: scale(0.92) translateZ(0);
   will-change: transform, opacity;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.scroll-scale-up.is-visible {
+.js .scroll-scale-up.is-visible {
   opacity: 1;
   transform: scale(1) translateZ(0);
+  transition-property: opacity, transform;
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .stagger-1 { transition-delay: 0.1s; }

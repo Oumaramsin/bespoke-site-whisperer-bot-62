@@ -12,7 +12,8 @@ interface SendContactParams {
   phone?: string;
   serviceType: string;
   timeline?: string;
-  subject: string;
+  /** Facultatif : déduit du type de prestation par le serveur */
+  subject?: string;
   message: string;
   website?: string;
 }

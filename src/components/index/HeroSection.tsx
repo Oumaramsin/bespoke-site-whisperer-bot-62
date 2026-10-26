@@ -2,20 +2,24 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
   CheckCircle2,
-  ShieldCheck,
-  HeartHandshake,
   Building2,
   Smartphone,
-  Phone,
   Mail,
   MapPin,
   Calendar,
-  Lock,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useCountUp } from "@/hooks/useCountUp";
 import { trackConversionEvent } from "@/lib/analytics";
+import { openBooking } from "@/lib/calendly";
 import MethodMotionSection from "@/components/index/MethodMotionSection";
+
+/** Logos du premier écran (ordinateur) : mêmes fichiers que la section « Ils nous font confiance » */
+const TRUST_LOGOS = [
+  { name: "Covéa", src: "/logos/covea.png" },
+  { name: "La Banque Postale", src: "/logos/banque-postale.webp" },
+  { name: "Société Générale", src: "/logos/societe-generale.png" },
+];
 
 const AnimatedKPI = ({
   value,
@@ -81,17 +85,8 @@ const TextKPI = ({
 );
 
 const HeroSection = () => {
-  const navigate = useNavigate();
-
-  const scrollToReservation = () => {
-    trackConversionEvent("click_booking_calendly", { source: "hero_banner" });
-    const el = document.getElementById("reservation-calendrier");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("/contact", { state: { scrollToBooking: true } });
-    }
-  };
+  // Tous les boutons « Réserver » ouvrent l'agenda par-dessus la page (BookingDialog), sans défilement
+  const book = (source: string) => openBooking(source);
 
   return (
     <section className="relative overflow-hidden pt-8 pb-16 md:pt-16 md:pb-24">
@@ -114,7 +109,8 @@ const HeroSection = () => {
               Disponible pour missions SI & projets web
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/80 text-muted-foreground text-xs font-medium border border-border/60">
+            {/* Localisation masquée sur mobile pour que le bouton principal reste dans le premier écran */}
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary/80 text-muted-foreground text-xs font-medium border border-border/60">
               <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
               <span>Basés à Fresnes (94) · Interventions Paris & Remote</span>
             </div>
@@ -122,20 +118,74 @@ const HeroSection = () => {
 
           {/* 2. ACCROCHE STRATÉGIQUE & PROMESSE CENTRALE */}
           <div className="space-y-4 max-w-4xl mx-auto">
+            {/* Accroche alignée sur la vidéo de présentation (cible : porteurs de projet web, mobile, e-commerce) ;
+                l'architecture SI reste présente dans l'intro et dans la carte dédiée juste en dessous */}
             <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary block">
-              Architecture SI (MEGA HOPEX) · Développement Web & Mobile
+              Applications web, mobiles & e-commerce sur-mesure
             </span>
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
-              Des décisions SI plus claires.
+              De l’idée à l’application en ligne.
               <span className="block mt-2 sm:mt-2.5 pb-2 gradient-text">
-                Des solutions numériques adaptées à vos enjeux.
+                Conçue avec vous, livrée à votre nom.
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed pt-2">
-              RAMSIN accompagne les organisations et dirigeants sur deux expertises complémentaires :{" "}
-              <strong>structurer durablement leur système d’information</strong> et{" "}
-              <strong>concevoir des applications numériques sur-mesure</strong> créatrices de valeur.
+              Une idée d’application, de boutique en ligne ou de plateforme ? RAMSIN la transforme en{" "}
+              <strong>un vrai produit, prêt pour vos clients</strong>, et vous en cède{" "}
+              <strong>l’intégralité : code, comptes, données</strong>. Pour les DSI : architecture SI et MEGA HOPEX V5.
             </p>
+
+            {/* 2.1 ACTION PRINCIPALE : visible dès le premier écran, y compris sur mobile */}
+            <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                onClick={() => book("hero_top")}
+                size="lg"
+                variant="lime"
+                className="w-full sm:w-auto rounded-xl px-7 py-6 font-extrabold text-sm sm:text-base gap-2 shadow-[0_8px_30px_-8px_rgba(18,58,53,0.45)] hover:shadow-[0_12px_35px_-8px_rgba(18,58,53,0.55)] transition-all cursor-pointer"
+              >
+                <Calendar className="w-4 h-4 text-[#071816]" />
+                Réserver 30 min offertes
+                <ArrowRight className="w-4 h-4 text-[#071816]" />
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto rounded-xl px-6 py-6 font-bold text-sm sm:text-base gap-2 border-2 border-[#123A35]/25 hover:border-[#123A35] hover:bg-[#123A35]/5 transition-all"
+              >
+                <Link
+                  to="/contact?tunnel=form#formulaire-contact"
+                  state={{ scrollToForm: true }}
+                  onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "hero_top" })}
+                >
+                  <Mail className="w-4 h-4 text-[#123A35]" />
+                  Décrire mon projet par écrit
+                </Link>
+              </Button>
+            </div>
+            <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] sm:text-xs text-muted-foreground font-medium">
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Sans engagement</li>
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Réponse sous 24 h ouvrées</li>
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Code cédé à 100 %</li>
+            </ul>
+
+            {/* Preuve immédiate (ordinateur) : les grands comptes servis, en gris discret, sans attendre la section dédiée */}
+            <div className="hidden md:flex items-center justify-center gap-6 pt-5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Ils nous ont fait confiance</span>
+              <ul className="flex items-center gap-5">
+                {TRUST_LOGOS.map((logo) => (
+                  <li key={logo.name} className="w-28 h-8 flex items-center justify-center">
+                    <img
+                      src={logo.src}
+                      alt={logo.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-8 max-w-full object-contain opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* 2.5 LECTEUR CINÉMA MOTION DESIGN : Démonstration vivante & problème client */}
@@ -159,7 +209,7 @@ const HeroSection = () => {
                       <Building2 className="w-5 h-5 shrink-0" />
                     </div>
                     <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#123A35]/10 text-[#123A35] border border-[#123A35]/15">
-                      Pour DSI & Dir. Transformation
+                      Pour DSI & directions de transformation
                     </span>
                   </div>
 
@@ -190,16 +240,14 @@ const HeroSection = () => {
 
                 <div className="pt-6 mt-4 border-t border-border/50 flex flex-col items-center gap-2.5">
                   <Button
-                    asChild
                     size="lg"
-                    className="w-full bg-[#123A35] hover:bg-[#0a221f] text-white font-bold rounded-xl gap-2 shadow-md hover:shadow-lg transition-all"
+                    onClick={() => {
+                      trackConversionEvent("select_pole", { pole: "si", source: "hero_card" });
+                      book("hero_card_si");
+                    }}
+                    className="w-full bg-[#123A35] hover:bg-[#0a221f] text-white font-bold rounded-xl gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
                   >
-                    <Link
-                      to="/contact?service=si"
-                      onClick={() => trackConversionEvent("select_pole", { pole: "si", source: "hero_card" })}
-                    >
-                      Échanger sur votre besoin SI <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    Réserver 30 min offertes <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Link
                     to="/services?pole=si"
@@ -221,13 +269,13 @@ const HeroSection = () => {
                       <Smartphone className="w-5 h-5 shrink-0" />
                     </div>
                     <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-800 border border-emerald-500/25">
-                      Pour Porteurs de Projet & Entreprises
+                      Pour porteurs de projet & entreprises
                     </span>
                   </div>
 
                   <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                      Web & Applications Sur-Mesure
+                      Web & applications sur-mesure
                     </h2>
                     <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
                       Conception et réalisation d’applications web, mobiles (iOS & Android) et plateformes métier pensées pour vos utilisateurs et votre rentabilité.
@@ -252,17 +300,15 @@ const HeroSection = () => {
 
                 <div className="pt-6 mt-4 border-t border-border/50 flex flex-col items-center gap-2.5">
                   <Button
-                    asChild
                     size="lg"
                     variant="lime"
-                    className="w-full rounded-xl gap-2 font-extrabold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
+                    onClick={() => {
+                      trackConversionEvent("select_pole", { pole: "web", source: "hero_card" });
+                      book("hero_card_web");
+                    }}
+                    className="w-full rounded-xl gap-2 font-extrabold text-sm sm:text-base shadow-md hover:shadow-lg transition-all cursor-pointer"
                   >
-                    <Link
-                      to="/contact?service=web"
-                      onClick={() => trackConversionEvent("select_pole", { pole: "web", source: "hero_card" })}
-                    >
-                      Échanger sur votre projet Web / Mobile <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    Réserver 30 min offertes <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Link
                     to="/services?pole=web"
@@ -275,124 +321,31 @@ const HeroSection = () => {
 
             </div>
 
-            {/* 4. CONCIERGE & CADRAGE EXPERT (Bandeau Haute Définition) */}
-            <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0c2621]/95 via-[#081a17]/95 to-[#051411]/95 border-2 border-[#C7F36B]/30 text-white shadow-[0_20px_50px_-12px_rgba(18,58,53,0.35),0_0_35px_rgba(199,243,107,0.12)] overflow-hidden">
-              {/* Halos lumineux d'ambiance */}
-              <div className="absolute -top-16 -right-16 w-56 h-56 bg-[#C7F36B]/15 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-16 -left-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-              <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
-                {/* En-tête : Badge pulse + Titre + Promesse */}
-                <div className="space-y-2 max-w-xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C7F36B]/15 border border-[#C7F36B]/30 text-[#C7F36B] text-xs font-mono font-bold tracking-wide">
-                    <span className="w-2 h-2 rounded-full bg-[#C7F36B] animate-ping" />
-                    <span>Échange Direct avec l'Architecte Senior</span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white">
-                    Besoin d'un premier avis d'expert sur votre projet ?
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    30 minutes offertes pour évaluer la faisabilité technique, le budget prévisionnel et la feuille de route, sans engagement commercial.
-                  </p>
-                </div>
-
-                {/* Actions & Téléphone : Deux vrais boutons de prestige */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full lg:w-auto justify-center">
-                  <Button
-                    onClick={scrollToReservation}
-                    size="lg"
-                    variant="lime"
-                    className="rounded-xl px-5 py-3 font-extrabold text-xs sm:text-sm shadow-[0_0_25px_rgba(199,243,107,0.4)] hover:shadow-[0_0_35px_rgba(199,243,107,0.6)] hover:scale-105 transition-all gap-2 cursor-pointer"
-                  >
-                    <Calendar className="w-4 h-4 text-[#071816]" />
-                    <span>Planifier mes 30 min (Offert)</span>
-                    <ArrowRight className="w-4 h-4 text-[#071816]" />
-                  </Button>
-
-                  <div className="hidden sm:flex items-center justify-center">
-                    <span className="text-[11px] font-mono uppercase font-bold text-slate-400 px-1">ou</span>
-                  </div>
-
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="rounded-xl px-5 py-3 font-bold text-xs sm:text-sm text-white border-white/20 bg-white/5 hover:bg-white/15 hover:border-white/40 transition-all gap-2"
-                  >
-                    <Link
-                      to="/contact?tunnel=form#formulaire-contact"
-                      state={{ scrollToForm: true }}
-                      onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "hero_banner" })}
-                    >
-                      <Mail className="w-4 h-4 text-[#C7F36B]" />
-                      <span>Transmettre par écrit</span>
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              {/* Barre de réassurance inférieure dans le cadre */}
-              <div className="relative z-10 mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center justify-center lg:justify-between gap-3 text-[11px] text-slate-300">
-                <div className="flex items-center gap-4">
-                  <span className="inline-flex items-center gap-1.5 text-emerald-300 font-medium">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#C7F36B]" /> Diagnostic 100% gratuit
-                  </span>
-                  <span className="hidden sm:inline opacity-30">•</span>
-                  <span className="inline-flex items-center gap-1.5 text-slate-300">
-                    <Lock className="w-3.5 h-3.5 text-[#C7F36B]" /> Confidentialité garantie
-                  </span>
-                </div>
-
-                <a
-                  href="tel:+33761518890"
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white font-mono font-bold transition-all text-[11px]"
-                >
-                  <Phone className="w-3 h-3 text-[#C7F36B]" />
-                  <span>Ligne directe : +33 (0)7 61 51 88 90</span>
-                </a>
-              </div>
-            </div>
-
             {/* 5. CHIFFRES CLÉS & PREUVES CONCRÈTES VÉRIFIABLES */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-border/60">
               <AnimatedKPI
                 value={7}
-                label="Années d'Expérience SI"
-                sublabel="En DSI & Grands Comptes"
+                label="Années d'expérience SI"
+                sublabel="En DSI & grands comptes"
                 suffix="+"
               />
               <TextKPI
-                value="V5 Certifiée"
+                value="V5 certifiée"
                 label="Expertise MEGA HOPEX"
-                sublabel="Cartographie & Référentiels"
+                sublabel="Cartographie & référentiels"
               />
               <TextKPI
-                value="Cédé à 100%"
-                label="Propriété de Vos Livrables"
+                value="Cédé à 100 %"
+                label="Propriété de vos livrables"
                 sublabel="Code source & comptes remis"
               />
               <TextKPI
                 value="Bac+5"
-                label="Diplôme Expert SI"
-                sublabel="Master 2 MIAGE & Ingénierie"
+                label="Diplôme d'expert SI"
+                sublabel="Master 2 MIAGE & ingénierie"
               />
             </div>
 
-            {/* 6. ENGAGEMENTS DE RÉASSURANCE CLIENT */}
-            <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 text-xs sm:text-sm text-muted-foreground pt-2 font-medium">
-              <span className="flex items-center gap-2">
-                <HeartHandshake className="w-4 h-4 text-primary" /> Échange
-                initial 30 min offert & sans engagement
-              </span>
-              <span className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-primary" /> Explications
-                en langage clair & sans jargon
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Réponse assurée sous
-                24h ouvrées
-              </span>
-            </div>
           </div>
 
         </div>

@@ -54,17 +54,26 @@
       }
     </style>
 
-    <!-- Schema.org JSON-LD -->
+    <!-- Schema.org JSON-LD. Fiche Google validée ? Ajouter son URL dans un champ "sameAs" (voir docs/confiance-fiche-google-et-avis.md) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
+      "@id": "https://www.ramsin.fr/#organization",
       "name": "RAMSIN Conseil",
       "legalName": "RAMSIN Conseil SAS",
       "description": "Cabinet d'expertise en Architecture des Systèmes d'Information, MEGA HOPEX et conception de solutions numériques et applications sur-mesure.",
       "url": "https://www.ramsin.fr",
+      "logo": "https://www.ramsin.fr/apple-touch-icon.png",
+      "image": "https://www.ramsin.fr/og-image.jpg",
       "telephone": "+33761518890",
       "email": "contact@ramsin.fr",
+      "founder": {
+        "@type": "Person",
+        "name": "Oumar Sidibé",
+        "jobTitle": "Fondateur, architecte SI et développeur full-stack",
+        "url": "https://www.ramsin.fr/a-propos"
+      },
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Fresnes",
@@ -78,12 +87,26 @@
         "Île-de-France",
         "France"
       ],
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "19:00"
+      },
       "serviceType": [
         "Architecture des Systèmes d'Information",
         "Expertise MEGA HOPEX V5",
         "Cartographie et Urbanisation du SI",
         "Développement Web Sur-Mesure",
         "Applications Mobiles iOS & Android"
+      ],
+      "knowsAbout": [
+        "Architecture des systèmes d'information",
+        "MEGA HOPEX V5",
+        "Cartographie applicative",
+        "Next.js",
+        "React Native",
+        "TypeScript"
       ]
     }
     </script>
