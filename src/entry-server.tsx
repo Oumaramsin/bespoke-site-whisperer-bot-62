@@ -24,6 +24,11 @@ export const PRERENDER_ROUTES = [
   "/confidentialite",
 ];
 
+/** Date de dernière modification connue d'une page (balise lastmod du sitemap) ; à défaut, la date du build */
+export const ROUTE_LASTMOD: Record<string, string> = Object.fromEntries(
+  GUIDES.map((guide) => [`/guides/${guide.slug}`, guide.dateModified]),
+);
+
 /** URL inexistante utilisée pour rendre la page NotFound dans dist/404.html */
 export const NOT_FOUND_ROUTE = "/404";
 

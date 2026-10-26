@@ -46,7 +46,7 @@ export const GUIDES: Guide[] = [
     title: "Cahier des charges d'une application : le modèle simple (et ce que vous pouvez sauter)",
     seoTitle: "Cahier des charges d'application : le modèle simple | RAMSIN",
     description:
-      "Pas besoin de 40 pages : les 7 questions qui remplacent un cahier des charges d'application, ce qu'il faut préciser et ce que vous pouvez laisser au développeur.",
+      "Pas besoin de 40 pages : les 7 questions qui remplacent un cahier des charges d'application, et ce que vous pouvez laisser au développeur.",
     kicker: "Guide · Lancer un projet",
     readingMinutes: 5,
     datePublished: "2026-10-26",
@@ -218,7 +218,7 @@ export const GUIDES: Guide[] = [
     title: "Site vitrine ou boutique en ligne : par quoi commencer quand on lance son activité ?",
     seoTitle: "Site vitrine ou boutique en ligne : que choisir ? | RAMSIN",
     description:
-      "Site vitrine qui apporte des demandes ou boutique en ligne qui vend : comment choisir au lancement, les 5 éléments d'un site qui convertit et les bases du SEO.",
+      "Site vitrine qui apporte des demandes ou boutique qui vend : comment choisir au lancement, et les 5 éléments d'un site qui convertit.",
     kicker: "Guide · Lancer son activité en ligne",
     readingMinutes: 5,
     datePublished: "2026-10-26",
@@ -284,7 +284,7 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "cartographie-applicative-par-ou-commencer",
-    related: { path: "/services?pole=si", label: "Architecture SI & MEGA HOPEX" },
+    related: { path: "/services#architecture-si", label: "Architecture SI & MEGA HOPEX" },
     title: "Cartographie applicative : à quoi elle sert et par où commencer",
     seoTitle: "Cartographie applicative : par où commencer | RAMSIN",
     description:

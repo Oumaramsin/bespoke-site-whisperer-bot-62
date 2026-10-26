@@ -10,41 +10,41 @@ export const GuaranteesSection = () => {
   const guarantees = [
     {
       icon: FileCheck,
-      badge: "Zéro surcoût imprévu",
+      badge: "Pas de rallonge",
       badgeColor: "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/25",
       title: "Périmètre cadré & budget forfaitaire",
       description:
-        "Cadrage fonctionnel rigoureux et devis ferme validé ensemble dès le départ. Aucun frais caché ni surcoût en cours de réalisation : votre investissement est scrupuleusement maîtrisé.",
+        "On cadre le projet ensemble et vous validez un devis ferme avant le début. Pas de frais cachés, pas de rallonge en cours de route.",
       points: [
         "Devis détaillé poste par poste",
-        "Calendrier de livraison jalonné",
-        "Engagement forfaitaire contractuel",
+        "Un planning avec des étapes datées",
+        "Prix forfaitaire écrit dans le devis",
       ],
     },
     {
       icon: Eye,
-      badge: "Visibilité continue",
+      badge: "Vous suivez tout",
       badgeColor: "bg-[#C7F36B]/25 text-[#123A35] border-[#C7F36B]/50",
-      title: "Démonstrations régulières & zéro boîte noire",
+      title: "Une version à tester chaque semaine",
       description:
-        "Vous suivez l'avancée réelle à chaque sprint via un espace de pré-production privé. Vous donnez vos retours en direct et validez l'ergonomie avant toute mise en ligne.",
+        "Chaque semaine, vous testez la nouvelle version sur un lien privé. Vous donnez vos retours, on ajuste, et rien n'est mis en ligne sans votre accord.",
       points: [
-        "Démos interactives à chaque étape clé",
-        "Ajustements agiles sans friction",
+        "Un lien de test mis à jour chaque semaine",
+        "Vos retours intégrés au fur et à mesure",
         "Échanges directs sans jargon technique",
       ],
     },
     {
       icon: ShieldCheck,
-      badge: "Liberté totale & sérénité",
+      badge: "Tout est à vous",
       badgeColor: "bg-emerald-500/10 text-emerald-800 border-emerald-500/25",
-      title: "Pleine propriété du code & garantie 30 jours",
+      title: "Code à votre nom & garantie 30 jours",
       description:
-        "Le code source complet et tous les comptes d'hébergement vous sont remis à 100%. Tout aléa technique éventuel est pris en charge et résolu en priorité sans frais durant les 30 jours suivant le lancement.",
+        "Le code source et tous les comptes sont à votre nom. Pendant 30 jours après le lancement, nous corrigeons sans frais tout bug constaté.",
       points: [
-        "Cession contractuelle 100% du code source",
-        "Zéro abonnement captif ni dépendance",
-        "Garantie corrective gratuite pendant 30 jours",
+        "Code source cédé par contrat",
+        "Aucun abonnement imposé",
+        "Corrections gratuites pendant 30 jours",
       ],
     },
   ];
@@ -71,7 +71,7 @@ export const GuaranteesSection = () => {
             Trois garanties écrites pour votre projet
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Engagements contractuels fermes et règles déontologiques qui protègent votre investissement et cadrent votre projet.
+            Ce à quoi nous nous engageons sur chaque projet, par écrit, avant de commencer.
           </p>
         </div>
 
@@ -98,15 +98,15 @@ export const GuaranteesSection = () => {
             return (
               <Card
                 key={idx}
-                className="flex flex-col justify-between border-2 border-border/80 hover:border-emerald-500/50 transition-all hover-lift bg-white rounded-3xl overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(18,58,53,0.15)] group"
+                className="flex flex-col md:justify-between border-2 border-border/80 hover:border-emerald-500/50 transition-all hover-lift bg-white rounded-3xl overflow-hidden shadow-[0_4px_20px_-8px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_50px_-12px_rgba(18,58,53,0.15)] group"
               >
                 <div className={`h-1.5 bg-gradient-to-r ${topAccents[idx]}`} />
-                <CardHeader className="pb-3 space-y-3 p-6 sm:p-7">
+                <CardHeader className="space-y-3 p-6 pb-3 sm:p-7 sm:pb-3">
                   <div className="flex items-center justify-between">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold ${iconStyles[idx]}`}>
                       <IconComp className="w-6 h-6" />
                     </div>
-                    <Badge variant="outline" className={`text-[11px] font-bold px-3 py-1 rounded-full border ${item.badgeColor}`}>
+                    <Badge variant="outline" className={`text-xs font-bold px-3 py-1 rounded-full border ${item.badgeColor}`}>
                       {item.badge}
                     </Badge>
                   </div>
@@ -116,8 +116,8 @@ export const GuaranteesSection = () => {
                   </CardTitle>
                 </CardHeader>
 
-                <CardContent className="space-y-4 flex-1 flex flex-col justify-between pt-0 p-6 sm:p-7">
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                <CardContent className="space-y-4 md:flex-1 md:flex md:flex-col md:justify-between p-6 pt-0 sm:p-7 sm:pt-0">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
 

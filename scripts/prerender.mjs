@@ -11,7 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(root, "dist");
 const ssrDir = path.join(root, "dist-ssr");
 
-const { render, PRERENDER_ROUTES, NOT_FOUND_ROUTE, SITE_URL } = await import(
+const { render, PRERENDER_ROUTES, NOT_FOUND_ROUTE, SITE_URL, ROUTE_LASTMOD } = await import(
   pathToFileURL(path.join(ssrDir, "entry-server.js")).href
 );
 
@@ -67,6 +67,7 @@ const writePage = async (route, file, { html, head }) => {
 
 // URL indexables (robots « index ») : elles forment le sitemap, généré au build pour ne jamais diverger des routes
 const sitemapUrls = [];
+const buildDate = new Date().toISOString().slice(0, 10);
 
 for (const route of PRERENDER_ROUTES) {
   const result = await render(route);
@@ -78,13 +79,13 @@ for (const route of PRERENDER_ROUTES) {
   }
 
   await writePage(route, path.join(distDir, route === "/" ? "" : route.slice(1), "index.html"), result);
-  if (result.seo.robots.startsWith("index")) sitemapUrls.push(expectedCanonical);
+  if (result.seo.robots.startsWith("index")) sitemapUrls.push({ loc: expectedCanonical, lastmod: ROUTE_LASTMOD[route] ?? buildDate });
 }
 
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...sitemapUrls.map((url) => `  <url><loc>${url}</loc></url>`),
+  ...sitemapUrls.map(({ loc, lastmod }) => `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod></url>`),
   "</urlset>",
   "",
 ].join("\n");

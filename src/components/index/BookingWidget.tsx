@@ -61,7 +61,7 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
     <section ref={sectionRef} id="reservation-calendrier" className="pt-0 pb-2 bg-gradient-to-b from-background via-primary/5 to-background border-t border-border/60">
       <div className="container mx-auto px-4">
         <div ref={widgetRef} className={`max-w-4xl mx-auto text-center mb-2 space-y-1 scroll-fade-up ${widgetVisible ? "is-visible" : ""}`}>
-          <Badge variant="outline" className="px-2.5 py-0 text-[11px] border-primary/30 text-primary font-semibold">
+          <Badge variant="outline" className="px-2.5 py-0 text-xs border-primary/30 text-primary font-semibold">
             <CalendarIcon className="w-3 h-3 mr-1 inline" /> Prise de rendez-vous en ligne
           </Badge>
           <h2 className="text-xl md:text-3xl font-extrabold tracking-tight">
@@ -81,12 +81,12 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
               Échangez directement avec RAMSIN Conseil sur vos besoins web, applicatifs ou d'architecture SI.
             </CardDescription>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-[11px] font-semibold text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs font-semibold text-muted-foreground">
               <span className="flex items-center gap-1 text-emerald-700">
-                <ShieldCheck className="w-3 h-3" /> Échange Sans Engagement
+                <ShieldCheck className="w-3 h-3" /> Échange sans engagement
               </span>
               <span className="flex items-center gap-1 text-primary">
-                <Zap className="w-3 h-3" /> Invitation Google Meet / Teams Automatique
+                <Zap className="w-3 h-3" /> Invitation Google Meet ou Teams envoyée automatiquement
               </span>
             </div>
           </CardHeader>
@@ -102,7 +102,7 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
                     <CalendarIcon className="w-7 h-7" />
                   </span>
                   <p className="text-sm sm:text-base font-semibold text-foreground max-w-sm">
-                    Choisissez directement votre créneau de 30 minutes dans l'agenda d'Oumar.
+                    Choisissez directement votre créneau de 30 minutes dans notre agenda.
                   </p>
                   <button
                     type="button"
@@ -155,7 +155,7 @@ export const BookingWidget = ({ autoLoad = false }: { autoLoad?: boolean }) => {
             onClick={() => trackConversionEvent("click_switch_to_written_form", { source: "booking_widget" })}
             className="mt-1.5 inline-flex items-center gap-1.5 font-bold text-primary hover:underline text-sm"
           >
-            Décrire votre besoin en 2 minutes via notre formulaire express →
+            Décrire votre projet par écrit, en 2 minutes →
           </Link>
         </div>
       </div>

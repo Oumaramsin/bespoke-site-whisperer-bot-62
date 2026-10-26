@@ -25,9 +25,9 @@ const PROJECTS_JSONLD = {
 };
 
 const FILTERS: { key: Filter; label: string; icon: typeof Layers }[] = [
-  { key: "all", label: "Tous les projets", icon: Layers },
-  { key: "web", label: "Web & Mobile", icon: Smartphone },
-  { key: "si", label: "Architecture SI & MEGA HOPEX", icon: Building2 },
+  { key: "all", label: "Tous", icon: Layers },
+  { key: "web", label: "Web & mobile", icon: Smartphone },
+  { key: "si", label: "Architecture SI", icon: Building2 },
 ];
 
 export const Projets = () => {
@@ -35,7 +35,6 @@ export const Projets = () => {
 
   const projects = filter === "all" ? PROJECTS_DATA : PROJECTS_DATA.filter((p) => p.pole === filter);
   const [featured, ...others] = projects;
-  const count = (pole: Filter) => (pole === "all" ? PROJECTS_DATA.length : PROJECTS_DATA.filter((p) => p.pole === pole).length);
 
   const book = (source: string) => openBooking(source);
 
@@ -43,7 +42,7 @@ export const Projets = () => {
     <>
       <SEO
         title="Réalisations & études de cas | RAMSIN Conseil"
-        description="Applications web & mobiles, boutiques en ligne et missions d'architecture SI : découvrez le défi de départ, la solution construite et le résultat obtenu pour chaque client RAMSIN."
+        description="Applications web et mobiles, boutiques en ligne et missions d'architecture SI : le défi, la solution et le résultat obtenu pour chaque client RAMSIN."
         canonical="https://www.ramsin.fr/projets"
         jsonLd={PROJECTS_JSONLD}
       />
@@ -64,26 +63,13 @@ export const Projets = () => {
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
             Pour chaque projet : le défi de départ, ce que nous avons construit ensemble et le résultat obtenu. Sans jargon.
           </p>
-
-          <dl className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4 max-w-3xl mx-auto">
-            {[
-              { value: String(count("web")), label: "produits web & mobile en ligne" },
-              { value: String(count("si")), label: "missions grands comptes" },
-              { value: "100 %", label: "du code cédé au client" },
-              { value: "30 min", label: "d'échange offert pour démarrer" },
-            ].map(({ value, label }) => (
-              <div key={label} className="rounded-2xl bg-card/80 border border-border/80 px-4 py-3 shadow-xs">
-                <dt className="text-2xl font-black text-[#123A35]">{value}</dt>
-                <dd className="text-xs font-semibold text-muted-foreground leading-snug">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
       <div className="container mx-auto px-4 max-w-6xl py-10 md:py-14 space-y-10">
         {/* FILTRES */}
-        <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label="Filtrer les réalisations">
+        <div className="flex justify-center">
+        <div className="inline-flex p-1 rounded-xl bg-muted/80 border border-border/80 gap-1" role="tablist" aria-label="Filtrer les réalisations">
           {FILTERS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
@@ -95,19 +81,17 @@ export const Projets = () => {
                 trackConversionEvent("switch_projects_tab", { tab: key });
               }}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold border transition-all cursor-pointer",
+                "inline-flex items-center gap-1.5 rounded-lg px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap",
                 filter === key
-                  ? "bg-[#123A35] text-white border-[#123A35] shadow-md"
-                  : "bg-card text-foreground border-border/80 hover:border-[#123A35]/40"
+                  ? "bg-[#123A35] text-white shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-4 h-4 hidden sm:block" />
               {label}
-              <span className={cn("text-xs rounded-full px-2 py-0.5", filter === key ? "bg-[#C7F36B] text-[#123A35]" : "bg-secondary")}>
-                {count(key)}
-              </span>
             </button>
           ))}
+        </div>
         </div>
 
         {/* PROJET VEDETTE + GRILLE (regroupée par pôle quand tout est affiché) */}
@@ -186,7 +170,7 @@ export const Projets = () => {
           <span className="block gradient-text pb-1">pourrait être le vôtre</span>
         </h2>
         <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-          Échange direct avec Oumar Sidibé, fondateur de RAMSIN. Réponse sous 24 h ouvrées si vous préférez écrire.
+          Échange direct avec RAMSIN, sans intermédiaire. Réponse sous 24 h ouvrées si vous préférez écrire.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Button variant="lime" size="lg" className="rounded-xl gap-2 px-7 cursor-pointer" onClick={() => book("projects_footer")}>

@@ -1,4 +1,5 @@
 {
+  "regions": ["cdg1"],
   "redirects": [
     { "source": "/projects", "destination": "/projets", "permanent": true },
     { "source": "/projects/:projectId", "destination": "/projets/:projectId", "permanent": true },

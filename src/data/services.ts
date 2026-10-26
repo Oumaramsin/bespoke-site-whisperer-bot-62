@@ -15,7 +15,7 @@ export const WEB_FAQ = [
   },
   {
     q: "Comment suivre l'avancement de mon projet ?",
-    a: "Dès le premier jour, un groupe WhatsApp dédié est créé avec Oumar. Chaque semaine, vous recevez une version à tester, vous partagez vos retours (et ceux de vos testeurs) et ils sont intégrés tout de suite.",
+    a: "Dès le premier jour, un groupe WhatsApp dédié est créé avec RAMSIN. Chaque semaine, vous recevez une version à tester, vous partagez vos retours (et ceux de vos testeurs) et ils sont intégrés tout de suite.",
   },
   {
     q: "À qui appartiennent le code et les comptes ?",

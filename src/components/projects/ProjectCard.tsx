@@ -8,7 +8,7 @@ import BrowserFrame from "./BrowserFrame";
 const PoleBadge = ({ pole }: { pole: Project["pole"] }) => (
   <span
     className={cn(
-      "inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full",
+      "inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-full",
       pole === "web" ? "bg-[#C7F36B]/30 text-[#123A35]" : "bg-[#123A35]/10 text-[#123A35]"
     )}
   >
@@ -80,7 +80,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
                   <Icon className="w-4 h-4" />
                 </span>
                 <div>
-                  <span className="block text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">{label}</span>
+                  <span className="block text-xs font-extrabold uppercase tracking-wider text-muted-foreground">{label}</span>
                   <span className="text-sm text-foreground/90 leading-relaxed">{text}</span>
                 </div>
               </li>
@@ -90,7 +90,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
           <div className="mt-auto pt-5 border-t border-border/60 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-1.5">
               {project.stack.slice(0, 3).map((tech) => (
-                <span key={tech} className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg border border-border/50">
+                <span key={tech} className="text-xs font-semibold bg-secondary px-2.5 py-1 rounded-lg border border-border/50">
                   {tech}
                 </span>
               ))}
@@ -149,7 +149,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
             {project.highlight ? (
               <span className="inline-flex flex-wrap items-baseline gap-x-1.5 rounded-xl bg-[#C7F36B] px-3 py-1.5 text-[#123A35]">
                 <span className="text-sm font-black">{project.highlight.value}</span>
-                <span className="text-[11px] font-bold">{project.highlight.label}</span>
+                <span className="text-xs font-bold">{project.highlight.label}</span>
               </span>
             ) : (
               <span />
@@ -184,7 +184,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
         {project.highlight && (
           <span className="absolute bottom-4 left-8 right-8 inline-flex flex-wrap items-baseline gap-x-1.5 rounded-xl bg-[#C7F36B] px-3 py-1.5 text-[#123A35] shadow-lg w-fit max-w-[calc(100%-4rem)]">
             <span className="text-sm font-black">{project.highlight.value}</span>
-            <span className="text-[11px] font-bold">{project.highlight.label}</span>
+            <span className="text-xs font-bold">{project.highlight.label}</span>
           </span>
         )}
       </div>

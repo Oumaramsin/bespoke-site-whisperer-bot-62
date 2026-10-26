@@ -18,7 +18,7 @@ const Navbar = () => {
     { name: "Contact", path: "/contact" },
   ];
 
-  // Une rubrique reste active sur ses sous-pages (/projets/dabari, /guides/…) et quel que soit le pôle (/services?pole=si)
+  // Une rubrique reste active sur ses sous-pages (/projets/dabari, /guides/…) et quelle que soit l'ancre (/services#architecture-si)
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname === path || location.pathname.startsWith(`${path}/`);
 
@@ -37,7 +37,7 @@ const Navbar = () => {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C7F36B] shadow-[0_0_8px_#C7F36B]" />
                 </span>
                 <span className="text-[9.5px] font-bold tracking-widest text-muted-foreground uppercase hidden sm:block">
-                  Architecture & Tech
+                  Web, mobile & SI
                 </span>
               </div>
             </Link>

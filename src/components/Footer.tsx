@@ -63,12 +63,12 @@ const Footer = () => {
             <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-foreground">
               Nos prestations
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-1 text-sm">
               {OFFER_LINKS.map((offer) => (
                 <li key={offer.id}>
                   <Link
                     to={offer.path}
-                    className="text-muted-foreground hover:text-primary transition-colors"
+                    className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                   >
                     {offer.shortTitle}
                   </Link>
@@ -76,8 +76,8 @@ const Footer = () => {
               ))}
               <li>
                 <Link
-                  to="/services?pole=si"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  to="/services#architecture-si"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   Architecture SI & MEGA HOPEX
                 </Link>
@@ -85,7 +85,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/guides"
-                  className="text-foreground font-semibold hover:text-primary transition-colors"
+                  className="inline-block py-1 text-foreground font-semibold hover:text-primary transition-colors"
                 >
                   Guides pratiques
                 </Link>
@@ -97,11 +97,11 @@ const Footer = () => {
             <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-foreground">
               Navigation
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-1 text-sm">
               <li>
                 <Link
                   to="/"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   Accueil
                 </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   Services
                 </Link>
@@ -117,7 +117,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/projets"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   Réalisations
                 </Link>
@@ -125,7 +125,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/a-propos"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   À propos
                 </Link>
@@ -133,7 +133,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary transition-colors"
                 >
                   Contact & réservation
                 </Link>
@@ -154,13 +154,13 @@ const Footer = () => {
                 Téléphone :{" "}
                 <a
                   href="tel:+33761518890"
-                  className="text-foreground hover:text-primary font-medium"
+                  className="inline-block py-1 text-foreground hover:text-primary font-medium"
                 >
                   +33 (0)7 61 51 88 90
                 </a>
               </li>
               <li>
-                Localisation : Basés à Fresnes (94) · Interventions Paris, Île-de-France & Remote
+                Localisation : Basés à Fresnes (94) · Interventions Paris, Île-de-France & à distance
               </li>
               {/* Fiche Google : liens affichés une fois les URL renseignées dans src/data/company.ts */}
               {GOOGLE_REVIEW_URL !== "" && (
@@ -198,10 +198,10 @@ const Footer = () => {
         <div className="border-t border-border/60 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {currentYear} RAMSIN Conseil. Tous droits réservés.</p>
           <nav className="flex items-center gap-4" aria-label="Informations légales">
-            <Link to="/mentions-legales" className="hover:text-primary transition-colors">Mentions légales</Link>
-            <Link to="/confidentialite" className="hover:text-primary transition-colors">Politique de confidentialité</Link>
+            <Link to="/mentions-legales" className="inline-block py-2 hover:text-primary transition-colors">Mentions légales</Link>
+            <Link to="/confidentialite" className="inline-block py-2 hover:text-primary transition-colors">Politique de confidentialité</Link>
             {isGoogleTagConfigured && (
-              <button type="button" onClick={openConsentBanner} className="hover:text-primary transition-colors">
+              <button type="button" onClick={openConsentBanner} className="inline-block py-2 hover:text-primary transition-colors">
                 Gestion des cookies
               </button>
             )}

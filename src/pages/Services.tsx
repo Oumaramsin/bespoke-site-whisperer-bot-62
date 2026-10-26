@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,9 +28,11 @@ import {
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import PoleProjects from "@/components/projects/PoleProjects";
+import MethodSteps from "@/components/projects/MethodSteps";
 import ServicesFaq from "@/components/services/ServicesFaq";
 import { WEB_FAQ } from "@/data/services";
 import { offerPath, type OfferId } from "@/data/offerRoutes";
+import { smoothScrollTo } from "@/lib/smoothScroll";
 
 const SERVICES_JSONLD = [
   {
@@ -66,28 +68,28 @@ const SERVICES_JSONLD = [
 import { trackConversionEvent } from "@/lib/analytics";
 import { openBooking } from "@/lib/calendly";
 
-type ServicePole = "si" | "web";
 
 export const Services = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  // Initialisation du pôle selon l'URL (?pole=si ou ?pole=web, défaut : web)
-  const poleParam = searchParams.get("pole");
-  const [activePole, setActivePole] = useState<ServicePole>(
-    poleParam === "si" ? "si" : "web"
-  );
-
+  // Les liens /services#architecture-si (accueil, pied de page, guides) sont gérés par ScrollToTop.
+  // Ici, seulement les anciens liens ?pole=si : on descend aussi jusqu'à la partie SI.
+  const legacySiLink = searchParams.get("pole") === "si";
   useEffect(() => {
-    if (poleParam === "web" || poleParam === "si") {
-      setActivePole(poleParam);
-    }
-  }, [poleParam]);
+    if (!legacySiLink) return;
+    const timer = window.setTimeout(() => {
+      const section = document.getElementById("architecture-si");
+      if (section) smoothScrollTo(section);
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [legacySiLink]);
 
-  const switchPole = (pole: ServicePole) => {
-    trackConversionEvent("select_pole", { pole, source: "services_tabs" });
-    setActivePole(pole);
-    setSearchParams({ pole });
-    window.scrollTo({ top: 320, behavior: "smooth" });
+  // Raccourcis du haut de page : défilement animé jusqu'à la partie choisie (l'ancre reste pour les navigateurs sans JS)
+  const goTo = (id: "web-mobile" | "architecture-si", pole: "web" | "si") => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    trackConversionEvent("select_pole", { pole, source: "services_hero" });
+    const section = document.getElementById(id);
+    if (section) smoothScrollTo(section);
   };
 
   const handleBookingRedirect = () => openBooking("services_page");
@@ -95,8 +97,8 @@ export const Services = () => {
   return (
     <>
       <SEO
-        title="Applications web & mobiles, hébergement, Architecture SI & MEGA HOPEX | RAMSIN"
-        description="Applications web, mobiles iOS & Android et e-commerce sur-mesure, puis hébergement, maintenance et évolutions. Et pour les DSI : architecture SI et MEGA HOPEX V5. Paris, Île-de-France et à distance."
+        title="Services web, mobile et architecture SI | RAMSIN"
+        description="Applications web et mobiles, e-commerce, hébergement et maintenance sur-mesure. Pour les DSI : architecture SI et MEGA HOPEX V5. Paris et à distance."
         jsonLd={SERVICES_JSONLD}
         canonical="https://www.ramsin.fr/services"
       />
@@ -110,7 +112,7 @@ export const Services = () => {
 
         <div className="container mx-auto px-4 text-center max-w-4xl space-y-6">
           <Badge variant="outline" className="px-3.5 py-1 text-xs border-primary/30 text-primary font-semibold">
-            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux parcours, un interlocuteur
+            <Sparkles className="w-3.5 h-3.5 mr-1 inline text-amber-500" /> Deux métiers, un interlocuteur
           </Badge>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.22]">
@@ -120,51 +122,37 @@ export const Services = () => {
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-normal max-w-3xl mx-auto leading-relaxed">
             Créateurs, indépendants et entreprises : nous concevons votre application ou votre site et vous en cédons l'intégralité.
-            Directions informatiques : cartographie, urbanisation et MEGA HOPEX V5. Choisissez votre parcours :
+            Directions informatiques : cartographie, urbanisation et MEGA HOPEX V5.
           </p>
 
-          {/* SÉLECTEUR DE PÔLE COMMERCIAL (SWITCHER CLÉ : Web à Gauche par Défaut) */}
-          <div className="pt-4 flex justify-center">
-            <div className="p-1.5 rounded-2xl glass-card border border-border/80 inline-flex flex-col sm:flex-row gap-2 max-w-full shadow-lg">
-              <button
-                onClick={() => switchPole("web")}
-                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
-                  activePole === "web"
-                    ? "bg-emerald-700 text-white shadow-md scale-[1.02]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                }`}
-              >
-                <Smartphone className="w-5 h-5 shrink-0" />
-                <span>Web & applications sur-mesure</span>
-                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
-                  Porteurs de projet & entreprises
-                </span>
-              </button>
-
-              <button
-                onClick={() => switchPole("si")}
-                className={`flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all cursor-pointer ${
-                  activePole === "si"
-                    ? "bg-[#123A35] text-white shadow-md scale-[1.02]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-                }`}
-              >
-                <Building2 className="w-5 h-5 shrink-0" />
-                <span>Architecture SI & MEGA HOPEX</span>
-                <span className="hidden md:inline text-[11px] opacity-90 px-2 py-0.5 rounded-full bg-white/20">
-                  DSI & Transformation
-                </span>
-              </button>
-            </div>
+          {/* Raccourcis vers les deux parties de la page (de simples ancres : elles marchent avant même le chargement de React) */}
+          <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+            <a
+              href="#web-mobile"
+              onClick={goTo("web-mobile", "web")}
+              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base bg-emerald-700 hover:bg-emerald-800 text-white shadow-md transition-colors"
+            >
+              <Smartphone className="w-5 h-5 shrink-0" />
+              Web & applications sur-mesure
+              <ChevronRight className="w-4 h-4 rotate-90 shrink-0" />
+            </a>
+            <a
+              href="#architecture-si"
+              onClick={goTo("architecture-si", "si")}
+              className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base bg-white text-[#123A35] border-2 border-[#123A35]/25 hover:border-[#123A35] shadow-sm transition-colors"
+            >
+              <Building2 className="w-5 h-5 shrink-0" />
+              Architecture SI & MEGA HOPEX
+              <ChevronRight className="w-4 h-4 rotate-90 shrink-0" />
+            </a>
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════
-          SECTION 1 : PÔLE WEB & APPLICATIONS SUR-MESURE
+          PARTIE 1 : WEB & APPLICATIONS SUR-MESURE (page carrefour vers les pages d'offre)
       ═══════════════════════════════════════════ */}
-      {activePole === "web" && (
-        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
+      <section id="web-mobile" className="scroll-mt-20 space-y-14 md:space-y-20 py-12 md:py-20">
           
           {/* BANDEAU EN-TÊTE DU PÔLE WEB */}
           <div className="container mx-auto px-4 max-w-5xl">
@@ -172,23 +160,23 @@ export const Services = () => {
               <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10 max-w-3xl space-y-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
-                  <Code2 className="w-3.5 h-3.5" /> Développement Web & Applications Mobiles
+                  <Code2 className="w-3.5 h-3.5" /> Développement web & applications mobiles
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
-                  Des solutions numériques performantes, conçues sur-mesure et cédées en pleine propriété.
+                  Votre site ou votre application, conçu avec vous et livré à votre nom.
                 </h2>
                 <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
-                  Porteurs de projet, créateurs, indépendants et entreprises : nous concevons des plateformes web, applications mobiles (iOS/Android) et outils métiers sur-mesure. Vous êtes propriétaire de votre code source, libre de tout abonnement captif et accompagné de A à Z.
+                  Vous lancez un projet ou vous voulez équiper votre entreprise : nous concevons votre site, votre application web ou mobile, ou votre outil de gestion. Le code et les comptes sont à votre nom, sans abonnement imposé, et nous restons là après la mise en ligne.
                 </p>
                 <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Cession Complète du Code Source
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Cession complète du code source
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Garantie 30 Jours Post-Lancement Incluse
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Garantie 30 jours après le lancement
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Stack Moderne (Next.js, React Native, TypeScript)
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Un prix ferme, fixé avant de commencer
                   </span>
                 </div>
                 <div className="pt-3 flex flex-wrap gap-3">
@@ -210,7 +198,7 @@ export const Services = () => {
                 Ce que nous réalisons
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Des solutions techniques modernes, fiables et adaptées à vos objectifs commerciaux.
+                Choisissez votre type de projet : chaque offre a sa page, avec le détail, le déroulé et des exemples.
               </p>
             </div>
 
@@ -220,39 +208,39 @@ export const Services = () => {
                   icon: Code2,
                   badge: "Web & SaaS",
                   title: "Applications web & outils métiers",
-                  desc: "Portails clients, tableaux de bord de gestion, logiciels SaaS internes et espaces membres interactifs.",
+                  desc: "Espace client, tableau de bord, outil de gestion interne ou logiciel en ligne pour vos propres clients.",
                   stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
                   offer: "application-web" as OfferId | undefined,
                   features: [
-                    "Authentification sécurisée (JWT, rôles)",
-                    "Automatisation de flux métiers & exports",
-                    "Paiements Stripe & abonnements récurrents",
+                    "Comptes utilisateurs et droits d'accès sécurisés",
+                    "Vos tâches répétitives automatisées",
+                    "Paiement en ligne et abonnements",
                   ],
                 },
                 {
                   icon: Smartphone,
                   badge: "iOS & Android",
                   title: "Applications mobiles iOS & Android",
-                  desc: "Applications natives rapides et intuitives pour smartphones et tablettes, publiées sur l'App Store et Google Play.",
-                  stack: "React Native, Expo, Notifications Push, Caméra",
+                  desc: "Une application pour iPhone et Android, publiée sur l'App Store et Google Play.",
+                  stack: "React Native, Expo, notifications push, caméra",
                   offer: "application-mobile" as OfferId | undefined,
                   features: [
-                    "Une seule base de code pour iOS & Android",
-                    "Expérience utilisateur fluide à 60 FPS",
-                    "Fonctionnement hors-ligne et synchronisation cloud",
+                    "Une seule application pour iPhone et Android",
+                    "Fluide et simple à prendre en main",
+                    "Fonctionne même sans réseau, puis se synchronise",
                   ],
                 },
                 {
                   icon: Sparkles,
-                  badge: "Haute conversion",
+                  badge: "Vitrine & boutique",
                   title: "Sites web & e-commerce",
-                  desc: "Sites vitrines d'autorité et boutiques e-commerce conçus pour convertir vos visiteurs en demandes qualifiées.",
+                  desc: "Un site vitrine qui donne envie de vous contacter, ou une boutique pour vendre en ligne.",
                   stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
                   offer: "site-ecommerce" as OfferId | undefined,
                   features: [
-                    "Temps de chargement instantanés (Core Web Vitals)",
-                    "SEO technique structuré dès la conception pour maximiser votre visibilité naturelle",
-                    "Design responsive sur smartphone, tablette & desktop",
+                    "Des pages qui s'affichent vite, même sur mobile",
+                    "Pensé dès le départ pour être bien référencé sur Google",
+                    "Adapté au téléphone, à la tablette et à l'ordinateur",
                   ],
                 },
                 {
@@ -263,7 +251,7 @@ export const Services = () => {
                   stack: "Vercel, AWS, Cloudflare, VPS",
                   offer: undefined as OfferId | undefined,
                   features: [
-                    "Hébergement, nom de domaine & certificat SSL",
+                    "Hébergement, nom de domaine et connexion sécurisée",
                     "Mises à jour, correctifs de sécurité & sauvegardes",
                     "Évolutions & publication sur l'App Store et Google Play",
                   ],
@@ -303,15 +291,12 @@ export const Services = () => {
                         </ul>
                       </div>
 
-                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
-                        <strong>Stack :</strong> {proj.stack}
-                      </div>
                       {proj.offer && (
                         <Link
                           to={offerPath(proj.offer)}
                           className="inline-flex items-center gap-1 text-sm font-bold text-emerald-700 hover:text-emerald-900 transition-colors"
                         >
-                          Voir la prestation en détail <ArrowRight className="w-4 h-4" />
+                          Découvrir l'offre <ArrowRight className="w-4 h-4" />
                         </Link>
                       )}
                     </CardContent>
@@ -321,105 +306,18 @@ export const Services = () => {
             </div>
           </div>
 
-          {/* PREUVES : RÉALISATIONS WEB & MOBILE */}
-          <PoleProjects pole="web" />
+          {/* PREUVE : un projet web, le plus complet (site, application iPhone et Android) */}
+          <PoleProjects pole="web" limit={1} title="Un projet récent" />
 
-          {/* 2. DÉMARCHE PROJET EN 5 ÉTAPES */}
+          {/* MÉTHODE : les 4 étapes, les mêmes que sur l'accueil et dans la vidéo */}
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
             <div className="text-center max-w-3xl mx-auto space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Notre méthode en 5 étapes
-              </h3>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">Comment ça se passe</h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Vous savez exactement où en est votre projet, sans mauvaise surprise ni retard imprévu.
+                Un seul interlocuteur du premier échange à la mise en ligne.
               </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              {[
-                {
-                  step: "01",
-                  title: "Cadrage & UX",
-                  desc: "Définition des fonctionnalités exactes, parcours utilisateurs et maquettage.",
-                },
-                {
-                  step: "02",
-                  title: "Architecture",
-                  desc: "Modélisation des données, choix des technologies et sécurisation des API.",
-                },
-                {
-                  step: "03",
-                  title: "Développement",
-                  desc: "Sprints agiles courts, démonstrations en direct et validation continue.",
-                },
-                {
-                  step: "04",
-                  title: "Recette & tests",
-                  desc: "Vérification sur tous les appareils, audits de performance et sécurité.",
-                },
-                {
-                  step: "05",
-                  title: "Livraison & code",
-                  desc: "Mise en ligne, remise du code source et formation vidéo à l'administration.",
-                },
-              ].map((step, i) => (
-                <div key={i} className="p-4 rounded-2xl glass-card border border-border/80 space-y-2 text-center md:text-left">
-                  <span className="text-2xl font-black text-emerald-700 block">
-                    {step.step}
-                  </span>
-                  <h4 className="text-sm font-bold text-foreground">{step.title}</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 3. NOS GARANTIES CONTRACTUELLES (RÉASSURANCE DIRIGEANT) */}
-          <div className="container mx-auto px-4 max-w-5xl space-y-8">
-            <div className="text-center max-w-3xl mx-auto space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Nos 4 engagements contractuels
-              </h3>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Les engagements concrets et vérifiables qui protègent votre investissement.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  icon: Lock,
-                  title: "Pleine propriété du code",
-                  desc: "Vous êtes propriétaire de votre projet, avec cession contractuelle 100% du code source et accès complets à vos comptes d'hébergement.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Garantie 30 jours incluse",
-                  desc: "Tout dysfonctionnement identifié dans les 30 jours suivant la livraison est pris en charge et résolu en priorité sans frais.",
-                },
-                {
-                  icon: Compass,
-                  title: "Hébergement au choix",
-                  desc: "Déploiement sur votre infrastructure ou nos serveurs haute disponibilité (Vercel, AWS, Cloudflare, VPS).",
-                },
-                {
-                  icon: Clock,
-                  title: "Délais & tarifs forfaitaires",
-                  desc: "Un devis clair, un budget ferme et un planning d'exécution validé ensemble dès le départ.",
-                },
-              ].map((g, i) => {
-                const IconG = g.icon;
-                return (
-                  <div key={i} className="p-5 rounded-2xl glass-card border border-border/80 space-y-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center">
-                      <IconG className="w-5 h-5" />
-                    </div>
-                    <h4 className="text-base font-bold text-foreground">{g.title}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{g.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
+            <MethodSteps />
           </div>
 
           {/* FAQ : LEVER LES FREINS AVANT DE SE LANCER */}
@@ -432,7 +330,7 @@ export const Services = () => {
                 Vous avez une idée d'application ou un site à concrétiser ?
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Présentez-nous votre besoin. Nous étudions la faisabilité technique et vous transmettons une proposition détaillée sous 24h ouvrées.
+                Décrivez-nous votre besoin : nous vous disons ce qui est faisable et vous envoyons une proposition détaillée sous 24 h ouvrées.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                 <Button
@@ -456,14 +354,12 @@ export const Services = () => {
             </div>
           </div>
 
-        </div>
-      )}
+      </section>
 
       {/* ═══════════════════════════════════════════
-          SECTION 2 : PÔLE ARCHITECTURE SI & MEGA HOPEX
+          PARTIE 2 : ARCHITECTURE SI & MEGA HOPEX (pour les DSI), en entier
       ═══════════════════════════════════════════ */}
-      {activePole === "si" && (
-        <div className="animate-fade-in space-y-16 md:space-y-24 py-12 md:py-20">
+      <section id="architecture-si" className="scroll-mt-20 space-y-16 md:space-y-24 py-12 md:py-20 border-t border-border/60 bg-secondary/20">
           
           {/* BANDEAU EN-TÊTE DU PÔLE SI */}
           <div className="container mx-auto px-4 max-w-5xl">
@@ -471,23 +367,23 @@ export const Services = () => {
               <div className="absolute top-0 right-0 w-96 h-96 bg-[#C7F36B]/10 rounded-full blur-3xl pointer-events-none" />
               <div className="relative z-10 max-w-3xl space-y-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C7F36B] bg-[#C7F36B]/15 border border-[#C7F36B]/30 px-3 py-1 rounded-full">
-                  <Award className="w-3.5 h-3.5" /> Conseil & Urbanisation des Systèmes d'Information
+                  <Award className="w-3.5 h-3.5" /> Conseil et urbanisation des systèmes d'information
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
-                  Prenez le contrôle de votre patrimoine applicatif et sécurisez vos trajectoires SI.
+                  Une vue claire de votre SI et des décisions documentées.
                 </h2>
                 <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
-                  DSI, Architectes d'Entreprise et Responsables de Transformation : nous intervenons pour cartographier vos flux, réduire la dette technique, structurer vos référentiels MEGA HOPEX V5 et formaliser des dossiers d'architecture technique (DAT) rigoureux.
+                  DSI, architectes d'entreprise et responsables de transformation : nous intervenons pour cartographier vos flux, réduire la dette technique, structurer vos référentiels MEGA HOPEX V5 et formaliser vos dossiers d'architecture technique (DAT).
                 </p>
                 <div className="pt-2 flex flex-wrap gap-4 text-xs text-slate-200 font-medium">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Expertise Certifiée MEGA HOPEX V5
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Expertise certifiée MEGA HOPEX V5
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Missions Grands Comptes (Covéa, La Banque Postale)
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Missions grands comptes (Covéa, La Banque Postale)
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Régie spécialisée ou Forfait ciblé
+                    <CheckCircle2 className="w-4 h-4 text-[#C7F36B]" /> Régie spécialisée ou forfait ciblé
                   </span>
                 </div>
                 <div className="pt-3 flex flex-wrap gap-3">
@@ -509,7 +405,7 @@ export const Services = () => {
                 Les défis d'architecture SI que nous résolvons
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Une intervention ciblée sur les véritables points de friction des directions informatiques.
+                Les situations pour lesquelles les DSI nous sollicitent le plus souvent.
               </p>
             </div>
 
@@ -557,7 +453,7 @@ export const Services = () => {
           </div>
 
           {/* PREUVES : MISSIONS SI */}
-          <PoleProjects pole="si" />
+          <PoleProjects pole="si" limit={1} title="Une mission récente" />
 
           {/* 2. LES 4 MISSIONS CONCRÈTES & LIVRABLES */}
           <div className="container mx-auto px-4 max-w-5xl space-y-8">
@@ -566,7 +462,7 @@ export const Services = () => {
                 Nos prestations d'architecture SI et leurs livrables
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Chaque mission débouche sur des livrables tangibles, vérifiables et immédiatement exploitables par vos équipes.
+                Chaque mission se termine par des livrables que vos équipes reprennent directement.
               </p>
             </div>
 
@@ -575,9 +471,9 @@ export const Services = () => {
                 {
                   icon: Layers,
                   title: "Cartographie & urbanisation du SI",
-                  scope: "Recensement exhaustif des briques logicielles, cartographie des flux d'échanges, découpage en zones fonctionnelles et urbanisation globale.",
+                  scope: "Recensement des briques logicielles, cartographie des flux d'échanges, découpage en zones fonctionnelles et urbanisation globale.",
                   deliverables: [
-                    "Cartographie applicative interactive (Niveaux Fonctionnel, Applicatif, Technique)",
+                    "Cartographie applicative interactive (niveaux fonctionnel, applicatif et technique)",
                     "Matrice des flux et interfaces d'intégration",
                     "Schémas d'urbanisation conformes aux standards d'entreprise",
                   ],
@@ -585,7 +481,7 @@ export const Services = () => {
                 {
                   icon: Database,
                   title: "Administration & configuration MEGA HOPEX",
-                  scope: "Paramétrage expert de la plateforme MEGA HOPEX V5 / V2R1, modélisation des référentiels, automatisation par scripts et gouvernance des données.",
+                  scope: "Paramétrage de la plateforme MEGA HOPEX V5 / V2R1, modélisation des référentiels, automatisation par scripts et gouvernance des données.",
                   deliverables: [
                     "Métamodèle personnalisé et référentiel nettoyé",
                     "Scripts d'automatisation des imports/exports (VB.Net / VBScript / API)",
@@ -599,7 +495,7 @@ export const Services = () => {
                   deliverables: [
                     "Dossiers d'architecture technique (DAT) complets et validés",
                     "Matrices d'impact technique et d'évaluation des risques",
-                    "Trajectoire cible (état actuel 'As-Is' vers cible 'To-Be')",
+                    "Trajectoire cible, de l'existant à l'architecture visée",
                   ],
                 },
                 {
@@ -607,7 +503,7 @@ export const Services = () => {
                   title: "Product ownership SI & conduite du changement",
                   scope: "Rapprochement des équipes métiers et informatiques, formalisation des besoins, rédaction de spécifications fonctionnelles et animation des rituels.",
                   deliverables: [
-                    "Backlog produit priorisé et User Stories détaillées",
+                    "Backlog priorisé et user stories détaillées",
                     "Cahiers de recette et plans de validation métiers",
                     "Sessions de formation et transfert d'autonomie aux équipes internes",
                   ],
@@ -655,7 +551,7 @@ export const Services = () => {
                 Comment se déroule une mission d'architecture avec RAMSIN ?
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Une démarche cadrée, collaborative et transparente du premier échange à la restitution finale.
+                Quatre étapes, du premier échange à la remise des livrables.
               </p>
             </div>
 
@@ -724,8 +620,7 @@ export const Services = () => {
             </div>
           </div>
 
-        </div>
-      )}
+      </section>
 
       {/* ═══════════════════════════════════════════
           CTA GLOBAL BAS DE PAGE

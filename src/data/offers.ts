@@ -45,6 +45,8 @@ export interface Offer {
   faq: OfferFaq[];
   /** Guides liés (slugs de src/data/guides.ts) */
   relatedGuides: string[];
+  /** Études de cas montrées sur la page : seulement des projets du même type que l'offre */
+  relatedProjects: string[];
   schema: { name: string; serviceType: string };
 }
 
@@ -57,7 +59,7 @@ export const OFFERS: Offer[] = [
     serviceParam: "web",
     seoTitle: "Création d'application mobile iOS & Android | RAMSIN",
     seoDescription:
-      "Développeur d'application mobile iOS & Android (React Native), Paris et Île-de-France. De l'idée aux stores, code cédé à 100 %. 30 min de cadrage offertes.",
+      "Création d'application mobile iOS et Android, de l'idée à la publication sur les stores. Code à votre nom. Paris, Île-de-France. 30 min offertes.",
     kicker: "Application mobile iOS & Android",
     h1: "Créez votre application mobile, publiée sur l'App Store et Google Play",
     lead:
@@ -83,8 +85,8 @@ export const OFFERS: Offer[] = [
         text: "Notifications push, caméra, géolocalisation, paiement intégré, fonctionnement hors-ligne et synchronisation : selon ce que votre usage demande.",
       },
       {
-        title: "Un back-office et une API",
-        text: "Pour administrer vos contenus, vos utilisateurs et vos commandes : tableau de bord web, API sécurisée (Node.js, PostgreSQL) et comptes à votre nom.",
+        title: "Un espace d'administration",
+        text: "Pour gérer vos contenus, vos utilisateurs et vos commandes depuis un tableau de bord, avec des comptes à votre nom.",
       },
       {
         title: "La pleine propriété",
@@ -119,15 +121,16 @@ export const OFFERS: Offer[] = [
       },
     ],
     relatedGuides: ["cahier-des-charges-application", "application-native-react-native-ou-web"],
+    relatedProjects: ["dabari"],
     schema: { name: "Création d'application mobile iOS & Android", serviceType: "Développement d'applications mobiles" },
   },
   {
     ...link("application-web"),
     pole: "web",
     serviceParam: "web",
-    seoTitle: "Développement d'application web & SaaS sur-mesure | RAMSIN",
+    seoTitle: "Développement d'application web sur-mesure | RAMSIN",
     seoDescription:
-      "Application web, SaaS, portail client ou outil métier sur-mesure (Next.js, Node.js). Code cédé à 100 %, démos chaque semaine. Paris, Île-de-France et à distance.",
+      "Application web, SaaS, portail client ou outil métier sur-mesure. Code à votre nom, une version à tester chaque semaine. Paris et à distance.",
     kicker: "Application web & logiciel SaaS",
     h1: "Une application web sur-mesure qui fait tourner votre activité",
     lead:
@@ -158,7 +161,7 @@ export const OFFERS: Offer[] = [
       },
       {
         title: "Un code propre, documenté et cédé",
-        text: "Next.js, TypeScript, Node.js, PostgreSQL : des technologies pérennes, un dépôt à votre nom et une documentation pour reprendre le projet à tout moment.",
+        text: "Des technologies répandues et durables, un code à votre nom et une documentation pour reprendre le projet à tout moment.",
       },
       {
         title: "Hébergement et maintenance",
@@ -189,15 +192,16 @@ export const OFFERS: Offer[] = [
       },
     ],
     relatedGuides: ["cahier-des-charges-application", "application-native-react-native-ou-web"],
+    relatedProjects: ["dabari", "maison-hamdiwashukri"],
     schema: { name: "Développement d'application web & SaaS sur-mesure", serviceType: "Développement d'applications web" },
   },
   {
     ...link("site-ecommerce"),
     pole: "web",
     serviceParam: "web",
-    seoTitle: "Création de site internet & e-commerce sur-mesure | RAMSIN",
+    seoTitle: "Création de site internet et e-commerce | RAMSIN",
     seoDescription:
-      "Site vitrine ou boutique en ligne sur-mesure (Next.js, Stripe) : rapide, bien référencé, à votre nom. Paris, Val-de-Marne, Île-de-France. 30 min offertes.",
+      "Site vitrine ou boutique en ligne sur-mesure : rapide, bien référencé et à votre nom. Paris, Val-de-Marne et Île-de-France. 30 min de cadrage offertes.",
     kicker: "Site vitrine & boutique en ligne",
     h1: "Un site internet qui transforme vos visiteurs en clients",
     lead:
@@ -255,6 +259,7 @@ export const OFFERS: Offer[] = [
       },
     ],
     relatedGuides: ["site-vitrine-ou-boutique-en-ligne", "cahier-des-charges-application"],
+    relatedProjects: ["maison-hamdiwashukri", "leclat-du-chef"],
     schema: { name: "Création de site internet & e-commerce", serviceType: "Conception de sites web et boutiques en ligne" },
   },
 ];

@@ -1,9 +1,9 @@
 import HeroSection from "@/components/index/HeroSection";
-import ClientsSection from "@/components/index/ClientsSection";
 import ProjectsSection from "@/components/index/ProjectsSection";
 import TestimonialsSection from "@/components/index/TestimonialsSection";
 import MethodSection from "@/components/index/MethodSection";
 import GuaranteesSection from "@/components/index/GuaranteesSection";
+import SiSection from "@/components/index/SiSection";
 import BookingWidget from "@/components/index/BookingWidget";
 import SEO from "@/components/SEO";
 
@@ -26,31 +26,31 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Applications web & mobiles sur-mesure, Architecture SI & MEGA HOPEX | RAMSIN"
-        description="De l'idée à l'application en ligne : applications web, mobiles iOS & Android et e-commerce sur-mesure, code à votre nom, hébergement et maintenance. Architecture SI & MEGA HOPEX pour les DSI. 30 min offertes."
+        title="Applications web et mobiles sur-mesure | RAMSIN"
+        description="De l'idée à l'application en ligne : sites, applications web et mobiles à votre nom. Architecture SI et MEGA HOPEX pour les DSI. 30 min offertes."
         canonical="https://www.ramsin.fr/"
         jsonLd={HOME_JSONLD}
       />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-secondary/10">
-        {/* 1. HERO SECTION (Titre, Vidéo Motion Design & Choix de Parcours) */}
+        {/* 1. HERO : promesse web & mobile, vidéo, lien discret pour les DSI, logos des grands comptes */}
         <HeroSection />
 
-        {/* 2. PREUVE SOCIALE & EXPÉRIENCE GRANDS COMPTES (Covéa, La Banque Postale, Société Générale) */}
-        <div className="cv-auto"><ClientsSection /></div>
-
-        {/* 3. ÉTUDES DE CAS EN VEDETTE (Dabari, Maison HamdiWaShukri, L'Éclat du Chef) */}
+        {/* 2. RÉALISATIONS WEB & MOBILE (Dabari, Maison HamdiWaShukri, L'Éclat du Chef) */}
         <div className="cv-auto"><ProjectsSection /></div>
 
-        {/* 3 bis. AVIS CLIENTS : affichés seulement une fois écrits et validés par les clients (src/data/testimonials.ts) */}
+        {/* 2 bis. AVIS CLIENTS : affichés seulement une fois écrits et validés par les clients (src/data/testimonials.ts) */}
         <div className="cv-auto"><TestimonialsSection /></div>
 
-        {/* 4. LA MÉTHODE EN 4 ÉTAPES (les deux pôles sont déjà présentés dans le hero) */}
+        {/* 3. LA MÉTHODE EN 4 ÉTAPES */}
         <div className="cv-auto"><MethodSection /></div>
 
-        {/* 5. NOS 3 GARANTIES CONCRÈTES (Budget forfaitaire, Zéro boîte noire, Code cédé & Garantie 30j) */}
+        {/* 4. TROIS GARANTIES ÉCRITES */}
         <div className="cv-auto"><GuaranteesSection /></div>
 
-        {/* 6. CONVERSION FINALE : RÉSERVATION DE CADRAGE OFFERT (30 MIN) */}
+        {/* 5. LE SECOND MÉTIER : ARCHITECTURE SI & MEGA HOPEX, en version courte (détail sur /services#architecture-si) */}
+        <div className="cv-auto"><SiSection /></div>
+
+        {/* 6. CONVERSION FINALE : RÉSERVATION DES 30 MIN OFFERTES */}
         <div className="cv-auto"><BookingWidget /></div>
       </div>
     </>

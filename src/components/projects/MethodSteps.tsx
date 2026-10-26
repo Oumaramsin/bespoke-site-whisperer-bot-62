@@ -11,7 +11,7 @@ const METHOD_STEPS = [
   {
     icon: MessageCircle,
     title: "Groupe WhatsApp dédié",
-    text: "Dès le premier jour, vous parlez en direct avec Oumar, sans intermédiaire.",
+    text: "Dès le premier jour, vous parlez en direct avec RAMSIN, sans intermédiaire.",
   },
   {
     icon: Smartphone,

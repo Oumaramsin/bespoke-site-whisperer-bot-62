@@ -9,12 +9,8 @@ import {
   Phone,
   MapPin,
   ArrowRight,
-  Code2,
-  Database,
-  Layers,
   CheckCircle2,
   Sparkles,
-  Award,
   ShieldCheck,
   Calendar,
   Zap,
@@ -23,7 +19,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
-import PoleProjects from "@/components/projects/PoleProjects";
 
 const ABOUT_JSONLD = {
   "@context": "https://schema.org",
@@ -51,10 +46,8 @@ export const About = () => {
       category: "Architecture SI & Référentiel Entreprise",
       accent: "border-l-[#123A35]",
       description: [
-        "Pilotage et enrichissement continu de la cartographie du SI transverse (applications, flux, socles technologiques)",
-        "Collaboration directe avec les architectes de domaine et responsables d'applications",
-        "Assainissement des métamodèles et résolution des anomalies cartographiques dans MEGA HOPEX V5",
-        "Mise en place de comités de gouvernance et reporting régulier sur la qualité du référentiel SI",
+        "Pilotage de la cartographie du SI transverse (applications, flux, socles technologiques) dans MEGA HOPEX V5",
+        "Fiabilisation du référentiel et comités de gouvernance avec les architectes de domaine",
       ],
     },
     {
@@ -65,10 +58,8 @@ export const About = () => {
       category: "Architecture Solution & Secteur Bancaire",
       accent: "border-l-emerald-600",
       description: [
-        "Cadrage d'architecture applicative et technique sur les projets de transformation du Crédit Immobilier",
-        "Analyses d'impacts d'adhérence des projets à la stratégie SI d'entreprise",
-        "Rédaction complète des Dossiers d'Architecture Technique (DAT) et passage réussi en Design Authority",
-        "Modélisation des processus métiers et des flux inter-applicatifs bancaires sécurisés",
+        "Rédaction des dossiers d'architecture technique (DAT), validés en Design Authority",
+        "Cadrage d'architecture des projets de transformation du crédit immobilier",
       ],
     },
     {
@@ -79,10 +70,8 @@ export const About = () => {
       category: "Expertise MEGA HOPEX & Automatisation API",
       accent: "border-l-[#123A35]",
       description: [
-        "Accompagnement de migrations d'environnements MEGA 2009 vers MEGA HOPEX V2R1",
-        "Développement de scripts d'automatisation en VB.Net et VBScript pour l'API MEGA HOPEX",
-        "Création de tableaux de bord personnalisés et de formulaires de saisie pour les utilisateurs",
-        "Conduite du changement, support technique et formation des architectes clients",
+        "Migrations de MEGA 2009 vers MEGA HOPEX V2R1 et scripts d'automatisation",
+        "Tableaux de bord, formation et accompagnement des architectes clients",
       ],
     },
     {
@@ -93,10 +82,8 @@ export const About = () => {
       category: "Développement Web & AMOA Bancaire",
       accent: "border-l-emerald-600",
       description: [
-        "Conception et développement d'applications web métiers (PHP 7, Symfony, MySQL, JavaScript)",
-        "Développement et consommation d'API REST sécurisées",
-        "Déploiement et administration des environnements sur serveurs Linux",
-        "Animation des cérémonies quotidiennes en méthode Agile (Daily, Sprint Planning)",
+        "Conception et développement d'applications web métiers",
+        "Mise en production et travail en méthode agile avec les équipes métier",
       ],
     },
   ];
@@ -116,55 +103,10 @@ export const About = () => {
     },
   ];
 
-  const skillGroups = [
-    {
-      title: "Architecture & cartographie SI",
-      icon: Layers,
-      accent: "border-l-[#123A35]",
-      items: [
-        "MEGA HOPEX V5 & V2R1",
-        "Cartographie Applicative & Flux",
-        "Dossier d'Architecture Technique (DAT)",
-        "Design Authority & Comités SI",
-        "Urbanisation & Trajectoire Cible",
-        "UML, ArchiMate & MERISE",
-        "Gouvernance des Référentiels",
-      ],
-    },
-    {
-      title: "Développement web & mobile full-stack",
-      icon: Code2,
-      accent: "border-l-emerald-600",
-      items: [
-        "Next.js 15 / 16 (App Router)",
-        "React Native & Expo (iOS / Android)",
-        "TypeScript & Node.js",
-        "Tailwind CSS & shadcn/ui",
-        "PostgreSQL & Prisma ORM",
-        "API REST & Authentification JWT",
-        "Stripe Checkout & PayPal SDK",
-      ],
-    },
-    {
-      title: "Méthodologie, cloud & DevOps",
-      icon: Database,
-      accent: "border-l-[#123A35]",
-      items: [
-        "Product Ownership & User Stories",
-        "Méthodologie Agile / Scrum",
-        "Docker & Conteneurisation",
-        "Hébergement Cloud (Vercel, AWS, VPS)",
-        "Git, GitHub & GitLab CI/CD",
-        "Scripts API (VB.Net / Python)",
-        "Conformité RGPD & Sécurité",
-      ],
-    },
-  ];
-
   const contact = {
     email: "contact@ramsin.fr",
     phone: "+33 (0)7 61 51 88 90",
-    location: "Basés à Fresnes (94) · Interventions Paris & Remote",
+    location: "Basés à Fresnes (94) · Interventions Paris & à distance",
   };
 
   const handleBookingRedirect = () => openBooking("about_footer");
@@ -172,8 +114,8 @@ export const About = () => {
   return (
     <>
       <SEO
-        title="À propos de RAMSIN Conseil | Oumar Sidibé, architecte SI & développeur"
-        description="Découvrez le profil de RAMSIN Conseil : 7 ans d'expérience professionnelle en Architecture SI (MEGA HOPEX V5, grands comptes Covéa, La Banque Postale) et développement Full-Stack sur-mesure."
+        title="À propos de RAMSIN Conseil | Oumar Sidibé"
+        description="RAMSIN Conseil, fondé par Oumar Sidibé : 7 ans en DSI de grands comptes (Covéa, La Banque Postale) et développement d'applications web et mobiles."
         canonical="https://www.ramsin.fr/a-propos"
         jsonLd={ABOUT_JSONLD}
       />
@@ -204,7 +146,7 @@ export const About = () => {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Porté par son fondateur <strong>Oumar Sidibé</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne grands comptes et dirigeants avec une exigence absolue de résultat.
+            Porté par son fondateur <strong>Oumar Sidibé</strong>, architecte SI diplômé Master 2 et certifié MEGA HOPEX V5, RAMSIN Conseil accompagne aussi bien les DSI de grandes entreprises que les porteurs de projet, du cadrage à la mise en ligne.
           </p>
 
           {/* Liens de contact rapide */}
@@ -247,23 +189,23 @@ export const About = () => {
             {[
               {
                 icon: Users2,
-                title: "1. Un interlocuteur unique, senior",
-                desc: "Pas de commercial qui disparaît après la signature ni de stagiaire envoyé en sous-traitance : vous échangez et travaillez directement avec l'expert qui conçoit vos architectures ou développe votre code.",
+                title: "1. Un seul interlocuteur, expérimenté",
+                desc: "Pas de commercial qui disparaît après la signature, pas de sous-traitance : vous échangez directement avec la personne qui conçoit votre architecture ou écrit votre code.",
               },
               {
                 icon: Zap,
-                title: "2. Circuit de décision court & réactivité",
-                desc: "Démarrage de mission rapide, ajustements agiles en direct et réponse garantie sous 24h ouvrées. Zéro lourdeur administrative d'ESN traditionnelle.",
+                title: "2. Des décisions rapides",
+                desc: "Démarrage rapide, ajustements en direct et réponse sous 24 h ouvrées, sans la lourdeur d'une grosse ESN.",
               },
               {
                 icon: HeartHandshake,
-                title: "3. Transparence budgétaire totale",
-                desc: "Pas de frais de structure superflus d'agence. Des tarifs forfaitaires ou régie clairs, fixés en amont et respectés scrupuleusement.",
+                title: "3. Un budget clair dès le départ",
+                desc: "Pas de frais de structure d'agence. Un forfait ou un tarif en régie fixé avant de commencer, et tenu.",
               },
               {
                 icon: ShieldCheck,
-                title: "4. Souveraineté & propriété contractuelle",
-                desc: "Vos référentiels d'architecture sont documentés pour vos équipes internes et l'intégralité du code source applicatif vous est cédée sans aucun abonnement captif.",
+                title: "4. Vous restez propriétaire",
+                desc: "Vos référentiels d'architecture sont documentés pour vos équipes, et le code source vous est cédé en entier, sans abonnement imposé.",
               },
             ].map((adv, i) => {
               const IconA = adv.icon;
@@ -294,7 +236,7 @@ export const About = () => {
           </CardHeader>
           <CardContent className="p-6 sm:p-8 pt-0 space-y-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
             <p>
-              Dans le monde du numérique, deux univers coexistent souvent sans se comprendre : les cabinets de conseil stratégique qui produisent des schémas théoriques, et les développeurs qui codent sans vision d'ensemble du système d'information.
+              Dans le numérique, deux mondes se parlent peu : les cabinets de conseil, qui produisent des schémas, et les développeurs, qui codent sans vue d'ensemble du système d'information.
             </p>
             <p>
               <strong>RAMSIN Conseil a été fondé pour faire le pont entre ces deux mondes.</strong> Fort de 7 années d'expérience professionnelle au cœur de DSI de grandes entreprises régulées (Covéa, La Banque Postale, Société Générale) et d'une maîtrise approfondie du développement Full-Stack moderne (Next.js, React Native, TypeScript, PostgreSQL), j'apporte une double compétence rare :
@@ -313,7 +255,20 @@ export const About = () => {
         </Card>
 
         {/* Réalisations web : la preuve pour les porteurs de projet */}
-        <PoleProjects pole="web" />
+        <Link
+          to="/projets"
+          className="group flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-border/80 bg-card px-6 py-5 hover:border-emerald-600/50 transition-colors"
+        >
+          <span className="text-center sm:text-left">
+            <span className="block text-base font-extrabold text-foreground">Nos réalisations</span>
+            <span className="block text-sm text-muted-foreground">
+              Une marketplace web et mobile, une boutique sur-mesure, un site vitrine de traiteur et deux missions d'architecture SI.
+            </span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-sm font-extrabold text-emerald-700 group-hover:gap-2.5 transition-all shrink-0">
+            Voir les études de cas <ArrowRight className="w-4 h-4" />
+          </span>
+        </Link>
 
         {/* ═══════════════════════════════════════════
             3. EXPÉRIENCES & RÉFÉRENCES PROFESSIONNELLES
@@ -404,53 +359,6 @@ export const About = () => {
         </div>
 
         {/* ═══════════════════════════════════════════
-            5. COMPÉTENCES TECHNIQUES ORGANISÉES
-        ═══════════════════════════════════════════ */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
-              <Award className="w-6 h-6" />
-            </div>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                Compétences & outils
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Les technologies et standards réellement déployés en production.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {skillGroups.map((grp, i) => {
-              const IconG = grp.icon;
-              return (
-                <Card key={i} className={`border border-border/80 border-l-4 ${grp.accent} glass-card rounded-2xl`}>
-                  <CardHeader className="p-4 pb-2 space-y-1">
-                    <div className="flex items-center gap-2 text-foreground font-bold text-sm">
-                      <IconG className="w-4 h-4 text-primary" />
-                      <span>{grp.title}</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-1">
-                    <div className="flex flex-wrap gap-1.5">
-                      {grp.items.map((it, idx) => (
-                        <span
-                          key={idx}
-                          className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg text-secondary-foreground border border-border/40"
-                        >
-                          {it}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ═══════════════════════════════════════════
             BANDEAU D'APPEL À L'ACTION
         ═══════════════════════════════════════════ */}
         <div
@@ -464,7 +372,7 @@ export const About = () => {
             Vous souhaitez valider la faisabilité de votre mission ou projet ?
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
-            Échangez directement avec Oumar Sidibé lors d'une session de cadrage technique offerte de 30 minutes sans aucun engagement.
+            Échangez directement avec RAMSIN lors d'une session de cadrage technique offerte de 30 minutes, sans aucun engagement.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button

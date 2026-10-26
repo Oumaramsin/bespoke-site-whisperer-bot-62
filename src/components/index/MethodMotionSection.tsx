@@ -46,8 +46,8 @@ const VALUE_PILLARS = [
   },
   {
     icon: Mic,
-    title: "2. Groupe WhatsApp dédié avec Oumar",
-    text: "Échangez en direct dès le premier jour avec Oumar Sidibé, sans intermédiaire ni jargon.",
+    title: "2. Groupe WhatsApp dédié",
+    text: "Échangez en direct dès le premier jour avec RAMSIN, sans intermédiaire ni jargon.",
   },
   {
     icon: Eye,
@@ -324,7 +324,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
           </div>
 
           <div className="space-y-1 sm:space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider mb-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C7F36B]/20 border border-[#C7F36B]/40 text-[#C7F36B] text-xs font-mono font-bold uppercase tracking-wider mb-1">
               <Sparkles className="w-3 h-3 text-[#C7F36B]" /> Présentation en vidéo ({fmt(duration)})
             </div>
             <h3 className="hidden sm:block text-3xl font-black text-white tracking-tight leading-snug">
@@ -332,7 +332,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
               <span className="block text-[#C7F36B]">Découvrez la méthode RAMSIN en images.</span>
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto hidden sm:block">
-              Zéro jargon technique, un groupe WhatsApp dédié avec Oumar Sidibé, et vous testez votre projet en direct chaque semaine.
+              Zéro jargon technique, un groupe WhatsApp dédié avec RAMSIN, et vous testez votre projet en direct chaque semaine.
             </p>
           </div>
         </div>
@@ -350,7 +350,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
           </h3>
 
           <p className="hidden sm:block text-sm text-slate-300 max-w-md leading-relaxed">
-            30 minutes offertes avec <strong>Oumar Sidibé</strong> pour clarifier votre besoin, définir vos priorités et structurer votre projet, sans aucun engagement.
+            30 minutes offertes avec <strong>RAMSIN</strong> pour clarifier votre besoin, définir vos priorités et structurer votre projet, sans aucun engagement.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 sm:pt-2 w-full max-w-md justify-center">
@@ -544,7 +544,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             <span className="block gradient-text mt-1">Donnons-lui vie ensemble.</span>
           </h2>
           <p className="text-muted-foreground text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Pas de cahier des charges de 50 pages, un groupe WhatsApp dédié avec Oumar Sidibé et votre hébergement clé en main.
+            Pas de cahier des charges de 50 pages, un groupe WhatsApp dédié avec RAMSIN et votre hébergement clé en main.
           </p>
         </div>
 
@@ -561,7 +561,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
                 <span className="text-[10px] font-mono font-bold text-muted-foreground">0{i + 1}</span>
               </div>
               <div className="text-xs sm:text-sm font-extrabold text-foreground">{pl.title}</div>
-              <div className="text-[11px] text-muted-foreground leading-snug">{pl.text}</div>
+              <div className="text-xs text-muted-foreground leading-snug">{pl.text}</div>
             </div>
           ))}
         </div>
@@ -591,7 +591,7 @@ export const MethodMotionSection = ({ embedded = false }: MethodMotionSectionPro
             30 minutes offertes · Échange direct sans engagement commercial · Réponse sous 24h ouvrées.
           </p>
           <div className="pt-4 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Découvrir les expertises &amp; réalisations</span>
+            <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Découvrir les expertises &amp; réalisations</span>
             <ChevronDown className="w-4 h-4 animate-bounce text-muted-foreground" />
           </div>
         </div>

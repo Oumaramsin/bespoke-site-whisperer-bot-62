@@ -177,8 +177,12 @@ export const Offer = ({ id }: { id: OfferId }) => {
           )}
         </section>
 
-        {/* PREUVES */}
-        <PoleProjects pole={offer.pole} />
+        {/* PREUVES : uniquement des projets du même type que l'offre */}
+        <PoleProjects
+          pole={offer.pole}
+          ids={offer.relatedProjects}
+          title={offer.relatedProjects.length === 1 ? "Un projet similaire" : "Des projets similaires"}
+        />
 
         {/* FAQ */}
         <section className="container mx-auto px-4 max-w-3xl space-y-8">
@@ -210,7 +214,7 @@ export const Offer = ({ id }: { id: OfferId }) => {
                   to={`/guides/${g.slug}`}
                   className="block p-5 rounded-2xl glass-card border border-border/80 hover-lift space-y-2"
                 >
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     <BookOpen className="w-3.5 h-3.5" /> {g.kicker} · {g.readingMinutes} min
                   </span>
                   <h3 className="text-base font-bold text-foreground leading-snug">{g.title}</h3>

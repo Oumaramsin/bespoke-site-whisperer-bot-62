@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 
-/** Champ à renseigner par RAMSIN avant la mise en ligne (volontairement visible) */
-const ToFill = ({ label }: { label: string }) => (
-  <mark className="bg-amber-200/70 text-amber-950 rounded px-1.5 py-0.5 font-semibold">[{label} — à compléter]</mark>
-);
-
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="space-y-3">
     <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">{title}</h2>
@@ -30,11 +25,11 @@ export const MentionsLegales = () => (
     <LegalLayout title="Mentions légales">
       <Section title="Éditeur du site">
         <p>
-          <strong>RAMSIN Conseil SAS</strong>, société par actions simplifiée au capital de <ToFill label="capital social" />,
-          immatriculée au RCS de <ToFill label="ville du RCS" /> sous le numéro <ToFill label="SIREN" />.
+          <strong>RAMSIN</strong>, société par actions simplifiée unipersonnelle (SASU) au capital de 300 €, immatriculée au RCS de
+          Créteil sous le numéro 941 420 408, exerçant sous le nom RAMSIN Conseil.
         </p>
-        <p>Siège social : <ToFill label="adresse complète" />, 94260 Fresnes, France.</p>
-        <p>Numéro de TVA intracommunautaire : <ToFill label="n° TVA" /></p>
+        <p>Siège social : 27 rue des Frères Lumière, 94260 Fresnes, France.</p>
+        <p>Numéro de TVA intracommunautaire : FR21 941 420 408</p>
         <p>
           Contact : <a href="mailto:contact@ramsin.fr" className="text-primary font-semibold">contact@ramsin.fr</a> ·{" "}
           <a href="tel:+33761518890" className="text-primary font-semibold">+33 (0)7 61 51 88 90</a>
@@ -43,7 +38,11 @@ export const MentionsLegales = () => (
       </Section>
 
       <Section title="Hébergement">
-        <p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — vercel.com</p>
+        <p>
+          Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis ·{" "}
+          <a href="https://vercel.com" className="text-primary font-semibold" target="_blank" rel="noopener noreferrer">vercel.com</a>
+        </p>
+        <p>Le site est hébergé en Europe : il est servi depuis les serveurs européens de Vercel, et le formulaire de contact est traité à Paris.</p>
       </Section>
 
       <Section title="Propriété intellectuelle">
@@ -72,7 +71,10 @@ export const Confidentialite = () => (
     <SEO title="Politique de confidentialité | RAMSIN Conseil" description="Comment RAMSIN Conseil collecte, utilise et protège les données transmises via ramsin.fr." canonical="https://www.ramsin.fr/confidentialite" />
     <LegalLayout title="Politique de confidentialité">
       <Section title="Responsable du traitement">
-        <p>RAMSIN Conseil SAS, Fresnes (94260) — contact : <a href="mailto:contact@ramsin.fr" className="text-primary font-semibold">contact@ramsin.fr</a>.</p>
+        <p>
+          RAMSIN (SASU, RCS Créteil 941 420 408), 27 rue des Frères Lumière, 94260 Fresnes · contact :{" "}
+          <a href="mailto:contact@ramsin.fr" className="text-primary font-semibold">contact@ramsin.fr</a>.
+        </p>
       </Section>
 
       <Section title="Données collectées et finalités">

@@ -293,3 +293,12 @@
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(59, 130, 246, 0.8);
 }
+
+@layer base {
+  /* Titres équilibrés : jamais un mot seul sur la dernière ligne */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}

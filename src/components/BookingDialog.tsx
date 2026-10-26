@@ -42,7 +42,7 @@ export const BookingDialog = () => {
         <DialogHeader className="space-y-1 px-5 pb-3 pt-5 text-left sm:px-6">
           <DialogTitle className="text-lg font-extrabold sm:text-xl">Réservez vos 30 minutes offertes</DialogTitle>
           <DialogDescription className="text-sm">
-            Échange direct avec Oumar Sidibé, en visio ou par téléphone, sans engagement. Choisissez le créneau qui vous convient.
+            Échange direct avec RAMSIN, en visio ou par téléphone, sans engagement. Choisissez le créneau qui vous convient.
           </DialogDescription>
         </DialogHeader>
 

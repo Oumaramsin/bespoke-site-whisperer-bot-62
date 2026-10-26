@@ -190,7 +190,7 @@ export const Contact = () => {
 
       toast({
         title: "Demande transmise avec succès !",
-        description: "Merci pour votre message. Oumar Sidibé vous recontactera sous 24h ouvrées.",
+        description: "Merci pour votre message. Nous vous recontactons sous 24 h ouvrées.",
       });
     } catch (error) {
       // Échec réel de l'envoi : on conserve la saisie et on propose les coordonnées directes
@@ -238,7 +238,7 @@ export const Contact = () => {
     <>
       <SEO
         title="Contact & prise de rendez-vous | RAMSIN Conseil"
-        description="Contactez RAMSIN Conseil pour vos besoins en Architecture SI (MEGA HOPEX V5) ou conception d'applications web & mobiles sur-mesure. Réponse assurée sous 24h ouvrées."
+        description="Réservez 30 minutes offertes ou décrivez votre projet par écrit : applications web et mobiles, architecture SI. Réponse sous 24 h ouvrées."
         canonical="https://www.ramsin.fr/contact"
       />
 
@@ -258,24 +258,26 @@ export const Contact = () => {
               Parlons de votre projet
             </h1>
             <p className="text-muted-foreground text-base sm:text-xl leading-relaxed max-w-2xl mx-auto">
-              Réservez 30 minutes offertes dans l'agenda d'Oumar Sidibé, ou décrivez votre projet par écrit : réponse sous 24 h ouvrées.
+              Réservez 30 minutes offertes dans notre agenda, ou décrivez votre projet par écrit : réponse sous 24 h ouvrées.
             </p>
           </div>
 
           {/* COORDONNÉES DIRECTES : e-mail, téléphone et localisation, visibles dès l'arrivée */}
           <h2 className="sr-only">Nos coordonnées</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-8 md:mb-12">
             <Card className="hover:border-primary/40 transition-colors hover-lift glass-card">
-              <CardHeader className="pb-3">
-                <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
-                  <Mail className="h-6 w-6" />
+              <CardHeader className="p-4 pb-2 md:p-6 md:pb-3 flex-row md:flex-col items-center md:items-start gap-3 md:gap-0 space-y-0 md:space-y-1.5">
+                <div className="p-2 md:p-2.5 bg-primary/10 rounded-xl w-fit text-primary shrink-0 md:mb-2">
+                  <Mail className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <CardTitle className="text-lg">E-mail direct</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">
-                  Pour un dossier, un cahier des charges ou une question
-                </CardDescription>
+                <div className="space-y-1 min-w-0">
+                  <CardTitle className="text-base md:text-lg">E-mail direct</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
+                    Pour un dossier, un cahier des charges ou une question
+                  </CardDescription>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                 <div onClick={() => trackConversionEvent("copy_email")}>
                   <CopyEmailButton
                     email="contact@ramsin.fr"
@@ -286,16 +288,18 @@ export const Contact = () => {
             </Card>
 
             <Card className="hover:border-primary/40 transition-colors hover-lift glass-card">
-              <CardHeader className="pb-3">
-                <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
-                  <Phone className="h-6 w-6" />
+              <CardHeader className="p-4 pb-2 md:p-6 md:pb-3 flex-row md:flex-col items-center md:items-start gap-3 md:gap-0 space-y-0 md:space-y-1.5">
+                <div className="p-2 md:p-2.5 bg-primary/10 rounded-xl w-fit text-primary shrink-0 md:mb-2">
+                  <Phone className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <CardTitle className="text-lg">Téléphone direct</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">
-                  Du lundi au vendredi, 9 h à 19 h
-                </CardDescription>
+                <div className="space-y-1 min-w-0">
+                  <CardTitle className="text-base md:text-lg">Téléphone direct</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
+                    Du lundi au vendredi, 9 h à 19 h
+                  </CardDescription>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                 <a
                   href="tel:+33761518890"
                   className="font-bold text-primary hover:underline text-base inline-block py-1"
@@ -306,16 +310,18 @@ export const Contact = () => {
             </Card>
 
             <Card className="hover:border-primary/40 transition-colors hover-lift glass-card">
-              <CardHeader className="pb-3">
-                <div className="p-2.5 bg-primary/10 rounded-xl w-fit text-primary mb-2">
-                  <MapPin className="h-6 w-6" />
+              <CardHeader className="p-4 pb-2 md:p-6 md:pb-3 flex-row md:flex-col items-center md:items-start gap-3 md:gap-0 space-y-0 md:space-y-1.5">
+                <div className="p-2 md:p-2.5 bg-primary/10 rounded-xl w-fit text-primary shrink-0 md:mb-2">
+                  <MapPin className="h-5 w-5 md:h-6 md:w-6" />
                 </div>
-                <CardTitle className="text-lg">Localisation & mobilité</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">
-                  Sur place ou à distance
-                </CardDescription>
+                <div className="space-y-1 min-w-0">
+                  <CardTitle className="text-base md:text-lg">Localisation & mobilité</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
+                    Sur place ou à distance
+                  </CardDescription>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 pt-0 md:p-6 md:pt-0">
                 <p className="font-semibold text-foreground text-sm">
                   Basés à Fresnes (94)
                   <br />
@@ -355,7 +361,7 @@ export const Contact = () => {
                   <div className="p-3 mb-2 rounded-xl bg-primary/10 border border-primary/30 flex items-center gap-2.5 text-xs text-primary font-bold animate-pulse-gentle">
                     <Sparkles className="w-4 h-4 text-emerald-700 shrink-0" />
                     <span>
-                      Tunnel Express 2 min : Décrivez votre besoin sans délai ci-dessous. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées.
+                      Décrivez votre projet en quelques lignes : nous vous répondons sous 24 h ouvrées.
                     </span>
                   </div>
                 ) : (
@@ -370,7 +376,7 @@ export const Contact = () => {
                   Décrivez votre projet en 2 minutes
                 </CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Quatre champs suffisent, pas besoin de cahier des charges. Oumar Sidibé étudie votre demande et vous répond sous 24h ouvrées avec de premières pistes.
+                  Quelques lignes suffisent, pas besoin de cahier des charges. Nous étudions votre demande et vous répondons sous 24 h ouvrées avec de premières pistes.
                 </CardDescription>
               </CardHeader>
 
@@ -387,7 +393,7 @@ export const Contact = () => {
                         Demande bien reçue !
                       </h3>
                       <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                        Merci pour votre confiance. Votre message a bien été transmis directement à <strong>Oumar Sidibé</strong>.
+                        Merci pour votre confiance. Votre message nous a bien été transmis.
                       </p>
                     </div>
 
@@ -636,7 +642,7 @@ export const Contact = () => {
                           )}
                         </Button>
 
-                        <p className="text-[11px] text-center text-muted-foreground flex items-center justify-center gap-1.5">
+                        <p className="text-xs text-center text-muted-foreground flex items-center justify-center gap-1.5">
                           <Lock className="w-3 h-3 text-emerald-600 shrink-0" />
                           <span>
                             Vos informations servent uniquement à répondre à votre demande. Zéro spam.{" "}
@@ -661,7 +667,7 @@ export const Contact = () => {
                 </CardHeader>
                 <CardContent className="space-y-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   <p>
-                    Chaque demande est analysée personnellement par Oumar Sidibé pour vous apporter une réponse constructive, des premières pistes techniques et une estimation réaliste.
+                    Chaque demande est étudiée personnellement pour vous apporter une réponse constructive, des premières pistes techniques et une estimation réaliste.
                   </p>
                 </CardContent>
               </Card>

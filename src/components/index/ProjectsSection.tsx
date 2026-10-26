@@ -1,19 +1,17 @@
-import { useState } from "react";
 import { PROJECTS_DATA } from "@/data/projects";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Award, Laptop, Layers } from "lucide-react";
+import { ArrowRight, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { trackConversionEvent } from "@/lib/analytics";
 import ProjectCard from "@/components/projects/ProjectCard";
 
 export const ProjectsSection = () => {
-  const [activeTab, setActiveTab] = useState<"web" | "si">("web");
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
-  const displayedProjects = PROJECTS_DATA.filter((p) => p.pole === activeTab);
+  // Accueil centré sur le web et le mobile : les missions SI sont présentées dans la section dédiée plus bas
+  const displayedProjects = PROJECTS_DATA.filter((p) => p.pole === "web");
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-secondary/20 via-background to-secondary/15 relative overflow-hidden">
@@ -47,33 +45,6 @@ export const ProjectsSection = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-            {/* Toggle Web vs SI */}
-            <div className="inline-flex p-1 rounded-xl bg-muted/80 border border-border/80 shadow-2xs">
-              {(
-                [
-                  { key: "web", label: "Web & mobile", icon: Laptop },
-                  { key: "si", label: "Architecture SI & MEGA HOPEX", icon: Layers },
-                ] as const
-              ).map(({ key, label, icon: Icon }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    setActiveTab(key);
-                    trackConversionEvent("switch_projects_tab", { tab: key });
-                  }}
-                  className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-lg transition-all cursor-pointer flex items-center gap-2 ${
-                    activeTab === key
-                      ? "bg-card text-foreground shadow-xs border border-border/60"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 text-primary" />
-                  {label} ({PROJECTS_DATA.filter((p) => p.pole === key).length})
-                </button>
-              ))}
-            </div>
-
             <Button asChild variant="outline" className="gap-2 font-bold hover-lift border-primary/30 hover:border-primary/60 text-xs sm:text-sm">
               <Link to="/projets">
                 Toutes les réalisations <ArrowRight className="w-4 h-4" />
@@ -85,9 +56,7 @@ export const ProjectsSection = () => {
         {/* Grille des cartes projets */}
         <div
           ref={cardsRef}
-          className={`grid grid-cols-1 sm:grid-cols-2 ${
-            activeTab === "web" ? "lg:grid-cols-3" : "max-w-5xl mx-auto"
-          } gap-6 scroll-fade-up ${cardsVisible ? "is-visible" : ""}`}
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 scroll-fade-up ${cardsVisible ? "is-visible" : ""}`}
         >
           {displayedProjects.map((project) => (
             <ProjectCard key={project.id} project={project} source="home_projects" />

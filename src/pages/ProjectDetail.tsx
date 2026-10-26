@@ -60,6 +60,21 @@ export const ProjectDetail = () => {
     ];
   }, [project]);
 
+  // Titre et description courts pour Google (environ 60 et 155 caractères avant la coupure)
+  const seoTitle = (() => {
+    if (!project) return "";
+    const label = project.categoryLabel.charAt(0).toLowerCase() + project.categoryLabel.slice(1);
+    const long = `${project.client}, ${label} | RAMSIN`;
+    return long.length <= 60 ? long : `${project.client} : étude de cas | RAMSIN`;
+  })();
+  const seoDescription = (() => {
+    if (!project) return "";
+    const text = project.summary;
+    if (text.length <= 158) return text;
+    const cut = text.slice(0, 155);
+    return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+  })();
+
   // Identifiant inconnu : Vercel répond avec dist/404.html (page NotFound pré-rendue), le client doit afficher la même chose
   if (!project) return <NotFound />;
 
@@ -89,8 +104,8 @@ export const ProjectDetail = () => {
   return (
     <>
       <SEO
-        title={`${project.client} — ${project.headline} | Étude de cas RAMSIN`}
-        description={`${project.summary} Le défi, la solution construite et le résultat obtenu pour ${project.clientCompany}.`}
+        title={seoTitle}
+        description={seoDescription}
         canonical={`https://www.ramsin.fr/projets/${project.id}`}
         jsonLd={jsonLd}
       />
@@ -257,7 +272,7 @@ export const ProjectDetail = () => {
                 <span className="text-xs font-bold text-muted-foreground inline-flex items-center gap-1.5"><Layers className="w-3.5 h-3.5" /> Technologies</span>
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {project.stack.map((tech) => (
-                    <span key={tech} className="text-[11px] font-semibold bg-secondary px-2.5 py-1 rounded-lg border border-border/50">{tech}</span>
+                    <span key={tech} className="text-xs font-semibold bg-secondary px-2.5 py-1 rounded-lg border border-border/50">{tech}</span>
                   ))}
                 </div>
               </div>
@@ -267,7 +282,7 @@ export const ProjectDetail = () => {
               <p className="text-lg font-extrabold leading-snug">
                 {isSI ? "Un enjeu d'architecture similaire ?" : `Un projet comme ${project.client} ?`}
               </p>
-              <p className="text-sm text-slate-300">30 minutes offertes avec Oumar Sidibé pour en parler, sans engagement.</p>
+              <p className="text-sm text-slate-300">30 minutes offertes avec RAMSIN pour en parler, sans engagement.</p>
               <Button variant="lime" className="w-full rounded-xl gap-2 cursor-pointer" onClick={() => book("aside")}>
                 <Calendar className="w-4 h-4" /> Réserver 30 min offertes
               </Button>

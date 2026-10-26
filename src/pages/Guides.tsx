@@ -63,7 +63,7 @@ export const Guides = () => (
             className="flex flex-col justify-between p-6 rounded-2xl glass-card border border-border/80 hover-lift space-y-3"
           >
             <div className="space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-primary">{g.kicker}</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">{g.kicker}</span>
               <h2 className="text-lg sm:text-xl font-extrabold text-foreground leading-snug">{g.title}</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">{g.description}</p>
             </div>

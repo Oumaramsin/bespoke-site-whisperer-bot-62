@@ -39,7 +39,7 @@ export const Guide = () => {
       inLanguage: "fr-FR",
       datePublished: guide.datePublished,
       dateModified: guide.dateModified,
-      author: { "@type": "Person", name: "Oumar Sidibé", url: `${SITE_URL}/a-propos` },
+      author: { "@type": "Organization", name: "RAMSIN Conseil", url: SITE_URL },
       publisher: {
         "@type": "Organization",
         name: "RAMSIN Conseil",
@@ -72,7 +72,7 @@ export const Guide = () => {
             <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5" /> Par{" "}
-                <Link to="/a-propos" className="font-semibold text-foreground hover:text-primary">Oumar Sidibé</Link>
+                <Link to="/a-propos" className="font-semibold text-foreground hover:text-primary">RAMSIN Conseil</Link>
               </span>
               <span>{formatGuideDate(guide.dateModified)}</span>
               <span className="inline-flex items-center gap-1.5">

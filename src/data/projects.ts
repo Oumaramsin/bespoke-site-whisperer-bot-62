@@ -62,28 +62,28 @@ export const PROJECTS_DATA: Project[] = [
     summary: "Conception intégrale d'une marketplace web & mobile connectant la diaspora africaine aux traiteurs de proximité et au transport collaboratif GP.",
     context: "Digitaliser et sécuriser les commandes de restauration africaine authentique et les envois de bagages internationaux vers l'Afrique de l'Ouest.",
     problem: "Prise de commande informelle par réseaux sociaux entraînant des erreurs récurrentes, des retards d'expédition et une absence totale de traçabilité.",
-    ramsinRole: "Lead Développeur Full-Stack & Architecte Solution (Cadrage, UI/UX, Backend Express, Frontend Next.js 15 et Mobile React Native Expo).",
-    solution: "Plateforme tout-en-un avec devis automatisés, validation d'adresses, timeline de suivi en 5 étapes et paiements Stripe sécurisés.",
+    ramsinRole: "Conception et développement de bout en bout : cadrage, design, site web, application mobile et serveur.",
+    solution: "Une plateforme unique : devis calculés automatiquement, adresses vérifiées, suivi des envois en 5 étapes et paiement en ligne sécurisé.",
     impact: "Paiements sécurisés, devis générés instantanément et gestion des commandes centralisée, sans échanges manuels.",
     shortProblem: "Commandes et devis gérés par messagerie informelle sans traçabilité ni paiement sécurisé.",
-    shortSolution: "Marketplace Next.js 15 & application mobile Expo avec calcul de devis temps réel et Stripe.",
+    shortSolution: "Un site et une application mobile qui calculent les devis en temps réel et encaissent les paiements en ligne.",
     shortImpact: "Paiements sécurisés, devis calculés automatiquement et suivi des envois GP en 5 étapes.",
     highlight: {
       value: "Web, iOS & Android",
       label: "livrés, code cédé"
     },
-    targetAudience: "Diaspora Africaine, Traiteurs Indépendants, Voyageurs GP",
+    targetAudience: "Diaspora africaine, traiteurs indépendants, voyageurs GP",
     deliverables: [
-      "Application Web Next.js 15 (App Router, Tailwind CSS, TypeScript)",
-      "Application Mobile native iOS & Android (React Native, Expo SDK 54)",
-      "Serveur REST Express TypeScript avec ORM Prisma et PostgreSQL",
-      "Système de notifications transactionnelles par emails (Resend)",
-      "Cession intégrale du code source et documentation technique"
+      "Le site web de la plateforme",
+      "L'application mobile pour iPhone et Android",
+      "Le serveur et la base de données qui font tourner les deux",
+      "Les e-mails automatiques de confirmation et de suivi",
+      "Le code source et sa documentation, cédés au client"
     ],
     tasks: [
-      "Cadrage fonctionnel et modélisation de la base de données relationnelle (11 tables)",
-      "Développement de l'API REST avec sécurité JWT et contrôle RBAC",
-      "Déploiement conteneurisé Docker et infrastructure cloud haute disponibilité"
+      "Cadrage des besoins et conception de la base de données",
+      "Comptes utilisateurs sécurisés, avec des droits adaptés à chaque profil",
+      "Mise en ligne sur une infrastructure fiable, facile à faire évoluer"
     ],
     tags: ["Next.js 15", "React Native", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
     stack: ["Next.js 15", "React Native / Expo", "Node.js", "PostgreSQL Prisma", "Docker"],
@@ -109,27 +109,27 @@ export const PROJECTS_DATA: Project[] = [
     summary: "Création d'une boutique e-commerce haut de gamme d'artisanat traditionnel avec configurateur de mensurations sur-mesure et double passerelle de paiement.",
     context: "Digitaliser les ventes d'une maison d'artisanat d'art à destination d'une clientèle internationale exigeante.",
     problem: "Prise de mensurations manuelle par messagerie provoquant des erreurs de confection à l'atelier et freinant l'expansion des ventes.",
-    ramsinRole: "Développeur Full-Stack & Designer UX/UI (Conception du configurateur, intégration Stripe/PayPal et espace client sécurisé).",
-    solution: "Développement d'un configurateur interactif calculant automatiquement les proportions d'atelier, adossé à une boutique Next.js 15 haute performance.",
+    ramsinRole: "Design et développement complet : configurateur de mesures, paiement en ligne et espace client.",
+    solution: "Un configurateur qui calcule automatiquement les mesures pour l'atelier, intégré à une boutique en ligne rapide.",
     impact: "Automatisation du calcul des mensurations d'atelier, suppression des échanges manuels par messagerie et simplification du parcours d'achat international.",
     shortProblem: "Prise de mensurations manuelle par chat avec risque élevé d'erreurs de coupe à l'atelier.",
-    shortSolution: "Configurateur interactif de mensurations, boutique Next.js 15 luxe et paiement Stripe / PayPal.",
+    shortSolution: "Un configurateur de mesures, une boutique en ligne et le paiement par carte ou PayPal.",
     shortImpact: "100 % des mensurations calculées automatiquement et un parcours d'achat simplifié pour la clientèle internationale.",
     highlight: {
       value: "Mensurations",
       label: "calculées automatiquement"
     },
-    targetAudience: "Clients B2C Luxe, Artisans Couturiers, Gestionnaires",
+    targetAudience: "Clientèle haut de gamme, couturiers de l'atelier, gestionnaires",
     deliverables: [
-      "Configurateur interactif de mensurations avec calcul d'atelier automatique",
-      "Tunnel d'achat sécurisé par Carte Bancaire (Stripe) et PayPal",
-      "Espace client avec timeline de suivi de confection en direct",
-      "Panneau d'administration complet pour les stocks, commandes et factures"
+      "Un configurateur qui calcule les mesures pour l'atelier",
+      "Le paiement sécurisé par carte bancaire ou PayPal",
+      "Un espace client pour suivre la confection en direct",
+      "Un espace de gestion des stocks, des commandes et des factures"
     ],
     tasks: [
-      "Design épuré et responsive aux standards du luxe",
-      "Optimisation des Core Web Vitals pour un chargement sous 1 seconde",
-      "Cession intégrale du code source et formation à l'administration"
+      "Un design épuré, adapté au téléphone comme à l'ordinateur",
+      "Des pages qui s'affichent en moins d'une seconde",
+      "Le code source cédé et une formation pour gérer la boutique"
     ],
     tags: ["Next.js 15", "React 19", "TypeScript", "Stripe Checkout", "PayPal API", "PostgreSQL"],
     stack: ["Next.js 15", "React 19", "TypeScript", "Stripe", "PayPal", "PostgreSQL"],
@@ -156,27 +156,27 @@ export const PROJECTS_DATA: Project[] = [
     summary: "Conception et mise en ligne du site vitrine d'un traiteur événementiel haut de gamme (mariages, séminaires, buffets d'entreprise).",
     context: "Professionnaliser l'image de marque et automatiser la réception des demandes de devis d'événements privés et corporatifs.",
     problem: "Site vieillissant et non adapté aux smartphones, entraînant la perte de prospects qualifiés et une surcharge d'appels téléphoniques.",
-    ramsinRole: "Concepteur & Développeur Web (Refonte graphique, intégration SEO locale et formulaire de devis dynamique).",
-    solution: "Site vitrine moderne Noir & Or avec consultation des menus, galerie photos haute résolution et simulateur de devis connecté directement à l'email du chef.",
+    ramsinRole: "Conception et développement du site : nouveau design, référencement local et formulaire de devis.",
+    solution: "Un site vitrine noir et or avec les menus, une galerie photo et un formulaire de devis qui arrive directement dans la boîte mail du chef.",
     impact: "Réception de demandes de devis complètes et pré-qualifiées directement par e-mail, sans ressaisie ni relance.",
-    shortProblem: "Site obsolète sur mobile et absence de tunnel de pré-qualification pour les devis traiteur.",
-    shortSolution: "Site vitrine haute conversion Noir & Or avec simulateur d'estimation et envoi d'email instantané.",
-    shortImpact: "Demandes de devis 100% complètes (date, convives, menu) reçues directement par email.",
+    shortProblem: "Un site dépassé sur mobile et aucun moyen de recevoir des demandes de devis complètes.",
+    shortSolution: "Un site vitrine noir et or avec estimation de devis, envoyée aussitôt par e-mail.",
+    shortImpact: "Des demandes de devis complètes (date, convives, menu) reçues directement par e-mail.",
     highlight: {
       value: "Devis qualifiés",
       label: "reçus directement par e-mail"
     },
-    targetAudience: "Entreprises, Organisateurs de Mariages, Particuliers",
+    targetAudience: "Entreprises, organisateurs de mariages, particuliers",
     deliverables: [
-      "Site vitrine ultra-rapide optimisé mobile, tablette et desktop",
-      "Formulaire de demande de devis événementiel qualifiant (nombre d'invités, date, menu)",
-      "Visionneuse interactive des réalisations et menus téléchargeables",
-      "Référencement SEO local (Google Maps et recherche traiteur Île-de-France)"
+      "Un site rapide, adapté au téléphone, à la tablette et à l'ordinateur",
+      "Un formulaire de devis qui demande la date, le nombre d'invités et le menu",
+      "Une galerie des réalisations et des menus à télécharger",
+      "Un référencement local, sur Google Maps et les recherches « traiteur Île-de-France »"
     ],
     tasks: [
-      "Optimisation des temps de chargement pour un affichage instantané",
-      "Configuration du nom de domaine professionnel et des boîtes e-mails",
-      "Mise en place des balises de suivi et conformité RGPD"
+      "Des pages qui s'affichent tout de suite",
+      "Le nom de domaine et les adresses e-mail professionnelles",
+      "La mesure d'audience et la mise en conformité RGPD"
     ],
     tags: ["Développement Web", "SEO Local", "Lead Generation", "Haute Performance", "Responsive"],
     stack: ["HTML5 / Modern JS", "Tailwind CSS", "API Devis Express", "SEO Local", "Hébergement Cloud"],
