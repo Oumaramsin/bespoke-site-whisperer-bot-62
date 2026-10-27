@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { trackConversionEvent } from "@/lib/analytics";
 import { openBooking } from "@/lib/calendly";
 import MethodMotionSection from "@/components/index/MethodMotionSection";
+import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 
 /** Logos du premier écran (ordinateur) : entreprises où les missions de conseil ont été réalisées */
 const TRUST_LOGOS = [
@@ -93,10 +94,11 @@ const HeroSection = () => {
               </Button>
             </div>
             <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground font-medium">
-              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Sans engagement</li>
-              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Réponse sous 24 h ouvrées</li>
-              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Code cédé à 100 %</li>
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Chaque étape payée après test</li>
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Devis ferme sous 48 h</li>
+              <li className="inline-flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Code et comptes à votre nom</li>
             </ul>
+            <GoogleReviewsBadge />
 
             {/* Second métier : les DSI voient tout de suite que RAMSIN ne fait pas que du web */}
             <p className="text-sm text-muted-foreground pt-1">

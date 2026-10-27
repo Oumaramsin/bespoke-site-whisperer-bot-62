@@ -1,56 +1,79 @@
-import { FileCheck, Eye, ShieldCheck, CheckCircle2, Sparkles } from "lucide-react";
+import { FileCheck, Hand, ShieldCheck, LifeBuoy, CheckCircle2, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+/** Les quatre engagements écrits dans chaque devis : ils répondent aux freins relevés chez les prospects
+ *  (prestataire qui disparaît, prix inconnu, projet qui dérape, personne après la mise en ligne). */
+export const GUARANTEES = [
+  {
+    icon: Hand,
+    badge: "Sans risque",
+    title: "Payé après test, arrêt libre",
+    description:
+      "Vous payez chaque étape seulement après l'avoir testée sur votre téléphone. Vous pouvez arrêter à tout moment et vous gardez tout ce qui est payé.",
+    points: [
+      "Chaque étape payée après test",
+      "Arrêt possible à la fin de chaque étape",
+      "Vous gardez tout ce qui est payé",
+    ],
+  },
+  {
+    icon: ShieldCheck,
+    badge: "Tout est à vous",
+    title: "Code et comptes à votre nom",
+    description:
+      "Le code est déposé chaque semaine sur votre propre compte, avec une documentation pour qu'un autre développeur puisse reprendre si besoin. Stores, hébergement et nom de domaine sont à votre nom dès le départ.",
+    points: [
+      "Code déposé chaque semaine sur votre compte",
+      "Documentation de reprise fournie",
+      "Aucun abonnement imposé",
+    ],
+  },
+  {
+    icon: FileCheck,
+    badge: "Pas de rallonge",
+    title: "Prix ferme et date écrite",
+    description:
+      "Des fourchettes de prix affichées pour chaque type de projet. Le prix ferme est écrit dans le devis envoyé sous 48 h, avec la date de mise en ligne. Tout ajout est chiffré par écrit avant d'être fait.",
+    points: [
+      "Fourchettes de prix affichées, devis ferme sous 48 h",
+      "Date de mise en ligne écrite dans le devis",
+      "Ajouts chiffrés par écrit, jamais imposés",
+    ],
+  },
+  {
+    icon: LifeBuoy,
+    badge: "On reste là",
+    title: "Suivi après la mise en ligne",
+    description:
+      "30 jours de corrections offertes, puis une maintenance mensuelle à prix fixe, sans engagement : mises à jour iOS et Android, sécurité, bugs corrigés sous 2 jours ouvrés.",
+    points: [
+      "30 jours de corrections offertes",
+      "Maintenance à prix fixe, sans engagement",
+      "Bugs corrigés sous 2 jours ouvrés",
+    ],
+  },
+];
+
+const BADGE_COLORS = [
+  "bg-[#C7F36B]/25 text-[#123A35] border-[#C7F36B]/50",
+  "bg-emerald-500/10 text-emerald-800 border-emerald-500/25",
+  "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/25",
+  "bg-teal-500/10 text-teal-800 border-teal-500/25",
+];
 
 export const GuaranteesSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
-  const guarantees = [
-    {
-      icon: FileCheck,
-      badge: "Pas de rallonge",
-      badgeColor: "bg-[#123A35]/10 text-[#123A35] border-[#123A35]/25",
-      title: "Périmètre cadré & budget forfaitaire",
-      description:
-        "On cadre le projet ensemble et vous validez un devis ferme avant le début. Pas de frais cachés, pas de rallonge en cours de route.",
-      points: [
-        "Devis détaillé poste par poste",
-        "Un planning avec des étapes datées",
-        "Prix forfaitaire écrit dans le devis",
-      ],
-    },
-    {
-      icon: Eye,
-      badge: "Vous suivez tout",
-      badgeColor: "bg-[#C7F36B]/25 text-[#123A35] border-[#C7F36B]/50",
-      title: "Une version à tester chaque semaine",
-      description:
-        "Chaque semaine, vous testez la nouvelle version sur un lien privé. Vous donnez vos retours, on ajuste, et rien n'est mis en ligne sans votre accord.",
-      points: [
-        "Un lien de test mis à jour chaque semaine",
-        "Vos retours intégrés au fur et à mesure",
-        "Échanges directs sans jargon technique",
-      ],
-    },
-    {
-      icon: ShieldCheck,
-      badge: "Tout est à vous",
-      badgeColor: "bg-emerald-500/10 text-emerald-800 border-emerald-500/25",
-      title: "Code à votre nom & garantie 30 jours",
-      description:
-        "Le code source et tous les comptes sont à votre nom. Pendant 30 jours après le lancement, nous corrigeons sans frais tout bug constaté.",
-      points: [
-        "Code source cédé par contrat",
-        "Aucun abonnement imposé",
-        "Corrections gratuites pendant 30 jours",
-      ],
-    },
-  ];
+  const guarantees = GUARANTEES.map((g, idx) => ({ ...g, badgeColor: BADGE_COLORS[idx] }));
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-background via-secondary/25 to-background border-t border-border/60 relative overflow-hidden">
+    <section
+      id="garanties"
+      className="scroll-mt-20 py-16 md:py-24 bg-gradient-to-b from-background via-secondary/25 to-background border-t border-border/60 relative overflow-hidden"
+    >
       <div className="container mx-auto px-4 max-w-6xl">
         
         {/* En-tête de section */}
@@ -68,17 +91,17 @@ export const GuaranteesSection = () => {
             Nos engagements
           </Badge>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            Trois garanties écrites pour votre projet
+            Quatre garanties écrites dans votre devis
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Ce à quoi nous nous engageons sur chaque projet, par écrit, avant de commencer.
+            Ce à quoi RAMSIN s'engage sur chaque projet, par écrit, avant de commencer. Vous ne prenez aucun risque sur ce que vous n'avez pas testé.
           </p>
         </div>
 
         {/* Grille des 3 Garanties d'Impact */}
         <div
           ref={cardsRef}
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 scroll-fade-up ${
+          className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-12 scroll-fade-up ${
             cardsVisible ? "is-visible" : ""
           }`}
         >
@@ -88,11 +111,13 @@ export const GuaranteesSection = () => {
               "from-[#123A35] via-[#1c554e] to-[#0a2320]",
               "from-[#C7F36B] via-emerald-400 to-[#123A35]",
               "from-emerald-600 via-teal-500 to-[#123A35]",
+              "from-teal-600 via-[#1c554e] to-[#071816]",
             ];
             const iconStyles = [
               "bg-[#123A35] text-[#C7F36B] shadow-md shadow-[#123A35]/20",
               "bg-[#C7F36B] text-[#071816] shadow-md shadow-[#C7F36B]/30",
               "bg-emerald-700 text-white shadow-md shadow-emerald-700/20",
+              "bg-teal-700 text-white shadow-md shadow-teal-700/20",
             ];
 
             return (

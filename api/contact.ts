@@ -33,6 +33,23 @@ const TIMELINE_LABELS: Record<string, string> = {
   flexible: "Flexible / En réflexion",
 };
 
+// Budget envisagé par le prospect (fourchettes du formulaire) : aucun prix de RAMSIN n'est affiché
+const BUDGET_LABELS: Record<string, string> = {
+  "lt-3k": "Moins de 3 000 €",
+  "3-6k": "3 000 à 6 000 €",
+  "6-10k": "6 000 à 10 000 €",
+  "10-20k": "10 000 à 20 000 €",
+  "gt-20k": "Plus de 20 000 €",
+  unknown: "Je ne sais pas encore",
+};
+
+// Budget prêt ou non : sert à décider entre un appel et une première réponse écrite
+const FUNDING_LABELS: Record<string, string> = {
+  ready: "Oui, il est réservé",
+  "in-progress": "Financement en cours (banque, prêt d'honneur…)",
+  "not-yet": "Pas encore",
+};
+
 const singleLine = (max: number) =>
   z
     .string()
@@ -48,6 +65,12 @@ const contactSchema = z.object({
   serviceType: z.enum(Object.keys(SERVICE_LABELS) as [string, ...string[]]),
   timeline: z
     .enum(Object.keys(TIMELINE_LABELS) as [string, ...string[]])
+    .optional(),
+  budget: z
+    .enum(Object.keys(BUDGET_LABELS) as [string, ...string[]])
+    .optional(),
+  funding: z
+    .enum(Object.keys(FUNDING_LABELS) as [string, ...string[]])
     .optional(),
   // Facultatif depuis le formulaire court : déduit de la prestation si absent
   subject: singleLine(150).optional().default(""),
@@ -141,6 +164,8 @@ const buildContactHtml = (data: z.infer<typeof contactSchema>) => {
     message: escapeHtml(data.message),
     service: escapeHtml(SERVICE_LABELS[data.serviceType]),
     timeline: escapeHtml(data.timeline ? TIMELINE_LABELS[data.timeline] : "Non précisé"),
+    budget: escapeHtml(data.budget ? BUDGET_LABELS[data.budget] : "Non précisé"),
+    funding: escapeHtml(data.funding ? FUNDING_LABELS[data.funding] : "Non précisé"),
   };
 
   return `
@@ -158,6 +183,8 @@ const buildContactHtml = (data: z.infer<typeof contactSchema>) => {
           ${row("Téléphone", safe.phone)}
           ${row("Prestation Souhaitée", safe.service, "color: #2563eb; font-weight: 700;")}
           ${row("Délai Souhaité", safe.timeline, "color: #059669; font-weight: 700;")}
+          ${row("Budget envisagé", safe.budget, "color: #059669; font-weight: 700;")}
+          ${row("Budget prêt ?", safe.funding, "color: #059669; font-weight: 700;")}
           ${row("Message", safe.message, "color: #334155; white-space: pre-wrap; line-height: 1.5;")}
         </table>
         ${buildAttributionHtml(data.attribution)}

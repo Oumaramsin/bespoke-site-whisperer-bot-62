@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Calendar, CheckCircle2, Mail, Package, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Calendar, CheckCircle2, Clock, Mail, Package, Tag, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
 import PoleProjects from "@/components/projects/PoleProjects";
 import MethodSteps from "@/components/projects/MethodSteps";
+import GuaranteesSection from "@/components/index/GuaranteesSection";
+import GoogleReviewsBadge from "@/components/GoogleReviewsBadge";
 import { getOffer } from "@/data/offers";
+import { PRICE_NOTES, PRICE_TIERS, formatSpan, formatTier, headlineTiers, lowerFirst } from "@/data/pricing";
 import { GUIDES } from "@/data/guides";
 import type { OfferId } from "@/data/offerRoutes";
 import { SITE_URL } from "@/lib/seo";
@@ -19,6 +22,11 @@ export const Offer = ({ id }: { id: OfferId }) => {
   const guides = GUIDES.filter((g) => offer.relatedGuides.includes(g.slug));
   const url = `${SITE_URL}${offer.path}`;
   const si = offer.pole === "si";
+  const tiers = PRICE_TIERS[offer.id];
+  const lowestTier = tiers[0];
+  const highestTier = tiers[tiers.length - 1];
+  const headline = headlineTiers(offer.id);
+  const priceNote = PRICE_NOTES[offer.id];
 
   const book = () => openBooking(`offer_${offer.id}`);
 
@@ -41,6 +49,17 @@ export const Offer = ({ id }: { id: OfferId }) => {
       url,
       provider: { "@type": "ProfessionalService", name: "RAMSIN Conseil", url: SITE_URL },
       areaServed: ["Paris", "Île-de-France", "France"],
+      offers: {
+        "@type": "Offer",
+        url,
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          ...(lowestTier.min !== undefined && { minPrice: lowestTier.min }),
+          ...(highestTier.max !== undefined && { maxPrice: highestTier.max }),
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: false,
+        },
+      },
     },
     {
       "@context": "https://schema.org",
@@ -80,7 +99,40 @@ export const Offer = ({ id }: { id: OfferId }) => {
               <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-white">
                 {offer.h1}
               </h1>
-              <p className="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed">{offer.lead}</p>
+              {/* Sur mobile, l'accroche longue est masquée pour que les délais et le bouton restent dans le premier écran */}
+              <p className="hidden sm:block text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed">{offer.lead}</p>
+              {offer.timing && (
+                <p className="flex items-start gap-2 text-sm text-white font-semibold leading-relaxed">
+                  <Clock className="w-4 h-4 text-[#C7F36B] shrink-0 mt-0.5" /> {offer.timing}
+                </p>
+              )}
+              {/* Ordre de prix : le premier frein des visiteurs était de ne trouver aucun prix avant l'appel.
+                  Le prix dépend de la taille du projet : on renvoie vers les fourchettes détaillées plus bas.
+                  Pour les applications, on montre la première version et l'application complète plutôt que l'étendue entière. */}
+              <p className="flex items-start gap-2 text-sm text-slate-200 leading-relaxed">
+                <Tag className="w-4 h-4 text-[#C7F36B] shrink-0 mt-0.5" />
+                <span>
+                  {headline.length > 0 ? (
+                    headline.map((tier, i) => (
+                      <span key={tier.name}>
+                        {i > 0 && ", "}
+                        {i === 0 ? tier.name : lowerFirst(tier.name)} :{" "}
+                        <strong className="text-white font-extrabold">{formatTier(tier)}</strong>
+                      </span>
+                    ))
+                  ) : (
+                    <>
+                      Selon la taille du projet :{" "}
+                      <strong className="text-white font-extrabold">{formatSpan(offer.id)}</strong>
+                    </>
+                  )}
+                  .{" "}
+                  <a href="#prix" className="underline underline-offset-2 text-[#C7F36B] hover:text-white">
+                    Voir les fourchettes
+                  </a>
+                </span>
+              </p>
+              <GoogleReviewsBadge dark />
               <ul className="pt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-200 font-medium">
                 {offer.highlights.map((h) => (
                   <li key={h} className="flex items-center gap-1.5">
@@ -110,6 +162,9 @@ export const Offer = ({ id }: { id: OfferId }) => {
           </div>
         </div>
       </section>
+
+      {/* GARANTIES ÉCRITES : la réponse au premier frein des prospects (« et si le prestataire disparaît ? ») */}
+      {!si && <GuaranteesSection />}
 
       <div className="py-12 md:py-20 space-y-16 md:space-y-24">
         {/* POUR QUI */}
@@ -150,6 +205,64 @@ export const Offer = ({ id }: { id: OfferId }) => {
           </p>
         </section>
 
+        {/* COMBIEN ÇA COÛTE : des fourchettes par taille de projet, jamais un prix unique (ancre #prix de l'en-tête) */}
+        <section id="prix" className="scroll-mt-20 container mx-auto px-4 max-w-5xl space-y-8">
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Combien ça coûte ?</h2>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Le prix dépend de la taille de votre projet. Voici les ordres de prix habituels, hors taxes.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {tiers.map((tier) => (
+              <div key={tier.name} className="p-6 rounded-2xl glass-card border border-border/80 space-y-2">
+                <h3 className="text-base font-bold text-foreground">{tier.name}</h3>
+                <p className="text-xl font-extrabold text-emerald-700">{formatTier(tier)}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{tier.examples}</p>
+              </div>
+            ))}
+          </div>
+          {priceNote && (
+            <p className="max-w-3xl mx-auto text-center text-sm sm:text-base font-semibold text-foreground leading-relaxed">{priceNote}</p>
+          )}
+          <p className="max-w-3xl mx-auto text-center text-sm text-muted-foreground leading-relaxed">
+            Le prix ferme est écrit dans le devis envoyé sous 48 h, après l'échange de 30 minutes. Rien n'est ajouté sans
+            votre accord écrit, et vous payez par étapes, chacune seulement après l'avoir testée.
+          </p>
+          <p className="max-w-3xl mx-auto text-center text-sm font-semibold text-foreground leading-relaxed">
+            Petit budget ou idée à tester ? Dites-le dès le premier échange : nous vous proposons la version la plus simple
+            qui suffit pour démarrer, ou nous vous orientons vers une solution toute faite comme Shopify si c'est plus raisonnable.
+          </p>
+        </section>
+
+        {/* QUI RÉALISE LE PROJET : remonté juste après les prix, car « il est seul » est le premier doute après le prix */}
+        {!si && (
+          <section className="container mx-auto px-4 max-w-3xl">
+            <div className="p-6 sm:p-8 rounded-3xl glass-card border border-border/80 space-y-3">
+              <h2 className="flex items-center gap-2.5 text-xl sm:text-2xl font-extrabold text-foreground">
+                <UserRound className="w-6 h-6 text-emerald-700 shrink-0" /> Qui réalise votre projet
+              </h2>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                Votre projet est conçu et développé par le fondateur de RAMSIN, développeur et ancien consultant SI pour de
+                grands comptes (Covéa, La Banque Postale). Un seul interlocuteur, du premier appel à la mise en ligne, sur un
+                groupe WhatsApp dédié. Deux projets à la fois au maximum, pour tenir les dates écrites dans chaque devis.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                Et si, un jour, il n'était plus disponible : votre code est déposé chaque semaine sur votre compte, avec une
+                documentation de reprise, et vous n'avez payé que les étapes testées. Un autre développeur peut reprendre sans
+                repartir de zéro.
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <GoogleReviewsBadge />
+                <Link to="/a-propos" className="inline-flex items-center gap-1 text-sm font-bold text-primary">
+                  En savoir plus sur RAMSIN <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+
+
         {/* MÉTHODE */}
         <section className="container mx-auto px-4 max-w-5xl space-y-8">
           <div className="text-center max-w-3xl mx-auto space-y-2">
@@ -184,8 +297,8 @@ export const Offer = ({ id }: { id: OfferId }) => {
           title={offer.relatedProjects.length === 1 ? "Un projet similaire" : "Des projets similaires"}
         />
 
-        {/* FAQ */}
-        <section className="container mx-auto px-4 max-w-3xl space-y-8">
+        {/* FAQ (ancre #faq : lien annexe « Combien ça coûte » des annonces) */}
+        <section id="faq" className="scroll-mt-20 container mx-auto px-4 max-w-3xl space-y-8">
           <div className="text-center space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Questions fréquentes</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Avant de vous lancer</h2>

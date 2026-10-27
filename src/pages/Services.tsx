@@ -24,6 +24,7 @@ import {
   Database,
   Phone,
   Server,
+  Tag,
 } from "lucide-react";
 import SEO from "@/components/SEO";
 import CTASection from "@/components/CTASection";
@@ -32,6 +33,7 @@ import MethodSteps from "@/components/projects/MethodSteps";
 import ServicesFaq from "@/components/services/ServicesFaq";
 import { WEB_FAQ } from "@/data/services";
 import { offerPath, type OfferId } from "@/data/offerRoutes";
+import { formatSpan } from "@/data/pricing";
 import { smoothScrollTo } from "@/lib/smoothScroll";
 
 const SERVICES_JSONLD = [
@@ -211,6 +213,7 @@ export const Services = () => {
                   desc: "Espace client, tableau de bord, outil de gestion interne ou logiciel en ligne pour vos propres clients.",
                   stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL",
                   offer: "application-web" as OfferId | undefined,
+                  price: `Selon le projet : ${formatSpan("application-web")}` as string | undefined,
                   features: [
                     "Comptes utilisateurs et droits d'accès sécurisés",
                     "Vos tâches répétitives automatisées",
@@ -224,6 +227,7 @@ export const Services = () => {
                   desc: "Une application pour iPhone et Android, publiée sur l'App Store et Google Play.",
                   stack: "React Native, Expo, notifications push, caméra",
                   offer: "application-mobile" as OfferId | undefined,
+                  price: `Selon le projet : ${formatSpan("application-mobile")}`,
                   features: [
                     "Une seule application pour iPhone et Android",
                     "Fluide et simple à prendre en main",
@@ -237,6 +241,7 @@ export const Services = () => {
                   desc: "Un site vitrine qui donne envie de vous contacter, ou une boutique pour vendre en ligne.",
                   stack: "Vite, Next.js, Tailwind CSS, Stripe Checkout",
                   offer: "site-ecommerce" as OfferId | undefined,
+                  price: `Selon le projet : ${formatSpan("site-ecommerce")}`,
                   features: [
                     "Des pages qui s'affichent vite, même sur mobile",
                     "Pensé dès le départ pour être bien référencé sur Google",
@@ -250,6 +255,7 @@ export const Services = () => {
                   desc: "Après la mise en ligne, nous gardons votre site ou votre application en ligne, sécurisé et à jour, pour que vous restiez concentré sur votre activité.",
                   stack: "Vercel, AWS, Cloudflare, VPS",
                   offer: undefined as OfferId | undefined,
+                  price: undefined,
                   features: [
                     "Hébergement, nom de domaine et connexion sécurisée",
                     "Mises à jour, correctifs de sécurité & sauvegardes",
@@ -275,6 +281,11 @@ export const Services = () => {
                       <CardDescription className="text-sm text-muted-foreground leading-relaxed">
                         {proj.desc}
                       </CardDescription>
+                      {proj.price && (
+                        <p className="flex items-center gap-1.5 text-sm font-bold text-foreground">
+                          <Tag className="w-4 h-4 text-emerald-700 shrink-0" /> {proj.price}
+                        </p>
+                      )}
                     </CardHeader>
                     <CardContent className="space-y-4 pt-2">
                       <div className="space-y-2">

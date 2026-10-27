@@ -12,6 +12,10 @@ interface SendContactParams {
   phone?: string;
   serviceType: string;
   timeline?: string;
+  /** Fourchette de budget choisie par le prospect (clé de BUDGET_OPTIONS) */
+  budget?: string;
+  /** Budget prêt, en cours de financement ou pas encore (clé de FUNDING_OPTIONS) */
+  funding?: string;
   /** Facultatif : déduit du type de prestation par le serveur */
   subject?: string;
   message: string;
@@ -34,6 +38,31 @@ export const formatServiceType = (key?: string) => {
   };
   return map[key || ""] || key || "Non précisé";
 };
+
+/** Fourchettes de budget du formulaire (mêmes clés que BUDGET_LABELS dans api/contact.ts) */
+export const BUDGET_OPTIONS: { value: string; label: string }[] = [
+  { value: "lt-3k", label: "Moins de 3 000 €" },
+  { value: "3-6k", label: "3 000 à 6 000 €" },
+  { value: "6-10k", label: "6 000 à 10 000 €" },
+  { value: "10-20k", label: "10 000 à 20 000 €" },
+  { value: "gt-20k", label: "Plus de 20 000 €" },
+  { value: "unknown", label: "Je ne sais pas encore" },
+];
+
+/** Budget prêt ou non (mêmes clés que FUNDING_LABELS dans api/contact.ts) */
+export const FUNDING_OPTIONS: { value: string; label: string }[] = [
+  { value: "ready", label: "Oui, il est réservé" },
+  { value: "in-progress", label: "Financement en cours (banque, prêt d'honneur…)" },
+  { value: "not-yet", label: "Pas encore" },
+];
+
+/** Date de lancement souhaitée (mêmes clés que TIMELINE_LABELS dans api/contact.ts) */
+export const TIMELINE_OPTIONS: { value: string; label: string }[] = [
+  { value: "asap", label: "Dès que possible" },
+  { value: "1-month", label: "D'ici 1 mois" },
+  { value: "3-months", label: "Sous 3 mois" },
+  { value: "flexible", label: "Pas de date précise" },
+];
 
 export const formatTimeline = (key?: string) => {
   const map: Record<string, string> = {

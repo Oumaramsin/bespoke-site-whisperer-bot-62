@@ -53,7 +53,14 @@ import SEO from "@/components/SEO";
 import BookingWidget from "@/components/index/BookingWidget";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CopyEmailButton from "@/components/CopyEmailButton";
-import { sendContactRequest, formatServiceType } from "@/services/contactService";
+import {
+  sendContactRequest,
+  formatServiceType,
+  BUDGET_OPTIONS,
+  FUNDING_OPTIONS,
+  TIMELINE_OPTIONS,
+} from "@/services/contactService";
+import { GUARANTEES } from "@/components/index/GuaranteesSection";
 import { trackConversionEvent } from "@/lib/analytics";
 import { openBooking } from "@/lib/calendly";
 
@@ -70,6 +77,9 @@ const formSchema = z.object({
   serviceType: z
     .string()
     .min(1, { message: "Veuillez sélectionner le domaine concerné par votre besoin" }),
+  budget: z.string().optional(),
+  funding: z.string().optional(),
+  timeline: z.string().optional(),
   message: z
     .string()
     .min(10, { message: "Veuillez décrire brièvement votre besoin (au moins 10 caractères)" })
@@ -109,6 +119,9 @@ export const Contact = () => {
       email: "",
       phone: "",
       serviceType: serviceParam === "si" ? "architecture-si" : serviceParam === "web" ? "web-app" : "",
+      budget: "",
+      funding: "",
+      timeline: "",
       message: "",
     },
   });
@@ -174,6 +187,9 @@ export const Contact = () => {
         email: data.email,
         phone: data.phone,
         serviceType: data.serviceType,
+        budget: data.budget || undefined,
+        funding: data.funding || undefined,
+        timeline: data.timeline || undefined,
         message: data.message,
         website: honeypot,
       });
@@ -600,6 +616,72 @@ export const Contact = () => {
                         />
                       </div>
 
+                      {/* Budget envisagé : le prospect se situe par rapport aux prix de départ des pages d'offre */}
+                      <FormField
+                        control={form.control}
+                        name="budget"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="contact-budget">
+                              Budget envisagé <span className="text-xs text-muted-foreground font-normal">(optionnel, tous les budgets sont étudiés)</span>
+                            </FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger id="contact-budget">
+                                  <SelectValue placeholder="Sélectionnez une fourchette" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {BUDGET_OPTIONS.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className="text-xs" />
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Qualification avant l'appel : budget prêt ou non, date de lancement souhaitée */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {(
+                          [
+                            { name: "funding", id: "contact-funding", label: "Votre budget est-il prêt ?", options: FUNDING_OPTIONS },
+                            { name: "timeline", id: "contact-timeline", label: "Lancement souhaité", options: TIMELINE_OPTIONS },
+                          ] as const
+                        ).map(({ name, id, label, options }) => (
+                          <FormField
+                            key={name}
+                            control={form.control}
+                            name={name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel htmlFor={id}>
+                                  {label} <span className="text-xs text-muted-foreground font-normal">(optionnel)</span>
+                                </FormLabel>
+                                <Select onValueChange={field.onChange} value={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger id={id}>
+                                      <SelectValue placeholder="Sélectionnez" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {options.map((option) => (
+                                      <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage className="text-xs" />
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+                      </div>
+
                       {/* Ligne 3 : Description du Besoin */}
                       <FormField
                         control={form.control}
@@ -675,45 +757,19 @@ export const Contact = () => {
               <Card className="border-border/80 glass-card rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 text-foreground font-bold text-lg">
-                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Nos 3 garanties
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" /> Nos 4 garanties écrites
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-sm text-foreground block">
-                        100 % en langage clair
-                      </span>
-                      <span className="text-xs text-muted-foreground leading-relaxed">
-                        Des explications concrètes sur vos enjeux, zéro jargon technique obscur pour masquer les réalités.
-                      </span>
+                  {GUARANTEES.map((g) => (
+                    <div key={g.title} className="flex gap-3 items-start">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-sm text-foreground block">{g.title}</span>
+                        <span className="text-xs text-muted-foreground leading-relaxed">{g.description}</span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-sm text-foreground block">
-                        Transparence forfaitaire
-                      </span>
-                      <span className="text-xs text-muted-foreground leading-relaxed">
-                        Devis clair, périmètre maîtrisé et budget forfaitaire ferme sans aucun surcoût imprévu.
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-bold text-sm text-foreground block">
-                        Confidentialité absolue
-                      </span>
-                      <span className="text-xs text-muted-foreground leading-relaxed">
-                        Protection stricte de vos secrets d'affaires, de votre code et de vos architectures.
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </CardContent>
               </Card>
             </div>

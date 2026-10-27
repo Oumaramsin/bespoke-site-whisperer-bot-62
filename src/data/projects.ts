@@ -40,7 +40,12 @@ export interface Project {
   imageBg?: string;
   /** Point d'ancrage de la capture recadrée (object-position CSS), « top » par défaut */
   imagePosition?: string;
+  /** Adresse du projet en ligne, que le visiteur peut vérifier lui-même (seulement si le site est public) */
+  liveUrl?: string;
 }
+
+/** « https://www.dabari.fr » → « dabari.fr » */
+export const liveHost = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
 export const PROJECTS_DATA: Project[] = [
   {
@@ -88,7 +93,8 @@ export const PROJECTS_DATA: Project[] = [
     tags: ["Next.js 15", "React Native", "TypeScript", "Node.js", "PostgreSQL", "Prisma", "Docker"],
     stack: ["Next.js 15", "React Native / Expo", "Node.js", "PostgreSQL Prisma", "Docker"],
     featured: true,
-    image: "/images/projects/dabari.webp"
+    image: "/images/projects/dabari.webp",
+    liveUrl: "https://www.dabari.fr"
   },
   {
     id: "maison-hamdiwashukri",
@@ -182,7 +188,8 @@ export const PROJECTS_DATA: Project[] = [
     stack: ["HTML5 / Modern JS", "Tailwind CSS", "API Devis Express", "SEO Local", "Hébergement Cloud"],
     featured: true,
     logo: "/logos/eclat-du-chef.webp",
-    image: "/images/projects/eclat-du-chef.webp"
+    image: "/images/projects/eclat-du-chef.webp",
+    liveUrl: "https://www.leclatduchef.fr"
   },
   {
     id: "covea-hopex-v5",

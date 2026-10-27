@@ -5,6 +5,7 @@
  */
 import type { Project } from "./projects";
 import { OFFER_LINKS, type OfferId } from "./offerRoutes";
+import { describeTiers } from "./pricing";
 
 export interface OfferFaq {
   q: string;
@@ -35,6 +36,8 @@ export interface Offer {
   kicker: string;
   h1: string;
   lead: string;
+  /** Délais annoncés sous l'accroche (démarrage, première version, mise en ligne) */
+  timing?: string;
   /** Trois points courts dans le bandeau d'en-tête */
   highlights: string[];
   audience: string[];
@@ -64,7 +67,9 @@ export const OFFERS: Offer[] = [
     h1: "Créez votre application mobile, publiée sur l'App Store et Google Play",
     lead:
       "Vous avez une idée d'application, un service à mettre dans la poche de vos clients ou un outil pour vos équipes sur le terrain ? RAMSIN conçoit et développe votre application iOS et Android avec une seule base de code (React Native), la publie sur les stores et vous en cède l'intégralité.",
-    highlights: ["Une seule base de code pour iOS & Android", "Publication sur les stores incluse", "Code source et comptes à votre nom"],
+    timing:
+      "Date de démarrage et date de mise en ligne écrites dans le devis. Une première version à tester sur votre téléphone dès la première semaine, mise en ligne en 4 à 8 semaines selon le projet.",
+    highlights: ["Chaque étape payée après test", "Publication sur les stores incluse", "Code et comptes à votre nom"],
     audience: [
       "Porteurs de projet qui lancent un service mobile : réservation, livraison, marketplace, communauté",
       "Commerces et marques qui veulent fidéliser leurs clients avec une application à leur nom",
@@ -94,18 +99,34 @@ export const OFFERS: Offer[] = [
       },
       {
         title: "Garantie et suivi après lancement",
-        text: "30 jours de garantie inclus, puis hébergement, maintenance, mises à jour sur les stores et évolutions si vous le souhaitez.",
+        text: "30 jours de corrections offertes, puis une maintenance mensuelle à prix fixe, sans engagement : mises à jour iOS et Android, exigences des stores, bugs corrigés sous 2 jours ouvrés.",
       },
     ],
     stack: "React Native, Expo, TypeScript, Node.js, PostgreSQL, notifications push, Stripe",
     faq: [
+      {
+        q: "Combien coûte une application mobile ?",
+        a: `Cela dépend de la taille du projet. Ordres de prix habituels : ${describeTiers("application-mobile")}. Le prix ferme est écrit dans le devis envoyé sous 48 h, et rien n'est ajouté sans votre accord écrit. Vous payez par étapes, chacune seulement après l'avoir testée.`,
+      },
+      {
+        q: "Vous préparez un rendez-vous avec votre banque ?",
+        a: "Le devis ferme, envoyé sous 48 h, détaille le prix, les étapes et la date de mise en ligne : vous pouvez le joindre à votre dossier de financement. Une première version à tester est prête dès la première semaine après le démarrage.",
+      },
+      {
+        q: "Que reste-t-il à payer après la mise en ligne ?",
+        a: "Les comptes sont à votre nom et vous les payez directement : compte développeur Apple (99 € par an) et Google Play (25 $ une seule fois), plus l'hébergement selon l'usage de l'application. La maintenance mensuelle est facultative, sans engagement, et son prix est écrit dans le devis.",
+      },
+      {
+        q: "Et si vous n'êtes plus disponible en cours de projet ?",
+        a: "Vous n'êtes jamais bloqué. Chaque semaine, le code et une notice de reprise sont déposés sur votre propre compte, pas sur le nôtre : un autre développeur peut reprendre le projet à partir de là. Vous n'avez payé que les étapes testées, et vous pouvez arrêter à tout moment en gardant ce qui est payé.",
+      },
       {
         q: "Faut-il une application native ou React Native ?",
         a: "Pour la grande majorité des projets, React Native donne une application fluide et une seule base de code pour iOS et Android, donc des délais et un budget réduits. Le natif pur se justifie pour des besoins très spécifiques (3D, traitement vidéo lourd). Nous en parlons au cadrage.",
       },
       {
         q: "Combien de temps pour mettre une application sur les stores ?",
-        a: "Après le cadrage, nous fixons un calendrier précis. Vous testez une nouvelle version chaque semaine sur votre téléphone. La validation par Apple et Google prend ensuite de quelques heures à quelques jours.",
+        a: "En général 4 à 8 semaines selon le projet, à partir de la date de démarrage écrite dans le devis. Vous testez une première version dès la première semaine, puis une nouvelle chaque semaine. La date de mise en ligne est écrite dans le devis ; la validation par Apple et Google prend ensuite de quelques heures à quelques jours.",
       },
       {
         q: "Dois-je créer les comptes Apple et Google moi-même ?",
@@ -117,7 +138,7 @@ export const OFFERS: Offer[] = [
       },
       {
         q: "Que se passe-t-il après la mise en ligne ?",
-        a: "30 jours de garantie sont inclus. Ensuite, nous pouvons assurer l'hébergement, la maintenance, les mises à jour sur les stores et les évolutions. Votre groupe WhatsApp reste ouvert.",
+        a: "30 jours de corrections sont offerts. Ensuite, vous pouvez prendre une maintenance mensuelle à prix fixe, sans engagement : mises à jour iOS et Android, exigences des stores, bugs corrigés sous 2 jours ouvrés. Son prix est écrit dans le devis. Votre groupe WhatsApp reste ouvert.",
       },
     ],
     relatedGuides: ["cahier-des-charges-application", "application-native-react-native-ou-web"],
@@ -135,7 +156,9 @@ export const OFFERS: Offer[] = [
     h1: "Une application web sur-mesure qui fait tourner votre activité",
     lead:
       "Portail client, espace membres, tableau de bord de gestion, logiciel SaaS vendu par abonnement ou outil interne qui remplace vos fichiers Excel : nous concevons des applications web rapides, sécurisées et pensées pour vos utilisateurs, avec Next.js et TypeScript.",
-    highlights: ["Accessible partout, sans installation", "Comptes, rôles et données sécurisés", "Code documenté et cédé à 100 %"],
+    timing:
+      "Date de démarrage et date de mise en ligne écrites dans le devis. Une première version à tester dès la première semaine, mise en ligne en 4 à 8 semaines selon le projet.",
+    highlights: ["Chaque étape payée après test", "Comptes, rôles et données sécurisés", "Code documenté et à votre nom"],
     audience: [
       "Entreprises qui veulent remplacer des tableurs et des échanges d'e-mails par un outil fiable",
       "Fondateurs qui lancent un logiciel en ligne (SaaS) vendu par abonnement",
@@ -170,6 +193,22 @@ export const OFFERS: Offer[] = [
     ],
     stack: "Next.js 15, React, TypeScript, Node.js, PostgreSQL, Prisma, Stripe",
     faq: [
+      {
+        q: "Combien coûte une application web ?",
+        a: `Cela dépend de la taille du projet. Ordres de prix habituels : ${describeTiers("application-web")}. Le prix ferme est écrit dans le devis envoyé sous 48 h, et rien n'est ajouté sans votre accord écrit. Vous payez par étapes, chacune seulement après l'avoir testée.`,
+      },
+      {
+        q: "Vous préparez un rendez-vous avec votre banque ?",
+        a: "Le devis ferme, envoyé sous 48 h, détaille le prix, les étapes et la date de mise en ligne : vous pouvez le joindre à votre dossier de financement. Une première version à tester est prête dès la première semaine après le démarrage.",
+      },
+      {
+        q: "Que reste-t-il à payer après la mise en ligne ?",
+        a: "L'hébergement et le nom de domaine sont à votre nom et vous les payez directement, selon l'usage de l'application ; si vous encaissez en ligne, Stripe prélève ses frais sur chaque paiement. La maintenance mensuelle est facultative, sans engagement, et son prix est écrit dans le devis.",
+      },
+      {
+        q: "Et si vous n'êtes plus disponible en cours de projet ?",
+        a: "Vous n'êtes jamais bloqué. Chaque semaine, le code et une notice de reprise sont déposés sur votre propre compte, pas sur le nôtre : un autre développeur peut reprendre le projet à partir de là. Vous n'avez payé que les étapes testées, et vous pouvez arrêter à tout moment en gardant ce qui est payé.",
+      },
       {
         q: "Application web ou logiciel à installer ?",
         a: "Une application web se met à jour pour tout le monde en même temps, s'utilise depuis n'importe quel appareil et ne demande aucune installation. C'est le bon choix dans la quasi-totalité des cas métier.",
@@ -206,7 +245,9 @@ export const OFFERS: Offer[] = [
     h1: "Un site internet qui transforme vos visiteurs en clients",
     lead:
       "Un site vitrine qui génère des demandes de devis ou une boutique en ligne qui vend : nous concevons des sites sur-mesure, rapides, bien référencés et pensés pour convertir, sans abonnement captif ni thème générique.",
-    highlights: ["Conçu pour convertir", "Rapide et bien référencé", "Nom de domaine et hébergement à votre nom"],
+    timing:
+      "Date de démarrage et date de mise en ligne écrites dans le devis. Une première version à tester dès la première semaine, mise en ligne en 2 à 4 semaines pour une boutique, souvent moins pour un site vitrine.",
+    highlights: ["Chaque étape payée après test", "Rapide et bien référencé", "Domaine, hébergement et code à votre nom"],
     audience: [
       "Artisans, commerçants, restaurateurs et indépendants qui veulent être trouvés et contactés",
       "Marques qui lancent une boutique en ligne avec paiement par carte et PayPal",
@@ -242,8 +283,24 @@ export const OFFERS: Offer[] = [
     stack: "Next.js, React, Tailwind CSS, Stripe Checkout, PayPal, Vercel",
     faq: [
       {
+        q: "Combien coûte une boutique en ligne ?",
+        a: `Cela dépend de la taille du projet. Ordres de prix habituels : ${describeTiers("site-ecommerce")}. Le prix ferme est écrit dans le devis envoyé sous 48 h, et vous payez par étapes, chacune seulement après l'avoir testée. Si une boutique Shopify suffit à votre projet, nous vous le disons dès le premier échange.`,
+      },
+      {
+        q: "Vous préparez un rendez-vous avec votre banque ?",
+        a: "Le devis ferme, envoyé sous 48 h, détaille le prix, les étapes et la date de mise en ligne : vous pouvez le joindre à votre dossier de financement. Une première version à tester est prête dès la première semaine après le démarrage.",
+      },
+      {
+        q: "Que reste-t-il à payer après la mise en ligne ?",
+        a: "Le nom de domaine et l'hébergement sont à votre nom et vous les payez directement ; Stripe et PayPal prélèvent leurs frais sur chaque vente, sans abonnement à une plateforme. La maintenance mensuelle est facultative, sans engagement, et son prix est écrit dans le devis.",
+      },
+      {
+        q: "Et si vous n'êtes plus disponible en cours de projet ?",
+        a: "Vous n'êtes jamais bloqué. Chaque semaine, le code et une notice de reprise sont déposés sur votre propre compte, pas sur le nôtre : un autre développeur peut reprendre le projet à partir de là. Vous n'avez payé que les étapes testées, et vous pouvez arrêter à tout moment en gardant ce qui est payé.",
+      },
+      {
         q: "Pourquoi un site sur-mesure plutôt que Wix ou Shopify ?",
-        a: "Un site sur-mesure est plus rapide, mieux référencé et entièrement à vous : pas d'abonnement mensuel à une plateforme, pas de limites de thème, et il évolue librement. Pour un simple test, une plateforme peut suffire : nous vous le dirons.",
+        a: "Shopify convient pour démarrer vite avec un catalogue simple : un abonnement mensuel (à partir de 27 € par mois), des frais sur chaque paiement et des applications payantes pour aller plus loin. Le sur-mesure devient intéressant quand Shopify bloque ou coûte cher chaque mois : produits personnalisés ou configurateur, parcours de commande particulier, connexion à vos outils, ou envie de ne plus payer d'abonnement à une plateforme. Si Shopify suffit à votre projet, nous vous le disons dès le premier échange.",
       },
       {
         q: "Mon site sera-t-il bien référencé sur Google ?",
@@ -255,7 +312,7 @@ export const OFFERS: Offer[] = [
       },
       {
         q: "Combien de temps faut-il ?",
-        a: "Un site vitrine se livre en quelques semaines, une boutique un peu plus selon le catalogue et les options. Le calendrier précis est fixé au cadrage, puis vous suivez l'avancement chaque semaine.",
+        a: "Une boutique en ligne se met en ligne en 2 à 4 semaines à partir de la date de démarrage écrite dans le devis, un site vitrine souvent plus vite. Vous testez une première version dès la première semaine, puis chaque semaine, et la date de mise en ligne est écrite dans le devis.",
       },
     ],
     relatedGuides: ["site-vitrine-ou-boutique-en-ligne", "cahier-des-charges-application"],

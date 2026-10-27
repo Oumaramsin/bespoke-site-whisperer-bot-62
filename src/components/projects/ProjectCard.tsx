@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, CheckCircle2, Building2, Smartphone, AlertTriangle, Zap, TrendingUp } from "lucide-react";
-import type { Project } from "@/data/projects";
+import { ArrowUpRight, CheckCircle2, Building2, Smartphone, AlertTriangle, Zap, TrendingUp, Globe } from "lucide-react";
+import { liveHost, type Project } from "@/data/projects";
 import { trackConversionEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import BrowserFrame from "./BrowserFrame";
@@ -14,6 +14,13 @@ const PoleBadge = ({ pole }: { pole: Project["pole"] }) => (
   >
     {pole === "web" ? <Smartphone className="w-3.5 h-3.5" /> : <Building2 className="w-3.5 h-3.5" />}
     {pole === "web" ? "Web & mobile" : "Architecture SI & MEGA HOPEX"}
+  </span>
+);
+
+/** Le projet est public : le visiteur peut aller le voir lui-même */
+const LiveBadge = ({ url }: { url: string }) => (
+  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+    <Globe className="w-3.5 h-3.5" /> En ligne · {liveHost(url)}
   </span>
 );
 
@@ -61,6 +68,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
           <div className="flex flex-wrap items-center gap-2">
             <PoleBadge pole={project.pole} />
             <span className="text-xs font-semibold text-muted-foreground">{project.categoryLabel} · {project.period}</span>
+            {project.liveUrl && <LiveBadge url={project.liveUrl} />}
           </div>
           <div className="space-y-2">
             <p className="text-sm font-extrabold text-primary">{project.client}</p>
@@ -130,6 +138,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
           <div className="flex flex-wrap items-center gap-2">
             <PoleBadge pole={project.pole} />
             <span className="text-xs font-semibold text-muted-foreground">{project.categoryLabel} · {project.period}</span>
+            {project.liveUrl && <LiveBadge url={project.liveUrl} />}
           </div>
           <div className="space-y-1.5">
             <p className="text-sm font-extrabold text-primary">{project.client}</p>
@@ -193,6 +202,7 @@ export const ProjectCard = ({ project, source = "projects_grid", featured = fals
         <div className="flex flex-wrap items-center gap-2">
           <PoleBadge pole={project.pole} />
           <span className="text-xs font-semibold text-muted-foreground">{project.categoryLabel}</span>
+          {project.liveUrl && <LiveBadge url={project.liveUrl} />}
         </div>
         <p className="text-sm font-extrabold text-primary">{project.client}</p>
         <h3 className="text-lg font-extrabold leading-snug group-hover:text-primary transition-colors">{project.headline}</h3>

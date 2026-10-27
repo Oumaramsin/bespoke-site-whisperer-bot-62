@@ -17,8 +17,9 @@ import {
   AlertTriangle,
   Phone,
   Quote,
+  ExternalLink,
 } from "lucide-react";
-import { PROJECTS_DATA } from "@/data/projects";
+import { PROJECTS_DATA, liveHost } from "@/data/projects";
 import { getTestimonialForProject } from "@/data/testimonials";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
@@ -156,6 +157,13 @@ export const ProjectDetail = () => {
                 <Button variant="lime" size="lg" className="rounded-xl gap-2 cursor-pointer" onClick={() => openBooking("case_hero")}>
                   <Calendar className="w-4 h-4" /> Un projet similaire ? 30 min offertes
                 </Button>
+                {project.liveUrl && (
+                  <Button asChild size="lg" variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4" /> Voir {liveHost(project.liveUrl)} en ligne
+                    </a>
+                  </Button>
+                )}
                 <Button asChild size="lg" variant="outline" className="rounded-xl gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white">
                   <Link to="/projets"><ArrowLeft className="w-4 h-4" /> Toutes les réalisations</Link>
                 </Button>
