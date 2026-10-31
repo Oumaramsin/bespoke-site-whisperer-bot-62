@@ -1,0 +1,587 @@
+/* Visuels pour la fiche Google Business Profile de RAMSIN : mêmes couleurs que ramsin.fr */
+:root {
+  --ink: #071816;
+  --green: #123a35;
+  --green-2: #15463f;
+  --lime: #c7f36b;
+  --lime-2: #d9ff7d;
+  --paper: #f5f8f4;
+  --muted: #55665f;
+  --line: rgba(18, 58, 53, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: var(--w);
+  height: var(--h);
+  overflow: hidden;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.canvas {
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 72px;
+}
+
+.canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fonds */
+.dark {
+  color: #fff;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(199, 243, 107, 0.2), transparent 42%),
+    radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.2), transparent 48%),
+    linear-gradient(150deg, #071816 0%, #0e2f2a 55%, #081d1a 100%);
+}
+
+.light {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 92% 6%, rgba(199, 243, 107, 0.45), transparent 38%),
+    radial-gradient(circle at 0% 100%, rgba(18, 58, 53, 0.08), transparent 45%),
+    var(--paper);
+}
+
+.dots::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: 30px 30px;
+}
+
+.dark.dots::before {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.6px, transparent 1.6px);
+}
+
+.light.dots::before {
+  background-image: radial-gradient(rgba(18, 58, 53, 0.08) 1.6px, transparent 1.6px);
+}
+
+/* Marque */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -0.5px;
+}
+
+.brand svg {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.brand .pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 14px var(--lime);
+}
+
+/* Textes */
+.kicker {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 21px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.dark .kicker {
+  background: rgba(199, 243, 107, 0.14);
+  color: var(--lime);
+  border: 1.5px solid rgba(199, 243, 107, 0.4);
+}
+
+.light .kicker {
+  background: rgba(199, 243, 107, 0.55);
+  color: var(--green);
+}
+
+h1 {
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.lime {
+  color: var(--lime);
+}
+
+.accent {
+  color: #0f766e;
+}
+
+.lead {
+  font-size: 29px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.dark .lead {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.light .lead {
+  color: var(--muted);
+}
+
+/* Icônes (tracés type « lucide ») */
+.i {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Pastilles */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.chip .i {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.dark .chip {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.dark .chip .i {
+  color: var(--lime);
+}
+
+.light .chip {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+}
+
+.light .chip .i {
+  color: #0f766e;
+}
+
+/* Bas de visuel */
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.site {
+  font-size: 26px;
+  font-weight: 800;
+  padding: 14px 24px;
+  border-radius: 16px;
+}
+
+.dark .site {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.light .site {
+  background: var(--green);
+  color: #fff;
+}
+
+/* Cadre navigateur des captures de projets */
+.frame {
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.65);
+}
+
+.frame .bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 18px;
+  background: #eef2f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 19px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.frame .bar span {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+}
+
+.frame .bar span:nth-child(1) {
+  background: #fb7185;
+}
+
+.frame .bar span:nth-child(2) {
+  background: #fbbf24;
+}
+
+.frame .bar span:nth-child(3) {
+  background: #34d399;
+}
+
+.frame .bar b {
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.frame img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Cartes */
+.card {
+  border-radius: 26px;
+  padding: 30px;
+}
+
+.dark .card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+}
+
+.light .card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  box-shadow: 0 18px 40px -28px rgba(7, 24, 22, 0.35);
+}
+
+.badge-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-icon .i {
+  width: 34px;
+  height: 34px;
+}
+
+.badge-lime {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.badge-green {
+  background: var(--green);
+  color: var(--lime);
+}
+
+.badge-soft {
+  background: rgba(199, 243, 107, 0.45);
+  color: var(--green);
+}
+
+/* Bloc principal centré verticalement entre le haut et le pied du visuel */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.chip {
+  white-space: nowrap;
+}
+
+/* ===== Maquettes d'appareils (photos de la fiche) ===== */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laptop {
+  position: relative;
+  width: var(--lw, 860px);
+  filter: drop-shadow(0 50px 60px rgba(0, 0, 0, 0.45));
+}
+
+.laptop .lid {
+  background: #0d1110;
+  border: 2px solid #2b3230;
+  border-radius: 28px 28px 6px 6px;
+  padding: 20px 20px 26px;
+}
+
+.laptop .lid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 6px;
+}
+
+.laptop .base {
+  position: relative;
+  height: 28px;
+  margin: 0 -7%;
+  background: linear-gradient(180deg, #e3e7ea 0%, #b8c0c6 55%, #8f989f 100%);
+  border-radius: 2px 2px 26px 26px;
+}
+
+.laptop .base::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 18%;
+  height: 9px;
+  transform: translateX(-50%);
+  background: #9aa3aa;
+  border-radius: 0 0 12px 12px;
+}
+
+.monitor {
+  position: relative;
+  width: var(--mw, 860px);
+  filter: drop-shadow(0 50px 60px rgba(0, 0, 0, 0.45));
+}
+
+.monitor .panel {
+  background: #0d1110;
+  border: 2px solid #2b3230;
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.monitor .stand {
+  width: 22%;
+  height: 90px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #8f989f, #d5dade 50%, #8f989f);
+  clip-path: polygon(30% 0, 70% 0, 82% 100%, 18% 100%);
+}
+
+.monitor .foot {
+  width: 40%;
+  height: 16px;
+  margin: 0 auto;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #d5dade, #8f989f);
+}
+
+/* Petite étiquette de projet et marque discrète, seuls textes des photos */
+.tag-project {
+  position: absolute;
+  left: 48px;
+  bottom: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 16px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.dark .tag-project {
+  background: rgba(7, 24, 22, 0.75);
+  color: #fff;
+  border: 1.5px solid rgba(199, 243, 107, 0.35);
+}
+
+.light .tag-project {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+}
+
+.tag-project small {
+  font-size: 20px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.mark {
+  position: absolute;
+  right: 48px;
+  bottom: 44px;
+  width: 64px;
+  height: 64px;
+}
+
+/* ===== iPhone (proportions d'un iPhone 15 Pro : écran 393 × 852 points) =====
+   --pw : largeur du téléphone. --u : un « point » iOS à cette échelle.
+   La barre d'état (heure, Dynamic Island, réseau, batterie) occupe le haut de l'écran :
+   la capture du site commence en dessous, rien n'est caché par l'encoche. */
+.iphone {
+  --pw: 400px;
+  --u: calc(var(--pw) * 0.91 / 393);
+  position: relative;
+  width: var(--pw);
+  padding: calc(var(--pw) * 0.012);
+  border-radius: calc(var(--pw) * 0.17);
+  background: linear-gradient(135deg, #d9d8d4 0%, #8f8e8a 22%, #c9c8c4 48%, #7d7c78 76%, #b9b8b4 100%);
+  filter: drop-shadow(0 46px 50px rgba(0, 0, 0, 0.42));
+}
+
+.iphone .bezel {
+  background: #050505;
+  padding: calc(var(--pw) * 0.026);
+  border-radius: calc(var(--pw) * 0.158);
+}
+
+.iphone .screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--pw) * 0.132);
+  background: var(--sb, #fff);
+}
+
+.iphone .status {
+  position: relative;
+  height: calc(var(--u) * 54);
+  background: var(--sb, #fff);
+  color: var(--sbtext, #000);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--u) * 4) calc(var(--u) * 30) 0 calc(var(--u) * 46);
+  font-family: -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+}
+
+.iphone .status time {
+  font-size: calc(var(--u) * 17);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.iphone .status .icons {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 6);
+}
+
+.iphone .status .icons svg {
+  display: block;
+  height: calc(var(--u) * 12);
+  width: auto;
+  fill: currentColor;
+}
+
+.iphone .status .icons svg.battery {
+  height: calc(var(--u) * 13);
+}
+
+.iphone .island {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--u) * 11);
+  width: calc(var(--u) * 125);
+  height: calc(var(--u) * 37);
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #000;
+}
+
+.iphone .screen > img {
+  display: block;
+  width: 100%;
+  height: calc(var(--u) * 750);
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Barre Safari réduite : l'adresse du site, puis l'indicateur d'accueil */
+.iphone .safari {
+  position: relative;
+  height: calc(var(--u) * 48);
+  background: rgba(246, 246, 246, 0.97);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  padding-top: calc(var(--u) * 8);
+  font-family: -apple-system, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  font-size: calc(var(--u) * 12.5);
+  font-weight: 500;
+  color: #111;
+}
+
+.iphone .safari::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--u) * 8);
+  width: calc(var(--u) * 139);
+  height: calc(var(--u) * 5);
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #111;
+}
+
+/* Boutons latéraux */
+.iphone .key {
+  position: absolute;
+  width: calc(var(--pw) * 0.011);
+  border-radius: 3px;
+  background: linear-gradient(90deg, #8a8985, #c8c7c3);
+}
+
+.iphone .key.action { left: calc(var(--pw) * -0.008); top: 17%; height: 4.2%; }
+.iphone .key.vol-up { left: calc(var(--pw) * -0.008); top: 25%; height: 7.5%; }
+.iphone .key.vol-down { left: calc(var(--pw) * -0.008); top: 34.5%; height: 7.5%; }
+.iphone .key.power { right: calc(var(--pw) * -0.008); top: 28%; height: 11%; }

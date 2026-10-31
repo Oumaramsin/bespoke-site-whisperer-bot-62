@@ -16,7 +16,7 @@ const HOME_JSONLD = {
     "Comment RAMSIN conçoit une application web ou mobile sur-mesure : cadrage de 30 min offert, groupe WhatsApp dédié, tests chaque semaine, lancement à votre nom.",
   thumbnailUrl: ["https://www.ramsin.fr/videos/cover_v4_1080p.png"],
   contentUrl: "https://www.ramsin.fr/videos/ramsin-motion-v4-1080p.mp4",
-  uploadDate: "2026-10-20",
+  uploadDate: "2026-10-20T09:00:00+02:00",
   duration: "PT1M24S",
   inLanguage: "fr-FR",
   publisher: { "@id": "https://www.ramsin.fr/#organization" },
