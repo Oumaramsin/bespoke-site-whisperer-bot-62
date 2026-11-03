@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, Calendar, CheckCircle2, Clock, Mail, Package, Tag, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,7 @@ import { GUIDES } from "@/data/guides";
 import type { OfferId } from "@/data/offerRoutes";
 import { SITE_URL } from "@/lib/seo";
 import { trackConversionEvent } from "@/lib/analytics";
-import { openBooking } from "@/lib/calendly";
+import { openBooking, rememberProject } from "@/lib/calendly";
 
 /** Page d'offre : une prestation, une URL, un H1 — page d'atterrissage des annonces et des recherches précises */
 export const Offer = ({ id }: { id: OfferId }) => {
@@ -29,6 +30,9 @@ export const Offer = ({ id }: { id: OfferId }) => {
   const priceNote = PRICE_NOTES[offer.id];
 
   const book = () => openBooking(`offer_${offer.id}`);
+
+  // Le type de projet suit le visiteur jusqu'à la page Contact : il pré-remplit le rendez-vous Calendly
+  useEffect(() => rememberProject(offer.id), [offer.id]);
 
   const jsonLd = [
     {
